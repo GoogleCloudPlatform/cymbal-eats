@@ -23,25 +23,30 @@
         <q-carousel
           arrows
           animated
-          v-model="slide"
+          infinite
+          transition-prev="slide-right"
+          transition-next="slide-left"
+          :autoplay="true"
+          v-model="dish"
           height="400px"
         >
           <q-carousel-slide
-            v-for="slide in slides"
-            :name="slide.name"
-            :key="slide.name"
+            v-for="dish in dishes"
+            :name="dish.id"
+            :key="dish.id"
             img-src="/images/cottage-cheese-with-peas.jpg"
           >
             <div class="absolute-bottom custom-caption">
               <div class="text-h2">
-                {{ slide.title }}
+                {{ dish.title }}
               </div>
               <div class="text-subtitle1">
-                {{ slide.subtitle }}
+                {{ dish.subtitle }}
               </div>
               <q-btn
                 color="primary"
-                label="Order"
+                :label="'Order $' + dish.price"
+                @click="placeOrder(dish.id)"
               />
             </div>
           </q-carousel-slide>
@@ -52,27 +57,18 @@
   </q-layout>
 </template>
 
-<script>
+<script setup>
 
-import { defineComponent, ref } from 'vue'
+  import { ref } from 'vue';
+  import dishesFile from '../assets/dishes.json';
 
-export default defineComponent({
-  name: 'MainLayout',
+  const dish = ref(1);
+  const dishes = ref(dishesFile);
 
-  components: {
-  },
-
-  setup () {
-
-    return {
-      slide: ref('first'),
-      slides: ref([
-        {name: 'first', title: 'Spicy', subtitle: 'Cottage cheese with peas'},
-        {name: 'second', title: 'Spicy 2', subtitle: 'Cottage cheese with peas 2'},
-      ])
-    }
+  function placeOrder(dishId) {
+    console.log(`placeOrder(${dishId})`)
   }
-})
+
 </script>
 
 <style lang="sass" scoped>

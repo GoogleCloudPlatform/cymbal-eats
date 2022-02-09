@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "title": "Spicy",
+    "subtitle": "Cottage cheese with peas",
+    "price": "17.95"
+  },
+  {
+    "id": 2,
+    "title": "Spicy 2",
+    "subtitle": "Cottage cheese with peas 2",
+    "price": "13.50"
+  }
+]
