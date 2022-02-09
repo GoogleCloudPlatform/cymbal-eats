@@ -34,7 +34,7 @@
             v-for="dish in dishes"
             :name="dish.id"
             :key="dish.id"
-            img-src="/images/cottage-cheese-with-peas.jpg"
+            :img-src="dish.image"
           >
             <div class="absolute-bottom custom-caption">
               <div class="text-h2">

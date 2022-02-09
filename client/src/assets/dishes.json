@@ -1,14 +1,16 @@
 [
   {
     "id": 1,
-    "title": "Spicy",
+    "title": "Savory",
     "subtitle": "Cottage cheese with peas",
-    "price": "17.95"
+    "image": "/images/cottage-cheese-with-peas.jpg",
+    "price": "16.95"
   },
   {
     "id": 2,
-    "title": "Spicy 2",
-    "subtitle": "Cottage cheese with peas 2",
+    "title": "Spicy",
+    "subtitle": "Curry lunch plate",
+    "image": "/images/curry-lunch-plate.jpg",
     "price": "13.50"
   }
 ]
