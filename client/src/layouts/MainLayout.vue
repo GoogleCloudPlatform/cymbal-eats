@@ -26,22 +26,23 @@
           v-model="slide"
           height="400px"
         >
-          <q-carousel-slide name="first" img-src="https://cdn.quasar.dev/img/mountains.jpg">
+          <q-carousel-slide
+            v-for="slide in slides"
+            :name="slide.name"
+            :key="slide.name"
+            img-src="/images/cottage-cheese-with-peas.jpg"
+          >
             <div class="absolute-bottom custom-caption">
-              <div class="text-h2">First stop</div>
-              <div class="text-subtitle1">Mountains</div>
-            </div>
-          </q-carousel-slide>
-          <q-carousel-slide name="second" img-src="https://cdn.quasar.dev/img/parallax1.jpg">
-            <div class="absolute-bottom custom-caption">
-              <div class="text-h2">Second stop</div>
-              <div class="text-subtitle1">Famous City</div>
-            </div>
-          </q-carousel-slide>
-          <q-carousel-slide name="third" img-src="https://cdn.quasar.dev/img/parallax2.jpg">
-            <div class="absolute-bottom custom-caption">
-              <div class="text-h2">Third stop</div>
-              <div class="text-subtitle1">Famous Bridge</div>
+              <div class="text-h2">
+                {{ slide.title }}
+              </div>
+              <div class="text-subtitle1">
+                {{ slide.subtitle }}
+              </div>
+              <q-btn
+                color="primary"
+                label="Order"
+              />
             </div>
           </q-carousel-slide>
         </q-carousel>
@@ -64,7 +65,11 @@ export default defineComponent({
   setup () {
 
     return {
-      slide: ref('first')
+      slide: ref('first'),
+      slides: ref([
+        {name: 'first', title: 'Spicy', subtitle: 'Cottage cheese with peas'},
+        {name: 'second', title: 'Spicy 2', subtitle: 'Cottage cheese with peas 2'},
+      ])
     }
   }
 })
