@@ -46,7 +46,7 @@
               <q-btn
                 color="primary"
                 :label="'Order $' + dish.price"
-                @click="placeOrder(dish.id)"
+                @click="addDishToOrder(dish.id)"
               />
             </div>
           </q-carousel-slide>
@@ -69,9 +69,8 @@
   const dish = ref(1);
   const dishes = ref(dishesFile);
 
-  function placeOrder(dishId) {
-    console.log(`placeOrder(${dishId})`)
-    store.commit('addDish', dishId);
+  function addDishToOrder(dishId) {
+    store.commit('addDishToOrder', dishId);
     router.push('edit-order');
   }
 

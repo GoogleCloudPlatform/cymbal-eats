@@ -5,23 +5,26 @@ import dishesFile from '../assets/dishes.json';
 export default store(function () {
   const Store = createStore({
     state: {
-      dishes: []
+      orderItems: []
     },
     getters: {
       orderTotal: state => {
         let retVal = 0;
-        for (const dish of state.dishes) {
-          retVal += parseFloat(dish.price);
+        for (const item of state.orderItems) {
+          retVal += parseFloat(item.price);
         }
-        return retVal;
+        return retVal.toFixed(2);
       }
     },
     mutations: {
-      addDish(state, dishId) {
+      addDishToOrder(state, dishId) {
         const dish = dishesFile.find(d => d.id==dishId);
         if (dish) {
-          state.dishes.push(dish);
+          state.orderItems.push(dish);
         }
+      },
+      deleteItem(state, index) {
+        state.orderItems.splice(index, 1);
       }
     },
     // enable strict mode (adds overhead!)

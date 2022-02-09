@@ -27,7 +27,7 @@
             separator
           >
             <q-item
-              v-for="(item, i) in store.state.dishes"
+              v-for="(item, i) in store.state.orderItems"
               :key="item.title"
             >
               <q-item-section side>
@@ -95,8 +95,8 @@
   const dish = ref(1);
   const dishes = ref(dishesFile);
 
-  function deleteItem(itemNumber) {
-    console.log(`deleteItem(${itemNumber})`);
+  function deleteItem(itemIndex) {
+    store.commit('deleteItem', itemIndex);
   }
 
   function goBackToShopping() {
