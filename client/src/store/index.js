@@ -1,23 +1,29 @@
 import { store } from 'quasar/wrappers'
 import { createStore } from 'vuex'
+import dishesFile from '../assets/dishes.json';
 
-// import example from './module-example'
-
-/*
- * If not building with SSR mode, you can
- * directly export the Store instantiation;
- *
- * The function below can be async too; either use
- * async/await or return a Promise which resolves
- * with the Store instance.
- */
-
-export default store(function (/* { ssrContext } */) {
+export default store(function () {
   const Store = createStore({
-    modules: {
-      // example
+    state: {
+      dishes: []
     },
-
+    getters: {
+      orderTotal: state => {
+        let retVal = 0;
+        for (const dish of state.dishes) {
+          retVal += parseFloat(dish.price);
+        }
+        return retVal;
+      }
+    },
+    mutations: {
+      addDish(state, dishId) {
+        const dish = dishesFile.find(d => d.id==dishId);
+        if (dish) {
+          state.dishes.push(dish);
+        }
+      }
+    },
     // enable strict mode (adds overhead!)
     // for dev mode and --debug builds only
     strict: process.env.DEBUGGING

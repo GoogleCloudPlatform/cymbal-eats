@@ -1,11 +1,11 @@
-
 const routes = [
   {
     path: '/',
-    component: () => import('layouts/MainLayout.vue'),
-    children: [
-      { path: '', component: () => import('pages/Index.vue') }
-    ]
+    component: () => import('layouts/MainLayout.vue')
+  },
+  {
+    path: '/edit-order',
+    component: () => import('layouts/EditOrderLayout.vue')
   },
 
   // Always leave this as last one,
