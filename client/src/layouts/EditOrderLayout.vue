@@ -104,7 +104,7 @@
   }
 
   function placeOrder() {
-    console.log(`placeOrder()`)
+    router.push('/place-order');
   }
 
 </script>

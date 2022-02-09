@@ -7,6 +7,10 @@ const routes = [
     path: '/edit-order',
     component: () => import('layouts/EditOrderLayout.vue')
   },
+  {
+    path: '/place-order',
+    component: () => import('layouts/PlaceOrderLayout.vue')
+  },
 
   // Always leave this as last one,
   // but you can also remove it
