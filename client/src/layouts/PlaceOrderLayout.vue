@@ -85,7 +85,7 @@
   import { useStore } from 'vuex';
   import { useRouter } from 'vue-router';
   import statesFile from '../assets/us-states.json';
-  import Server from '../utils/Server.js';
+  import * as Server from '../utils/Server.js';
 
   const store = useStore();
   const router = useRouter();
@@ -107,9 +107,11 @@
         name.value, address.value, city.value, state.value, zip.value,
         store.state.orderItems
       )
+      alert('Order number: ' + orderNumber);
       router.push('/order-status/' + orderNumber);
     }
     catch(ex) {
+      console.error(ex);
       alert(ex.toString());
     }
   }
