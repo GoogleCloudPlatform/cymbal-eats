@@ -16,6 +16,10 @@ const routes = [
     component: () => import('layouts/OrderStatusLayout.vue')
   },
   {
+    path: '/kitchen',
+    component: () => import('layouts/KitchenLayout.vue')
+  },
+  {
     path: '/:catchAll(.*)*',
     component: () => import('pages/Error404.vue')
   }
