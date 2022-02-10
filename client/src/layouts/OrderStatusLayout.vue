@@ -26,7 +26,13 @@
         {{ orderNumber }}
         <br>
         <br>
-        {{ store.state.status }}
+        {{ status }}
+        <br>
+        <br>
+        <OrderView
+          :items="orderItems"
+          :allowdelete="false"
+        />
 
       </div>
 
@@ -42,7 +48,7 @@
   import { initializeApp } from 'firebase/app';
   import { getAnalytics } from "firebase/analytics";
   import { getFirestore, doc, onSnapshot } from 'firebase/firestore';
-  import * as Server from '../utils/Server.js';
+  import OrderView from '../components/OrderView.vue';
 
   const store = useStore();
   const router = useRouter();
@@ -62,10 +68,13 @@
   const db = getFirestore();
 
   const orderNumber = ref(route.params.orderNumber);
+  const orderItems = ref([]);
+  const status = ref('');
 
   onSnapshot(doc(db, 'orders', orderNumber.value), (doc) => {
     const order = doc.data();
-    store.commit('setOrder', {orderItems: order.orderItems, status: order.status});
+    orderItems.value = order.orderItems;
+    status.value = order.status;
   });
 
 
