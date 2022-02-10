@@ -21,14 +21,35 @@
 
       <div class="q-gutter-md q-pa-md">
 
+        <div class="row items-center">
+          <div class="col-4">
+            Order number
+          </div>
+          <div class="col-4">
+            <q-input
+              filled
+              v-model="orderNumber"
+              :readonly="true"
+            />
+          </div>
+        </div>
+
+        <div class="row items-center">
+          <div class="col-4">
+            Order status
+          </div>
+          <div class="col-4">
+            <q-input
+              filled
+              v-model="status"
+              :readonly="true"
+            />
+          </div>
+        </div>
+          
         <br>
         <br>
-        {{ orderNumber }}
-        <br>
-        <br>
-        {{ status }}
-        <br>
-        <br>
+        
         <OrderView
           :items="orderItems"
           :allowdelete="false"
