@@ -58,7 +58,7 @@
           />
           <q-btn
             color="red"
-            label="Cancel"
+            label="Cancel &amp; refund"
             @click="cancel(activeOrder.orderNumber)"
           />
           <q-btn
