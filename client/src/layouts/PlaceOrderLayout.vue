@@ -58,12 +58,20 @@
           />
         </div>
 
-        <q-btn
-          label="Keep Shopping"
-          @click="goBackToShopping"
-        />
         <br><br>
-        <img src="/images/order-with-g-pay.png"/>
+        <div>
+          <q-btn
+            class="float-right"
+            label="Keep Shopping"
+            @click="goBackToShopping"
+          />
+          <br><br><br>
+          <img
+            class="float-right"
+            src="/images/order-with-g-pay.png"
+            @click="placeOrder"
+          />
+        </div>
         
       </div>
 
@@ -76,6 +84,8 @@
   import { ref } from 'vue';
   import { useStore } from 'vuex';
   import { useRouter } from 'vue-router';
+  import statesFile from '../assets/us-states.json';
+  import Server from '../utils/Server.js';
 
   const store = useStore();
   const router = useRouter();
@@ -85,67 +95,23 @@
   const city = ref('Mountain View');
   const state = ref('CA');
   const zip = ref('94043');
-  const states = ref([
-    'AL',
-    'AK',
-    'AS',
-    'AZ',
-    'AR',
-    'CA',
-    'CO',
-    'CT',
-    'DE',
-    'DC',
-    'FL',
-    'GA',
-    'GU',
-    'HI',
-    'ID',
-    'IL',
-    'IN',
-    'IA',
-    'KS',
-    'KY',
-    'LA',
-    'ME',
-    'MD',
-    'MA',
-    'MI',
-    'MN',
-    'MS',
-    'MO',
-    'MT',
-    'NE',
-    'NV',
-    'NH',
-    'NJ',
-    'NM',
-    'NY',
-    'NC',
-    'ND',
-    'MP',
-    'OH',
-    'OK',
-    'OR',
-    'PA',
-    'PR',
-    'RI',
-    'SC',
-    'SD',
-    'TN',
-    'TX',
-    'UT',
-    'VT',
-    'VA',
-    'VI',
-    'WA',
-    'WV',
-    'WI',
-    'WY'
-  ])
+  const states = ref(statesFile);
 
   function goBackToShopping() {
     router.push('/');
+  }
+
+  async function placeOrder() {
+    try {
+      const orderNumber = await Server.placeOrder(
+        name.value, address.value, city.value, state.value, zip.value,
+        store.state.orderItems
+      )
+      router.push('/order-status/' + orderNumber);
+    }
+    catch(ex) {
+      alert(ex.toString());
+    }
   }
 
 </script>
