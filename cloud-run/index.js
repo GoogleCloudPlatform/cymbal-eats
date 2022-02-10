@@ -13,9 +13,6 @@ const firestore = new Firestore();
 app.post('/place-order', async (req, res) => {
   try {
     const orderNumber = getNewOrderNumber();
-    const body = req.body;
-    const orderItems = req.body.orderItems;
-
     const orderDoc = firestore.doc(`orders/${orderNumber}`);
     await orderDoc.set({
       orderNumber: orderNumber,
@@ -24,7 +21,10 @@ app.post('/place-order', async (req, res) => {
       city: req.body.city,
       state: req.body.state,
       zip: req.body.zip,
-      orderItems: req.body.orderItems
+      orderItems: req.body.orderItems,
+      status: 'New',
+      statusUpdatedAt: new Date(),
+      placedAt: new Date()
     })
     res.json({orderNumber: orderNumber});
   }

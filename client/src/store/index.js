@@ -5,7 +5,8 @@ import dishesFile from '../assets/dishes.json';
 export default store(function () {
   const Store = createStore({
     state: {
-      orderItems: []
+      orderItems: [],
+      status : '',
     },
     getters: {
       orderTotal: state => {
@@ -25,6 +26,10 @@ export default store(function () {
       },
       deleteItem(state, index) {
         state.orderItems.splice(index, 1);
+      },
+      setOrder(state, {orderItems, status}) {
+        state.orderItems = orderItems.splice(0);
+        state.status = status;
       }
     },
     // enable strict mode (adds overhead!)

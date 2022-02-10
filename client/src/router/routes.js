@@ -11,9 +11,10 @@ const routes = [
     path: '/place-order',
     component: () => import('layouts/PlaceOrderLayout.vue')
   },
-
-  // Always leave this as last one,
-  // but you can also remove it
+  {
+    path: '/order-status/:orderNumber',
+    component: () => import('layouts/OrderStatusLayout.vue')
+  },
   {
     path: '/:catchAll(.*)*',
     component: () => import('pages/Error404.vue')
