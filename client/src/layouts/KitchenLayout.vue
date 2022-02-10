@@ -30,8 +30,8 @@
             :key="order.orderNumber"
             clickable
             v-ripple
-            :active="activeOrder==order.orderNumber"
-            @click="activeOrder=order.orderNumber"
+            :active="activeOrder==order"
+            @click="activeOrder=order"
             active-class="active-order"
           >
             <q-item-section>
@@ -46,6 +46,40 @@
           </q-item>
         </q-list>
 
+        <hr>
+
+        <q-card
+          v-if="activeOrder.orderItems"
+          class="q-pa-lg q-gutter-md"
+        >
+          <OrderView
+            :items="activeOrder.orderItems"
+            :allowdelete="false"
+          />
+          <q-btn
+            color="red"
+            label="Cancel"
+            @click="cancel(activeOrder.orderNumber)"
+          />
+          <q-btn
+            v-if="activeOrder.status=='New'"
+            color="primary"
+            label="Start preparing"
+            @click="startPreparing(activeOrder.orderNumber)"
+          />
+          <q-btn
+            v-if="activeOrder.status=='Being prepared'"
+            color="primary"
+            label="Ready for pickup"
+            @click="readyForPickup(activeOrder.orderNumber)"
+          />
+          <q-btn
+            v-if="activeOrder.status=='Ready for pickup'"
+            color="primary"
+            label="Picked up"
+            @click="pickedUp(activeOrder.orderNumber)"
+          />
+        </q-card>
 
       </div>
 
@@ -61,7 +95,8 @@
   import { useTimeAgo } from '@vueuse/core';
   import { initializeApp } from 'firebase/app';
   import { getAnalytics } from "firebase/analytics";
-  import { getFirestore, query, orderBy, collection, onSnapshot } from 'firebase/firestore';
+  import { getFirestore, query, orderBy, doc, deleteDoc, collection, onSnapshot, updateDoc } from 'firebase/firestore';
+  import OrderView from '../components/OrderView.vue';
 
   const store = useStore();
   const router = useRouter();
@@ -81,9 +116,9 @@
   const db = getFirestore();
 
   const orders = ref([]);
-  const activeOrder = ref(0);
+  const activeOrder = ref({});
 
-  const q = query(collection(db, 'orders'), orderBy('placedAt'));
+  const q = query(collection(db, 'orders'), orderBy('placedAt', 'desc'));
   onSnapshot(q, (querySnapshot) => {
     orders.value = [];
     querySnapshot.forEach((doc) => {
@@ -93,6 +128,27 @@
     });
   });
 
+  async function cancel(orderNumber) {
+    if (confirm(`Are you sure you want to delete order ${orderNumber}?`)) {
+      const orderDoc = doc(db, 'orders', orderNumber.toString());
+      await deleteDoc(orderDoc);
+    }
+  }
+
+  async function startPreparing(orderNumber) {
+    const orderDoc = doc(db, 'orders', orderNumber.toString());
+    await updateDoc(orderDoc, { status: 'Being prepared' });
+  }
+
+  async function readyForPickup(orderNumber) {
+    const orderDoc = doc(db, 'orders', orderNumber.toString());
+    await updateDoc(orderDoc, { status: 'Ready for pickup' });
+  }
+
+  async function pickedUp(orderNumber) {
+    const orderDoc = doc(db, 'orders', orderNumber.toString());
+    await updateDoc(orderDoc, { status: 'Out for delivery' });
+  }
 
 </script>
 

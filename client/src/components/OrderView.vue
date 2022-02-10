@@ -1,5 +1,6 @@
 <template>
   <q-list
+    v-if="items"
     bordered
     separator
   >
