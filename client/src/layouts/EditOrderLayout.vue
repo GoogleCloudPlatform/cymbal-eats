@@ -22,46 +22,11 @@
       <div class="q-pa-md">
 
         <div>
-          <q-list
-            bordered
-            separator
-          >
-            <q-item
-              v-for="(item, i) in store.state.orderItems"
-              :key="item.title"
-            >
-              <q-item-section side>
-                <q-btn
-                  flat
-                  dense
-                  round
-                  icon="close"
-                  @click="deleteItem(i)"
-                />
-              </q-item-section>
-              <q-item-section>
-                {{ item.subtitle }}
-              </q-item-section>
-              <q-item-section side>
-                <div class="text-grey-8">
-                  ${{ item.price }}
-                </div>
-              </q-item-section>
-            </q-item>
-            <q-item>
-              <q-item-section side>
-                <q-btn flat dense round />
-              </q-item-section>
-              <q-item-section>
-                <b>Total</b>
-              </q-item-section>
-              <q-item-section side>
-                <b>
-                  ${{ store.getters.orderTotal }}
-                </b>
-              </q-item-section>
-            </q-item>
-          </q-list>
+          <OrderView
+            :items="orderItems"
+            :allowdelete="true"
+            v-on:delete-item="deleteItem"
+          />
         </div>
 
         <div style="margin-top:20px; display:flex; justify-content:space-between">
@@ -84,23 +49,24 @@
 
 <script setup>
 
-  import { ref } from 'vue';
+  import { ref, computed } from 'vue';
   import { useStore } from 'vuex';
   import { useRouter } from 'vue-router';
+  import OrderView from '../components/OrderView.vue';
   import dishesFile from '../assets/dishes.json';
 
   const store = useStore();
   const router = useRouter();
 
-  const dish = ref(1);
-  const dishes = ref(dishesFile);
-
-  function deleteItem(itemIndex) {
-    store.commit('deleteItem', itemIndex);
-  }
+  const orderItems = computed(() => store.state.orderItems);
 
   function goBackToShopping() {
     router.push('/');
+  }
+
+  function deleteItem(itemIndex) {
+    console.log(`deleteItem(${itemIndex}) called`);
+    store.commit('deleteItem', itemIndex);
   }
 
   function placeOrder() {
