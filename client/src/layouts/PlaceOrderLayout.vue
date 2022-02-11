@@ -107,7 +107,6 @@
         name.value, address.value, city.value, state.value, zip.value,
         store.state.orderItems
       )
-      alert('Order number: ' + orderNumber);
       router.push('/order-status/' + orderNumber);
     }
     catch(ex) {

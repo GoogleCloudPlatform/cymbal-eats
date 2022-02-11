@@ -6,7 +6,7 @@
           flat
           dense
           round
-          icon="menu"
+          icon="restaurant"
           aria-label="Menu"
         />
 
