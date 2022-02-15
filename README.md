@@ -122,71 +122,215 @@ URL=SERVICE URL
 
 ## Test the Service
 
+You'll need a tool like httpie.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
-
-If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
-
-## Running the application in dev mode
-
-You can run your application in dev mode that enables live coding using:
-```shell script
-./mvnw compile quarkus:dev
+### Test GET
+```
+http GET $URL/menu
 ```
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at http://localhost:8080/q/dev/.
-
-## Packaging and running the application
-
-The application can be packaged using:
-```shell script
-./mvnw package
+Result
 ```
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
+HTTP/1.1 200 OK
+Alt-Svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"
+Content-Length: 719
+Date: Tue, 15 Feb 2022 18:34:46 GMT
+Server: Google Frontend
+X-Cloud-Trace-Context: 05f35f105e0cdd88c44a869df8cea223;o=1
+content-type: application/json
 
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
-
-If you want to build an _über-jar_, execute the following command:
-```shell script
-./mvnw package -Dquarkus.package.type=uber-jar
+[
+    {
+        "id": 1,
+        "itemImageURL": "https://sheikahplate.files.wordpress.com/2018/03/vegetable_curry_header.jpg?w=720",
+        "itemName": "Curry Plate",
+        "itemPrice": 12.5,
+        "spiceLevel": 3,
+        "tagLine": "Spicy touch for your taste buds!!"
+    },
+    {
+        "id": 3,
+        "itemImageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Gulab_jamun_%28Gibraltar%2C_November_2020%29.jpg/1200px-Gulab_jamun_%28Gibraltar%2C_November_2020%29.jpg",
+        "itemName": "Gulab Jamoon",
+        "itemPrice": 2.4,
+        "spiceLevel": 0,
+        "tagLine": "Sweet cottage cheese dumplings"
+    },
+    {
+        "id": 2,
+        "itemImageURL": "http://nie-images.s3.amazonaws.com/gall_content/2020/10/2020_10$largeimg11_Oct_2020_200729347.jpg",
+        "itemName": "Idly Plate",
+        "itemPrice": 10.25,
+        "spiceLevel": 2,
+        "tagLine": "South Indian delight!!"
+    }
+]
 ```
 
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
+### Test POST
 
-## Creating a native executable
+```
+http POST $URL/menu itemName=Rasgulla itemPrice=3.2 tagLine="East Indian Cottage Cheese dumplings" itemImageURL="https://rakskitchen.net/wp-content/uploads/2010/10/homemade-rasgulla.jpg"
+```
+Output
 
-You can create a native executable using: 
-```shell script
-./mvnw package -Pnative
+```
+HTTP/1.1 200 OK
+Alt-Svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"
+Content-Length: 200
+Date: Tue, 15 Feb 2022 18:45:45 GMT
+Server: Google Frontend
+X-Cloud-Trace-Context: f15a1e0c21441e0797a375913321b3fa;o=1
+content-type: application/json
+
+{
+    "id": 4,
+    "itemImageURL": "https://rakskitchen.net/wp-content/uploads/2010/10/homemade-rasgulla.jpg",
+    "itemName": "Rasgulla",
+    "itemPrice": 3.2,
+    "spiceLevel": 0,
+    "tagLine": "East Indian Cottage Cheese dumplings"
+}
+
 ```
 
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using: 
-```shell script
-./mvnw package -Pnative -Dquarkus.native.container-build=true
+Check with GET again to see the data
+
+```
+[
+    {
+        "id": 1,
+        "itemImageURL": "https://sheikahplate.files.wordpress.com/2018/03/vegetable_curry_header.jpg?w=720",
+        "itemName": "Curry Plate",
+        "itemPrice": 12.5,
+        "spiceLevel": 3,
+        "tagLine": "Spicy touch for your taste buds!!"
+    },
+    {
+        "id": 3,
+        "itemImageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Gulab_jamun_%28Gibraltar%2C_November_2020%29.jpg/1200px-Gulab_jamun_%28Gibraltar%2C_November_2020%29.jpg",
+        "itemName": "Gulab Jamoon",
+        "itemPrice": 2.4,
+        "spiceLevel": 0,
+        "tagLine": "Sweet cottage cheese dumplings"
+    },
+    {
+        "id": 2,
+        "itemImageURL": "http://nie-images.s3.amazonaws.com/gall_content/2020/10/2020_10$largeimg11_Oct_2020_200729347.jpg",
+        "itemName": "Idly Plate",
+        "itemPrice": 10.25,
+        "spiceLevel": 2,
+        "tagLine": "South Indian delight!!"
+    },
+    {
+        "id": 4,
+        "itemImageURL": "https://rakskitchen.net/wp-content/uploads/2010/10/homemade-rasgulla.jpg",
+        "itemName": "Rasgulla",
+        "itemPrice": 3.2,
+        "spiceLevel": 0,
+        "tagLine": "East Indian Cottage Cheese dumplings"
+    }
+]
 ```
 
-You can then execute your native executable with: `./target/menu-service-1.0.0-runner`
+### Test PUT
 
-If you want to learn more about building native executables, please consult https://quarkus.io/guides/maven-tooling.
+```
+http PUT $URL/menu/4 itemName=Roshogulla itemPrice=3.2 tagLine="East Indian Cottage Cheese dumplings" itemImageURL="https://rakskitchen.net/wp-content/uploads/2010/10/homemade-rasgulla.jpg"
+```
+Output
 
-## Provided Code
+```
+HTTP/1.1 200 OK
+Alt-Svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"
+Content-Length: 202
+Date: Tue, 15 Feb 2022 19:06:16 GMT
+Server: Google Frontend
+X-Cloud-Trace-Context: fe992f122a10995d8d7d9eb06cb6af24
+content-type: application/json
 
-### RESTEasy JAX-RS
+{
+    "id": 4,
+    "itemImageURL": "https://rakskitchen.net/wp-content/uploads/2010/10/homemade-rasgulla.jpg",
+    "itemName": "Roshogulla",
+    "itemPrice": 3.2,
+    "spiceLevel": 0,
+    "tagLine": "East Indian Cottage Cheese dumplings"
+}
+```
+Test with GET again
 
-Easily start your RESTful Web Services
+```
+[
+    {
+        "id": 1,
+        "itemImageURL": "https://sheikahplate.files.wordpress.com/2018/03/vegetable_curry_header.jpg?w=720",
+        "itemName": "Curry Plate",
+        "itemPrice": 12.5,
+        "spiceLevel": 3,
+        "tagLine": "Spicy touch for your taste buds!!"
+    },
+    {
+        "id": 3,
+        "itemImageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Gulab_jamun_%28Gibraltar%2C_November_2020%29.jpg/1200px-Gulab_jamun_%28Gibraltar%2C_November_2020%29.jpg",
+        "itemName": "Gulab Jamoon",
+        "itemPrice": 2.4,
+        "spiceLevel": 0,
+        "tagLine": "Sweet cottage cheese dumplings"
+    },
+    {
+        "id": 2,
+        "itemImageURL": "http://nie-images.s3.amazonaws.com/gall_content/2020/10/2020_10$largeimg11_Oct_2020_200729347.jpg",
+        "itemName": "Idly Plate",
+        "itemPrice": 10.25,
+        "spiceLevel": 2,
+        "tagLine": "South Indian delight!!"
+    },
+    {
+        "id": 4,
+        "itemImageURL": "https://rakskitchen.net/wp-content/uploads/2010/10/homemade-rasgulla.jpg",
+        "itemName": "Roshogulla",
+        "itemPrice": 3.2,
+        "spiceLevel": 0,
+        "tagLine": "East Indian Cottage Cheese dumplings"
+    }
+]
 
-[Related guide section...](https://quarkus.io/guides/getting-started#the-jax-rs-resources)
+```
+
+### Test DELETE
+
+```
+http DELETE $URL/menu/4
+```
+
+Output
+```
+HTTP/1.1 204 No Content
+Alt-Svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"
+Content-Length: 0
+Content-Type: text/html
+Date: Tue, 15 Feb 2022 19:07:56 GMT
+Server: Google Frontend
+X-Cloud-Trace-Context: 4bb1d40d73dbc39464e4f6b8ab32b290;o=1
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
