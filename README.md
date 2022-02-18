@@ -13,13 +13,14 @@ Create a new CloudSQL instance of type Postgres with name `menu-catalog` and a P
 Copy the Private IP to connect to the database.
 ```
 DB_HOST=[VALUE OF PRIVATEIP]
+DB_INSTANCE=[INSTANCE NAME]
 ```
 
 Create a database with name `menu-db` in this `menu-catalog` CloudSQL instance running
 
 ```
 DB_DATABASE=menu-db
-gcloud sql databases create $DB_DATABASE --instance=$DB_HOST
+gcloud sql databases create $DB_DATABASE --instance=$DB_INSTANCE
 ```
 
 Add a database user
@@ -28,7 +29,7 @@ Add a database user
 DB_USER=[CHANGEME]
 DB_PASSWORD=[CHANGEME]
 gcloud sql users create $DB_USER \
---instance=$DB_HOST \
+--instance=$DB_INSTANCE \
 --password=$DB_PASSWORD
 ```
 
