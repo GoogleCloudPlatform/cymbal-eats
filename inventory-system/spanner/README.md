@@ -46,6 +46,6 @@ Application includes:
 
 1. Clone the [Cymbal Eats](https://https://github.com/momander/cymbal-eats) git repository to your local machine
 2. Open a command line and change directoy to inventory-system/spanner/
-3. Run `gcloud run deploy spanner-service --update-env-vars SPANNER_CONNECTION_STRING<your_connection_string>`
+3. Run `gcloud run deploy spanner-service --update-env-vars SPANNER_CONNECTION_STRING=<your_connection_string>`
 4. The command will output something like this:
 `Service URL: https://spanner-service-bawz2x6bda-wl.a.run.app` Click the URL to confirm the service is running correctly!
