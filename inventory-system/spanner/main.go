@@ -38,11 +38,13 @@ import (
 // TODO(GHAUN): Create global database variable and clean up code
 
 // create Global Variable for Database
-const databaseName = "projects/playing-around-340123/instances/postgress-sql-test/databases/test-db"
+// Spanner connection ID should look like:
+// projects/<PROJECT>/instances/<SPANNER INSTANCE>/databases/<database>
+
+var databaseName string = os.Getenv("SPANNER_CONNECTION_STRING")
 
 func main() {
 	log.Print("Starting server...")
-
 	log.Print("Creating Database if it doesn't exist")
 	err := createDatabase(databaseName)
 	if err != nil {
