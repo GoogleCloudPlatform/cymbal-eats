@@ -63,7 +63,8 @@
   import { useStore } from 'vuex';
   import { useRouter } from 'vue-router';
   // TODO: Get dishes from this API instead of a file:
-  //       https://menu-service-fknlqyv5cq-uc.a.run.app/menu
+  //       https://menu-service-luu7kai33a-uc.a.run.app/menu
+  // TODO: Document how to build and deploy the Quasar app.
   import dishesFile from '../assets/dishes.json';
 
   const store = useStore();
