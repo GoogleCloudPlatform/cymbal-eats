@@ -98,6 +98,7 @@
   import { getFirestore, query, orderBy, doc, deleteDoc, collection, onSnapshot, updateDoc } from 'firebase/firestore';
   import OrderView from '../components/OrderView.vue';
 
+  // TODO: Show live inventory, based on the Inventory service.
   const store = useStore();
   const router = useRouter();
   const route = useRoute();
