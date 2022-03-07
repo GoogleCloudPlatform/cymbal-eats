@@ -77,11 +77,17 @@ func main() {
 
 }
 
+func enableCors(w *http.ResponseWriter) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+}
+
 func handler(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
 	fmt.Fprintf(w, "GoLang Inventory Service is running!")
 }
 
 func getAvailableInventory(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
 	response, err := readAvailableInventory(databaseName)
 	if err != nil {
 		log.Fatal(err)
@@ -90,6 +96,7 @@ func getAvailableInventory(w http.ResponseWriter, r *http.Request) {
 }
 
 func updateInventoryItem(w http.ResponseWriter, r *http.Request) {
+	enableCors(&w)
 	if r.URL.Path != "/updateInventoryItem" {
 		http.NotFound(w, r)
 		return
