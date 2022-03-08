@@ -25,5 +25,8 @@ public class Menu extends PanacheEntity {
 
     @Column(name="item_image_url")
     public URL itemImageURL;
+
+    @Column(name="item_thumbnail_url")
+    public URL itemThumbnailURL;
      
 }

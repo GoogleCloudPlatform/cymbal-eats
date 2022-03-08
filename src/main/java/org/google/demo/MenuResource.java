@@ -55,6 +55,7 @@ public class MenuResource {
         if (menu.tagLine != null) entity.tagLine=menu.tagLine;
         entity.spiceLevel=menu.spiceLevel;
         if (menu.itemImageURL != null) entity.itemImageURL = menu.itemImageURL;
+        if (menu.itemThumbnailURL != null) entity.itemThumbnailURL = menu.itemThumbnailURL;
 
         return entity;
     }
