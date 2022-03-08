@@ -42,6 +42,7 @@ import (
 // projects/<PROJECT>/instances/<SPANNER INSTANCE>/databases/<database>
 
 var databaseName string = os.Getenv("SPANNER_CONNECTION_STRING")
+var dataClient *spanner.Client
 
 func main() {
 	log.Print("Starting server...")
@@ -54,6 +55,14 @@ func main() {
 		log.Print("Database Already Created")
 	}
 	log.Print("Database setup complete")
+
+	ctx := context.Background()
+
+	dataClient, err = spanner.NewClient(ctx, databaseName)
+
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	seedDatabase(databaseName)
 
@@ -74,6 +83,8 @@ func main() {
 	if err := http.ListenAndServe(":"+port, nil); err != nil {
 		log.Fatal(err)
 	}
+
+	defer dataClient.Close()
 
 }
 
@@ -119,13 +130,6 @@ func updateInventoryItem(w http.ResponseWriter, r *http.Request) {
 		// In production code you should check and sanatize data. This is a demo however
 
 		log.Print(il)
-		ctx := context.Background()
-		dataClient, err := spanner.NewClient(ctx, databaseName)
-		if err != nil {
-			log.Print(err)
-			return
-		}
-		defer dataClient.Close()
 		// This should be a global variable since it's used more than once
 		inventoryHistoryColumns := []string{
 			"ItemRowID",
@@ -139,7 +143,7 @@ func updateInventoryItem(w http.ResponseWriter, r *http.Request) {
 				inventoryHistoryColumns,
 				[]interface{}{uuid.New().String(), element.ItemID, element.InventoryChange, time.Now()}))
 		}
-		_, err = dataClient.Apply(ctx, m)
+		_, err = dataClient.Apply(context.Background(), m)
 		if err != nil {
 			log.Print(err)
 			return
@@ -195,12 +199,6 @@ func seedDatabase(db string) error {
 		return nil
 	}
 	log.Print("Seeding Database")
-	ctx := context.Background()
-	dataClient, err := spanner.NewClient(ctx, db)
-	if err != nil {
-		return err
-	}
-	defer dataClient.Close()
 
 	// Get JSON file here for seeding
 	// Use test for now
@@ -214,7 +212,7 @@ func seedDatabase(db string) error {
 		spanner.Insert("inventoryHistory", inventoryHistoryColumns, []interface{}{uuid.New().String(), 2, "3", time.Now()}),
 		spanner.Insert("inventoryHistory", inventoryHistoryColumns, []interface{}{uuid.New().String(), 3, "1", time.Now()}),
 	}
-	_, err = dataClient.Apply(ctx, m)
+	_, err := dataClient.Apply(context.Background(), m)
 	if err != nil {
 		return err
 	}
@@ -223,12 +221,6 @@ func seedDatabase(db string) error {
 }
 
 func readAvailableInventory(db string) (string, error) {
-	ctx := context.Background()
-	dataClient, err := spanner.NewClient(ctx, db)
-	if err != nil {
-		return "", err
-	}
-	defer dataClient.Close()
 
 	ro := dataClient.ReadOnlyTransaction()
 	defer ro.Close()
@@ -238,7 +230,7 @@ func readAvailableInventory(db string) (string, error) {
 		sum(inventoryChange) as inventory 
 		FROM inventoryHistory 
 		group by ItemID`}
-	iter := ro.Query(ctx, stmt)
+	iter := ro.Query(context.Background(), stmt)
 	defer iter.Stop()
 	type inventoryList struct {
 		ItemID    int64
