@@ -1,7 +1,7 @@
 steps:
 # Deploy container image to Cloud Run Services
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  dir: 'inventory-system/'
+  dir: 'inventory-system/spanner/'
   entrypoint: gcloud
   args:
   - 'run'
