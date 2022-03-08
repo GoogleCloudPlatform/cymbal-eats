@@ -108,6 +108,7 @@ func updateInventoryItem(w http.ResponseWriter, r *http.Request) {
 		d := json.NewDecoder(r.Body)
 		d.DisallowUnknownFields()
 		il := []struct {
+			ItemID          int    `json:"itemID"`
 			ItemName        string `json:"itemName"`
 			InventoryChange int    `json:"inventoryChange"`
 		}{}

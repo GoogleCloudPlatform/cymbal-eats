@@ -1,4 +1,14 @@
 steps:
+# Build the container image
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  dir: 'inventory-system/spanner/'
+  args: ['build', '-t', 'gcr.io/$PROJECT_ID/${_SERVICE}:$COMMIT_SHA', '.']
+
+# Push the container image to Container Registry
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  dir: 'inventory-system/spanner/'
+  args: ['push', 'gcr.io/$PROJECT_ID/${_SERVICE}:$COMMIT_SHA']
+
 # Deploy container image to Cloud Run Services
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   dir: 'inventory-system/spanner/'
@@ -7,8 +17,8 @@ steps:
   - 'run'
   - 'deploy'
   - '$_SERVICE'
-  - '--source'
-  - '.'
+  - '--image'
+  - 'gcr.io/$PROJECT_ID/$_SERVICE:$COMMIT_SHA'
   - '--region'
   - '$_REGION'
   - '--platform'
