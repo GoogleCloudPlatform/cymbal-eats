@@ -59,18 +59,33 @@
 
 <script setup>
 
-  import { ref } from 'vue';
+  import { ref, onMounted } from 'vue';
   import { useStore } from 'vuex';
   import { useRouter } from 'vue-router';
-  // TODO: Get dishes from this API instead of a file:
-  //       https://menu-service-luu7kai33a-uc.a.run.app/menu
-  // TODO: Document how to build and deploy the Quasar app.
-  import dishesFile from '../assets/dishes.json';
+  import * as Server from '../utils/Server.js';
 
   const store = useStore();
   const router = useRouter();
   const dish = ref(1);
-  const dishes = ref(dishesFile);
+  const dishes = ref([]);
+
+  // TODO: Display low stock warning for items that are low on inventory.
+  // TODO: Add admin UI for adding new menu items.
+  //       Start a workflow (implemented in code, not Cloud Workflows):
+  //       When an image is uploaded, check that it's not adult or violent.
+  //       Generate thumbnail.
+  //       Generate new entry in menu service.
+  // TODO: Add +/- buttons to set quantity of each order line in the order.
+  // TODO: If you order the same dish twice, make it one single order line with qty of 2.
+  // TODO: Send quantity to the order service.
+  // TODO: Deploy the consumer web front-end to the cloud.
+  // TODO: Deploy the admin web front-end to the cloud.
+
+  onMounted(async () => {
+    await store.dispatch('loadMenu');
+    dishes.value = await Server.getMenuItems();
+    console.log(dishes.value);
+  });
 
   function addDishToOrder(dishId) {
     store.commit('addDishToOrder', dishId);
