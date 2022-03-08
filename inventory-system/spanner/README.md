@@ -36,7 +36,7 @@ Application includes:
 
 1. (Create new Cloud Spanner Instance)[https://cloud.google.com/spanner/docs/create-manage-instances]
 2. Take note of the name of the instance. It can also be found using: `gcloud spanner instances list`
-3. Create your connection string: `projects/<PROJECT>/instances/<Instance_Name>/databases/<database>
+3. Create your connection string: `projects/<PROJECT>/instances/<Instance_ID>/databases/<database>`
     * <database> is what you want to call the database. The GoLang service will create it if not created.
 4. (We should see if we need to check IAM permissions)
 
