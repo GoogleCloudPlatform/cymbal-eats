@@ -242,7 +242,7 @@ func readAvailableInventory(db string) (string, error) {
 		itemName, 
 		sum(inventoryChange) as inventory 
 		FROM inventoryHistory 
-		group by itemName`}
+		group by ItemID, itemName`}
 	iter := ro.Query(ctx, stmt)
 	defer iter.Stop()
 	type inventoryList struct {
