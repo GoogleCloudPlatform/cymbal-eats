@@ -108,9 +108,8 @@ func updateInventoryItem(w http.ResponseWriter, r *http.Request) {
 		d := json.NewDecoder(r.Body)
 		d.DisallowUnknownFields()
 		il := []struct {
-			ItemID          int    `json:"itemID"`
-			ItemName        string `json:"itemName"`
-			InventoryChange int    `json:"inventoryChange"`
+			ItemID          int `json:"itemID"`
+			InventoryChange int `json:"inventoryChange"`
 		}{}
 		err := d.Decode(&il)
 		if err != nil {
@@ -131,7 +130,6 @@ func updateInventoryItem(w http.ResponseWriter, r *http.Request) {
 		inventoryHistoryColumns := []string{
 			"ItemRowID",
 			"ItemID",
-			"itemName",
 			"inventoryChange",
 			"timeStamp"}
 		m := []*spanner.Mutation{}
@@ -139,7 +137,7 @@ func updateInventoryItem(w http.ResponseWriter, r *http.Request) {
 			m = append(m, spanner.Insert(
 				"inventoryHistory",
 				inventoryHistoryColumns,
-				[]interface{}{uuid.New().String(), element.ItemID, element.ItemName, element.InventoryChange, time.Now()}))
+				[]interface{}{uuid.New().String(), element.ItemID, element.InventoryChange, time.Now()}))
 		}
 		_, err = dataClient.Apply(ctx, m)
 		if err != nil {
@@ -175,7 +173,6 @@ func createDatabase(db string) error {
 			`CREATE TABLE InventoryHistory (
 				ItemRowID STRING (36) NOT NULL,
 				ItemID	INT64 NOT NULL,
-				ItemName   STRING (1024) NOT NULL,
 				InventoryChange  INT64,
 				TimeStamp   TIMESTAMP,
 			) PRIMARY KEY (ItemRowID)`,
@@ -210,13 +207,12 @@ func seedDatabase(db string) error {
 	inventoryHistoryColumns := []string{
 		"ItemRowID",
 		"ItemID",
-		"ItemName",
 		"InventoryChange",
 		"TimeStamp"}
 	m := []*spanner.Mutation{
-		spanner.Insert("inventoryHistory", inventoryHistoryColumns, []interface{}{uuid.New().String(), 1, "Curry Plate", "5", time.Now()}),
-		spanner.Insert("inventoryHistory", inventoryHistoryColumns, []interface{}{uuid.New().String(), 2, "Idly Plate", "3", time.Now()}),
-		spanner.Insert("inventoryHistory", inventoryHistoryColumns, []interface{}{uuid.New().String(), 3, "Gulab Jamoon", "1", time.Now()}),
+		spanner.Insert("inventoryHistory", inventoryHistoryColumns, []interface{}{uuid.New().String(), 1, "5", time.Now()}),
+		spanner.Insert("inventoryHistory", inventoryHistoryColumns, []interface{}{uuid.New().String(), 2, "3", time.Now()}),
+		spanner.Insert("inventoryHistory", inventoryHistoryColumns, []interface{}{uuid.New().String(), 3, "1", time.Now()}),
 	}
 	_, err = dataClient.Apply(ctx, m)
 	if err != nil {
@@ -239,15 +235,13 @@ func readAvailableInventory(db string) (string, error) {
 	stmt := spanner.Statement{
 		SQL: `SELECT 
 		itemID,
-		itemName, 
 		sum(inventoryChange) as inventory 
 		FROM inventoryHistory 
-		group by ItemID, itemName`}
+		group by ItemID`}
 	iter := ro.Query(ctx, stmt)
 	defer iter.Stop()
 	type inventoryList struct {
 		ItemID    int64
-		ItemName  string
 		Inventory int64
 	}
 	itemList := []inventoryList{}
@@ -260,7 +254,7 @@ func readAvailableInventory(db string) (string, error) {
 			return "", err
 		}
 		item := inventoryList{}
-		if err := row.Columns(&item.ItemID, &item.ItemName, &item.Inventory); err != nil {
+		if err := row.Columns(&item.ItemID, &item.Inventory); err != nil {
 			return "", err
 		}
 		itemList = append(itemList, item)
