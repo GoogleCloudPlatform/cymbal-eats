@@ -16,7 +16,7 @@ Application includes:
 - HTTP Web Paths:
     * "/": Health Check
     * "/getAvailableInventory": Get's current inventory by item
-    * "/updateInventoryItem": Receives post request to update inventory item. JSON example: "[{'itemName': string,'inventoryChange': int}]"
+    * "/updateInventoryItem": Receives post request to update inventory item. JSON example: "[{'itemID': int,'inventoryChange': int}]"
 
 
 ## Files
