@@ -20,6 +20,10 @@ const routes = [
     component: () => import('layouts/KitchenLayout.vue')
   },
   {
+    path: '/add-menu-item',
+    component: () => import('pages/AddMenuItemPage.vue')
+  },
+  {
     path: '/:catchAll(.*)*',
     component: () => import('pages/Error404.vue')
   }

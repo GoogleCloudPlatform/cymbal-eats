@@ -71,7 +71,6 @@
   const dish = ref(1);
   const dishes = computed(() => store.state.menuItems);
 
-  // TODO: Display low stock warning for items that are low on inventory.
   // TODO: Add admin UI for adding new menu items.
   //       Start a workflow (implemented in code, not Cloud Workflows):
   //       When an image is uploaded, check that it's not adult or violent.
