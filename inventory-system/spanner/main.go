@@ -246,8 +246,8 @@ func readAvailableInventory(db string) (string, error) {
 	iter := ro.Query(ctx, stmt)
 	defer iter.Stop()
 	type inventoryList struct {
-		Item_ID   int64
-		Item_name string
+		ItemID    int64
+		ItemName  string
 		Inventory int64
 	}
 	itemList := []inventoryList{}
@@ -260,7 +260,7 @@ func readAvailableInventory(db string) (string, error) {
 			return "", err
 		}
 		item := inventoryList{}
-		if err := row.Columns(&item.Item_ID, &item.Item_name, &item.Inventory); err != nil {
+		if err := row.Columns(&item.ItemID, &item.ItemName, &item.Inventory); err != nil {
 			return "", err
 		}
 		itemList = append(itemList, item)
