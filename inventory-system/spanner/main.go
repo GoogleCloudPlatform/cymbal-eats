@@ -238,13 +238,15 @@ func readAvailableInventory(db string) (string, error) {
 	defer ro.Close()
 	stmt := spanner.Statement{
 		SQL: `SELECT 
+		itemID,
 		itemName, 
 		sum(inventoryChange) as inventory 
 		FROM inventoryHistory 
-		group by itemName`}
+		group by ItemID, itemName`}
 	iter := ro.Query(ctx, stmt)
 	defer iter.Stop()
 	type inventoryList struct {
+		Item_ID   int64
 		Item_name string
 		Inventory int64
 	}
@@ -258,7 +260,7 @@ func readAvailableInventory(db string) (string, error) {
 			return "", err
 		}
 		item := inventoryList{}
-		if err := row.Columns(&item.Item_name, &item.Inventory); err != nil {
+		if err := row.Columns(&item.Item_ID, &item.Item_name, &item.Inventory); err != nil {
 			return "", err
 		}
 		itemList = append(itemList, item)
