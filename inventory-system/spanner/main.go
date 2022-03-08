@@ -238,6 +238,7 @@ func readAvailableInventory(db string) (string, error) {
 	defer ro.Close()
 	stmt := spanner.Statement{
 		SQL: `SELECT 
+		itemID,
 		itemName, 
 		sum(inventoryChange) as inventory 
 		FROM inventoryHistory 
