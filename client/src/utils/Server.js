@@ -16,8 +16,20 @@ export async function getMenuItems() {
   }));
 }
   
+export async function getInventoryCounts() {
+  const url = 'https://spanner-inventory-service-luu7kai33a-uc.a.run.app/getAvailableInventory';
+  const response = await fetch(url, {
+    mode: 'cors',
+    method: 'GET',
+  })
+  const inventoryCounts = await response.json();
+  return inventoryCounts.map(ic => ({
+    id: ic.ItemID,
+    inventory: ic.Inventory
+  }));
+}
+
 export async function placeOrder(name, address, city, state, zip, orderItems) {
-  // const url = 'http://localhost:8080/place-order';
   const url = 'https://order-service-luu7kai33a-uc.a.run.app/place-order';
   const payload = {name, address, city, state, zip, orderItems};
   const response = await fetch(url, {

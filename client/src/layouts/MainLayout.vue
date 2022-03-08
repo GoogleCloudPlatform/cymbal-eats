@@ -48,6 +48,9 @@
                 :label="'Order $' + dish.price"
                 @click="addDishToOrder(dish.id)"
               />
+              <div>
+                Inventory: {{ dish.inventory }}
+              </div>
             </div>
           </q-carousel-slide>
         </q-carousel>
@@ -59,15 +62,14 @@
 
 <script setup>
 
-  import { ref, onMounted } from 'vue';
+  import { ref, onMounted, computed } from 'vue';
   import { useStore } from 'vuex';
   import { useRouter } from 'vue-router';
-  import * as Server from '../utils/Server.js';
 
   const store = useStore();
   const router = useRouter();
   const dish = ref(1);
-  const dishes = ref([]);
+  const dishes = computed(() => store.state.menuItems);
 
   // TODO: Display low stock warning for items that are low on inventory.
   // TODO: Add admin UI for adding new menu items.
@@ -83,8 +85,6 @@
 
   onMounted(async () => {
     await store.dispatch('loadMenu');
-    dishes.value = await Server.getMenuItems();
-    console.log(dishes.value);
   });
 
   function addDishToOrder(dishId) {

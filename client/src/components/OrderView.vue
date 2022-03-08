@@ -21,6 +21,10 @@
       <q-item-section>
         {{ item.subtitle }}
       </q-item-section>
+      <q-item-section side v-if="item.inventory<5">
+        <q-badge color="orange" label="about to run out" />
+      </q-item-section>
+      <q-space/>
       <q-item-section side>
         <div class="text-grey-8">
           ${{ item.price }}

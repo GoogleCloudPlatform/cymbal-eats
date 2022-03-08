@@ -23,15 +23,16 @@ export default store(function () {
       setMenuItems(state, menuItems) {
         state.menuItems = menuItems;
       },
-      // setInventoryCounts(state, inventoryCounts) {
-      //   const newMenuItems = JSON.parse(JSON.stringify(state.menuItems));
-      //   for (let inventoryCount of inventoryCounts) {
-      //     const menuItem = newMenuItems.find(m => m.id == inventoryCount.id);
-      //     if (menuItem) {
-      //       menuItem.stock = inventoryCount.Inventory;
-      //     }
-      //   }
-      // },
+      setInventoryCounts(state, inventoryCounts) {
+        const newMenuItems = JSON.parse(JSON.stringify(state.menuItems));
+        for (let inventoryCount of inventoryCounts) {
+          const menuItem = newMenuItems.find(m => m.id == inventoryCount.id);
+          if (menuItem) {
+            menuItem.inventory = inventoryCount.inventory;
+          }
+        }
+        state.menuItems = newMenuItems;
+      },
       addDishToOrder(state, dishId) {
         const dish = state.menuItems.find(d => d.id==dishId);
         if (dish) {
@@ -50,8 +51,8 @@ export default store(function () {
       async loadMenu(context) {
         const menuItems = await Server.getMenuItems();
         context.commit('setMenuItems', menuItems);
-        // const inventoryCounts = await Server.getInventoryCounts();
-        // context.commit('setInventoryCounts', inventoryCounts);
+        const inventoryCounts = await Server.getInventoryCounts();
+        context.commit('setInventoryCounts', inventoryCounts);
       }
     },
     // enable strict mode (adds overhead!)
