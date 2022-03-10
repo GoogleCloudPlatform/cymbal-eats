@@ -132,12 +132,8 @@ http GET $URL/menu
 Result
 ```
 HTTP/1.1 200 OK
-Alt-Svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"
-Content-Length: 719
-Date: Tue, 15 Feb 2022 18:34:46 GMT
-Server: Google Frontend
-X-Cloud-Trace-Context: 05f35f105e0cdd88c44a869df8cea223;o=1
-content-type: application/json
+Content-Type: application/json
+content-length: 1177
 
 [
     {
@@ -145,7 +141,9 @@ content-type: application/json
         "itemImageURL": "https://sheikahplate.files.wordpress.com/2018/03/vegetable_curry_header.jpg?w=720",
         "itemName": "Curry Plate",
         "itemPrice": 12.5,
+        "itemThumbnailURL": "https://sheikahplate.files.wordpress.com/2018/03/vegetable_curry_header.jpg?w=720",
         "spiceLevel": 3,
+        "status": "Ready",
         "tagLine": "Spicy touch for your taste buds!!"
     },
     {
@@ -153,7 +151,9 @@ content-type: application/json
         "itemImageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Gulab_jamun_%28Gibraltar%2C_November_2020%29.jpg/1200px-Gulab_jamun_%28Gibraltar%2C_November_2020%29.jpg",
         "itemName": "Gulab Jamoon",
         "itemPrice": 2.4,
+        "itemThumbnailURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Gulab_jamun_%28Gibraltar%2C_November_2020%29.jpg/1200px-Gulab_jamun_%28Gibraltar%2C_November_2020%29.jpg",
         "spiceLevel": 0,
+        "status": "Failed",
         "tagLine": "Sweet cottage cheese dumplings"
     },
     {
@@ -161,34 +161,97 @@ content-type: application/json
         "itemImageURL": "http://nie-images.s3.amazonaws.com/gall_content/2020/10/2020_10$largeimg11_Oct_2020_200729347.jpg",
         "itemName": "Idly Plate",
         "itemPrice": 10.25,
+        "itemThumbnailURL": "http://nie-images.s3.amazonaws.com/gall_content/2020/10/2020_10$largeimg11_Oct_2020_200729347.jpg",
         "spiceLevel": 2,
+        "status": "Ready",
         "tagLine": "South Indian delight!!"
+    }
+]
+```
+### Test GET Ready 
+
+```
+http GET $URL/menu/ready
+```
+
+Outputs only items that are ready
+```
+HTTP/1.1 200 OK
+Content-Type: application/json
+content-length: 685
+
+[
+    {
+        "id": 1,
+        "itemImageURL": "https://sheikahplate.files.wordpress.com/2018/03/vegetable_curry_header.jpg?w=720",
+        "itemName": "Curry Plate",
+        "itemPrice": 12.5,
+        "itemThumbnailURL": "https://sheikahplate.files.wordpress.com/2018/03/vegetable_curry_header.jpg?w=720",
+        "spiceLevel": 3,
+        "status": "Ready",
+        "tagLine": "Spicy touch for your taste buds!!"
+    },
+    {
+        "id": 2,
+        "itemImageURL": "http://nie-images.s3.amazonaws.com/gall_content/2020/10/2020_10$largeimg11_Oct_2020_200729347.jpg",
+        "itemName": "Idly Plate",
+        "itemPrice": 10.25,
+        "itemThumbnailURL": "http://nie-images.s3.amazonaws.com/gall_content/2020/10/2020_10$largeimg11_Oct_2020_200729347.jpg",
+        "spiceLevel": 2,
+        "status": "Ready",
+        "tagLine": "South Indian delight!!"
+    }
+]
+```
+
+### Test GET Failed
+
+```
+http GET $URL/menu/failed
+```
+
+Outputs only failed menu items
+```
+HTTP/1.1 200 OK
+Content-Type: application/json
+content-length: 493
+
+[
+    {
+        "id": 3,
+        "itemImageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Gulab_jamun_%28Gibraltar%2C_November_2020%29.jpg/1200px-Gulab_jamun_%28Gibraltar%2C_November_2020%29.jpg",
+        "itemName": "Gulab Jamoon",
+        "itemPrice": 2.4,
+        "itemThumbnailURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Gulab_jamun_%28Gibraltar%2C_November_2020%29.jpg/1200px-Gulab_jamun_%28Gibraltar%2C_November_2020%29.jpg",
+        "spiceLevel": 0,
+        "status": "Failed",
+        "tagLine": "Sweet cottage cheese dumplings"
     }
 ]
 ```
 
 ### Test POST
 
+Note the POST request doesnt include status field.
 ```
-http POST $URL/menu itemName=Rasgulla itemPrice=3.2 tagLine="East Indian Cottage Cheese dumplings" itemImageURL="https://rakskitchen.net/wp-content/uploads/2010/10/homemade-rasgulla.jpg"
+http POST $URL/menu itemName=Rasgulla itemPrice=3.2 tagLine="East Indian Cottage Cheese dumplings" itemImageURL="https://rakskitchen.net/wp-content/uploads/2010/10/homemade-rasgulla.jpg" itemThumbnailURL="https://rakskitchen.net/wp-content/uploads/2010/10/homemade-rasgulla.jpg"
 ```
-Output
+
+Output as below. Note the status is automatically set to `Processing`
 
 ```
 HTTP/1.1 200 OK
-Alt-Svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"
-Content-Length: 200
-Date: Tue, 15 Feb 2022 18:45:45 GMT
-Server: Google Frontend
-X-Cloud-Trace-Context: f15a1e0c21441e0797a375913321b3fa;o=1
-content-type: application/json
+Content-Type: application/json
+content-length: 316
 
 {
     "id": 4,
     "itemImageURL": "https://rakskitchen.net/wp-content/uploads/2010/10/homemade-rasgulla.jpg",
     "itemName": "Rasgulla",
     "itemPrice": 3.2,
+    "itemThumbnailURL": "https://rakskitchen.net/wp-content/uploads/2010/10/homemade-rasgulla.jpg",
     "spiceLevel": 0,
+    "status": "Processing",
     "tagLine": "East Indian Cottage Cheese dumplings"
 }
 
@@ -197,13 +260,19 @@ content-type: application/json
 Check with GET again to see the data
 
 ```
+HTTP/1.1 200 OK
+Content-Type: application/json
+content-length: 1495
+
 [
     {
         "id": 1,
         "itemImageURL": "https://sheikahplate.files.wordpress.com/2018/03/vegetable_curry_header.jpg?w=720",
         "itemName": "Curry Plate",
         "itemPrice": 12.5,
+        "itemThumbnailURL": "https://sheikahplate.files.wordpress.com/2018/03/vegetable_curry_header.jpg?w=720",
         "spiceLevel": 3,
+        "status": "Ready",
         "tagLine": "Spicy touch for your taste buds!!"
     },
     {
@@ -211,7 +280,9 @@ Check with GET again to see the data
         "itemImageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Gulab_jamun_%28Gibraltar%2C_November_2020%29.jpg/1200px-Gulab_jamun_%28Gibraltar%2C_November_2020%29.jpg",
         "itemName": "Gulab Jamoon",
         "itemPrice": 2.4,
+        "itemThumbnailURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Gulab_jamun_%28Gibraltar%2C_November_2020%29.jpg/1200px-Gulab_jamun_%28Gibraltar%2C_November_2020%29.jpg",
         "spiceLevel": 0,
+        "status": "Failed",
         "tagLine": "Sweet cottage cheese dumplings"
     },
     {
@@ -219,7 +290,9 @@ Check with GET again to see the data
         "itemImageURL": "http://nie-images.s3.amazonaws.com/gall_content/2020/10/2020_10$largeimg11_Oct_2020_200729347.jpg",
         "itemName": "Idly Plate",
         "itemPrice": 10.25,
+        "itemThumbnailURL": "http://nie-images.s3.amazonaws.com/gall_content/2020/10/2020_10$largeimg11_Oct_2020_200729347.jpg",
         "spiceLevel": 2,
+        "status": "Ready",
         "tagLine": "South Indian delight!!"
     },
     {
@@ -227,63 +300,91 @@ Check with GET again to see the data
         "itemImageURL": "https://rakskitchen.net/wp-content/uploads/2010/10/homemade-rasgulla.jpg",
         "itemName": "Rasgulla",
         "itemPrice": 3.2,
+        "itemThumbnailURL": "https://rakskitchen.net/wp-content/uploads/2010/10/homemade-rasgulla.jpg",
         "spiceLevel": 0,
+        "status": "Processing",
         "tagLine": "East Indian Cottage Cheese dumplings"
     }
 ]
+
+```
+
+Test GET with `processing`
+
+```
+http GET $URL/menu/processing
+```
+
+Output
+```
+HTTP/1.1 200 OK
+Content-Type: application/json
+content-length: 319
+
+[
+    {
+        "id": 4,
+        "itemImageURL": "https://rakskitchen.net/wp-content/uploads/2010/10/homemade-rasgulla.jpg",
+        "itemName": "Rasgulla",
+        "itemPrice": 3.2,
+        "itemThumbnailURL": "https://rakskitchen.net/wp-content/uploads/2010/10/homemade-rasgulla.jpg",
+        "spiceLevel": 0,
+        "status": "Processing",
+        "tagLine": "East Indian Cottage Cheese dumplings"
+    }
+]
+
 ```
 
 ### Test PUT
 
 ```
-http PUT $URL/menu/4 itemName=Roshogulla itemPrice=3.2 tagLine="East Indian Cottage Cheese dumplings" itemImageURL="https://rakskitchen.net/wp-content/uploads/2010/10/homemade-rasgulla.jpg"
+http PUT $URL/menu/4 itemName=Roshogulla itemPrice=3.2 tagLine="East Indian Cottage Cheese dumplings" itemImageURL="https://rakskitchen.net/wp-content/uploads/2010/10/homemade-rasgulla.jpg" itemThumbnailURL="https://rakskitchen.net/wp-content/uploads/2010/10/homemade-rasgulla.jpg" status="Ready"
 ```
 Output
 
 ```
 HTTP/1.1 200 OK
-Alt-Svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"
-Content-Length: 202
-Date: Tue, 15 Feb 2022 19:06:16 GMT
-Server: Google Frontend
-X-Cloud-Trace-Context: fe992f122a10995d8d7d9eb06cb6af24
-content-type: application/json
+Content-Type: application/json
+content-length: 313
 
 {
     "id": 4,
     "itemImageURL": "https://rakskitchen.net/wp-content/uploads/2010/10/homemade-rasgulla.jpg",
     "itemName": "Roshogulla",
     "itemPrice": 3.2,
+    "itemThumbnailURL": "https://rakskitchen.net/wp-content/uploads/2010/10/homemade-rasgulla.jpg",
     "spiceLevel": 0,
+    "status": "Ready",
     "tagLine": "East Indian Cottage Cheese dumplings"
 }
 ```
-Test with GET again
+Test with GET ready items again
 
 ```
+HTTP/1.1 200 OK
+Content-Type: application/json
+content-length: 1000
+
 [
     {
         "id": 1,
         "itemImageURL": "https://sheikahplate.files.wordpress.com/2018/03/vegetable_curry_header.jpg?w=720",
         "itemName": "Curry Plate",
         "itemPrice": 12.5,
+        "itemThumbnailURL": "https://sheikahplate.files.wordpress.com/2018/03/vegetable_curry_header.jpg?w=720",
         "spiceLevel": 3,
+        "status": "Ready",
         "tagLine": "Spicy touch for your taste buds!!"
-    },
-    {
-        "id": 3,
-        "itemImageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Gulab_jamun_%28Gibraltar%2C_November_2020%29.jpg/1200px-Gulab_jamun_%28Gibraltar%2C_November_2020%29.jpg",
-        "itemName": "Gulab Jamoon",
-        "itemPrice": 2.4,
-        "spiceLevel": 0,
-        "tagLine": "Sweet cottage cheese dumplings"
     },
     {
         "id": 2,
         "itemImageURL": "http://nie-images.s3.amazonaws.com/gall_content/2020/10/2020_10$largeimg11_Oct_2020_200729347.jpg",
         "itemName": "Idly Plate",
         "itemPrice": 10.25,
+        "itemThumbnailURL": "http://nie-images.s3.amazonaws.com/gall_content/2020/10/2020_10$largeimg11_Oct_2020_200729347.jpg",
         "spiceLevel": 2,
+        "status": "Ready",
         "tagLine": "South Indian delight!!"
     },
     {
@@ -291,7 +392,9 @@ Test with GET again
         "itemImageURL": "https://rakskitchen.net/wp-content/uploads/2010/10/homemade-rasgulla.jpg",
         "itemName": "Roshogulla",
         "itemPrice": 3.2,
+        "itemThumbnailURL": "https://rakskitchen.net/wp-content/uploads/2010/10/homemade-rasgulla.jpg",
         "spiceLevel": 0,
+        "status": "Ready",
         "tagLine": "East Indian Cottage Cheese dumplings"
     }
 ]
