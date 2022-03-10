@@ -31,11 +31,30 @@ public class MenuResource {
         
     }
 
+    @GET
+    @Path("/ready")
+    public List<Menu> getAllReady() throws Exception {
+        return Menu.findReady();
+    }
+
+    @GET
+    @Path("/failed")
+    public List<Menu> getAllFailed() throws Exception {
+        return Menu.findFailed();
+    }
+
+    @GET
+    @Path("/processing")
+    public List<Menu> getAllProcessing() throws Exception {
+        return Menu.findProcessing();
+    }
+    
     @POST
     @Transactional
     public Response create(Menu menu) {
         if (menu == null || menu.id != null) 
             throw new WebApplicationException("id != null");
+            menu.status=Status.Processing;
         menu.persist();
         return Response.ok(menu).status(200).build();
     }
@@ -56,6 +75,7 @@ public class MenuResource {
         entity.spiceLevel=menu.spiceLevel;
         if (menu.itemImageURL != null) entity.itemImageURL = menu.itemImageURL;
         if (menu.itemThumbnailURL != null) entity.itemThumbnailURL = menu.itemThumbnailURL;
+        if (menu.status != null) entity.status = menu.status;
 
         return entity;
     }
