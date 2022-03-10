@@ -1,5 +1,5 @@
 GOOGLE_PROJECT_ID=cymbal-eats
-SERVICE_NAME=api
+SERVICE_NAME=order-service
 
 gcloud run deploy $SERVICE_NAME \
   --source . \
