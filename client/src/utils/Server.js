@@ -1,6 +1,5 @@
 export async function getMenuItems() {
-  const url = 'https://menu-service-luu7kai33a-uc.a.run.app/menu';
-  // const url = 'https://spanner-inventory-service-luu7kai33a-uc.a.run.app/getAvailableInventory';
+  const url = 'https://menu-service-luu7kai33a-uc.a.run.app/menu/ready';
   const response = await fetch(url, {
     mode: 'cors',
     method: 'GET',
@@ -44,9 +43,9 @@ export async function placeOrder(name, address, city, state, zip, orderItems) {
   return respObj.orderNumber;
 }
 
-export async function createMenuItem(tagLine, itemName, itemImageURL, itemPrice, spiceLevel) {
+export async function createMenuItem(tagLine, itemName, itemPrice, spiceLevel) {
   const url = 'https://menu-service-luu7kai33a-uc.a.run.app/menu';
-  const payload = {tagLine, itemName, itemImageURL, itemPrice, spiceLevel};
+  const payload = {tagLine, itemName, itemPrice, spiceLevel};
   const response = await fetch(url, {
     method: 'POST',
     mode: 'cors',
