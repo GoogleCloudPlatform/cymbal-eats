@@ -32,6 +32,12 @@ public class MenuResource {
     }
 
     @GET
+    @Path("{id}")
+    public Menu get(@PathParam("id") Long id) throws Exception {
+        return Menu.findById(id);
+    }
+
+    @GET
     @Path("/ready")
     public List<Menu> getAllReady() throws Exception {
         return Menu.findReady();
