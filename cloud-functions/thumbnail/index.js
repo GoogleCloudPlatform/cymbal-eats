@@ -16,6 +16,7 @@ const imageMagick = require('imagemagick');
 const Promise = require("bluebird");
 const path = require('path');
 const {Storage} = require('@google-cloud/storage');
+import axios from 'axios';
 
 
 exports.process_thumbnails = async (file, context) => 
@@ -29,9 +30,14 @@ exports.process_thumbnails = async (file, context) =>
         const thumbBucket = storage.bucket(process.env.BUCKET_THUMBNAILS);
 
         const originalFile = path.resolve('/tmp/original', file.name);
-        const thumbFile = path.resolve('/tmp/thumbnail', file.name);
+        const itemID = parseInt(path.parse(file.name).name);
 
-        await bucket.file(fileEvent.name).download({
+        if (isNaN(itemID)){
+            res.status(500).send("Incorrect File Name");
+            return;
+        }
+
+        await bucket.file(file.name).download({
             destination: originalFile
         });
         console.log(`Downloaded picture into ${originalFile}`);
@@ -47,6 +53,23 @@ exports.process_thumbnails = async (file, context) =>
 
         await thumbBucket.upload(thumbFile);
         console.log(`Uploaded thumbnail to Cloud Storage bucket ${process.env.BUCKET_THUMBNAILS}`);
+        // Send update call to menu service
+        const request = axios.create({
+            headers :{ 
+                post: {
+                    "Content-Type": 'application/json'
+                }
+            }
+        }).request({
+            url: process.env.MENU_SERVICE_URL,
+            method: 'POST',
+            data: JSON.stringify({
+                id: itemID,
+                status: "ready"
+            })
+        })
+
+        // Send response
         res.status(204).send(`${fileEvent.name} processed`);
     } catch (err) {
         console.log(`Error: creating the thumbnail: ${err}`);

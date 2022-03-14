@@ -13,4 +13,4 @@ steps:
   - --trigger-event google.storage.object.finalize
   - --runtime=nodejs14
   - --set-env-vars
-  - BUCKET_THUMBNAILS=$_BUCKET_THUMBNAILS
+  - BUCKET_THUMBNAILS=$_BUCKET_THUMBNAILS,MENU_SERVICE_URL=$_MENU_SERVICE_URL
