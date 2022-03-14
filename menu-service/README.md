@@ -19,7 +19,9 @@ Create a database with name `menu-db` in this `menu-catalog` CloudSQL instance r
 
 ```
 DB_DATABASE=menu-db
-gcloud sql databases create $DB_DATABASE --instance=$DB_HOST
+DB_INSTANCE_NAME=menu-catalog
+
+gcloud sql databases create $DB_DATABASE --instance=$DB_INSTANCE_NAME
 ```
 
 Add a database user
@@ -28,7 +30,7 @@ Add a database user
 DB_USER=[CHANGEME]
 DB_PASSWORD=[CHANGEME]
 gcloud sql users create $DB_USER \
---instance=$DB_HOST \
+--instance=$DB_INSTANCE_NAME \
 --password=$DB_PASSWORD
 ```
 

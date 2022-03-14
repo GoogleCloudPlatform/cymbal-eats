@@ -11,7 +11,7 @@
         />
 
         <q-toolbar-title>
-          Cymbal Eats
+          Add menu item
         </q-toolbar-title>
 
       </q-toolbar>
@@ -21,13 +21,14 @@
 
       <div class="q-pa-md q-gutter-md">
 
-        <q-input filled v-model="tagLine" label="tagLine" />
-        <q-input filled v-model="itemName" label="itemName" />
-        <q-input filled v-model="itemImageURL" label="itemImageURL" />
-        <q-input filled v-model="itemPrice" label="itemPrice" />
-        <q-input filled v-model="spiceLevel" label="spiceLevel" />
+        <q-input filled v-model="tagLine" label="Tagline" />
+        <q-input filled v-model="itemName" label="Item name" />
+        <q-file filled v-model="itemImage" label="Item image" />
+        <q-input filled v-model="itemPrice" label="Item price" />
+        <q-input filled v-model="spiceLevel" label="Spice level" />
         <q-btn
           label="Create menu item"
+          color="primary"
           @click="createMenuItem"
         />
 
@@ -39,20 +40,31 @@
 
 <script setup>
 
-  import { ref, onMounted, computed } from 'vue';
-  import { useStore } from 'vuex';
-  import { useRouter } from 'vue-router';
+  import { ref, watch } from 'vue';
   import * as Server from '../utils/Server.js';
 
   const tagLine = ref('');
   const itemName = ref('');
-  const itemImageURL = ref('');
+  const itemImage = ref();
   const itemPrice = ref('');
   const spiceLevel = ref('');
+
+  // TODO: Send the item properties and the file to a new endpoint on the server.
+  //       That serverside code will add the record in the menu service and it
+  //       will upload the file to GCS. It's too hard/insecure to upload to
+  //       GCS directly from the client.
+  
+  watch(() => itemImage.value, (newValue) => {
+    const reader = new FileReader();
+    reader.onload = async function(e) {
+      console.log(e.target.result)
+    }
+    reader.readAsDataURL(newValue);
+  })
   
   async function createMenuItem() {
     await Server.createMenuItem(
-      tagLine.value, itemName.value, itemImageURL.value, itemPrice.value,
+      tagLine.value, itemName.value, itemPrice.value,
       spiceLevel.value
     )
   }

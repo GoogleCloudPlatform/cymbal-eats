@@ -1,6 +1,5 @@
 export async function getMenuItems() {
-  const url = 'https://menu-service-luu7kai33a-uc.a.run.app/menu';
-  // const url = 'https://spanner-inventory-service-luu7kai33a-uc.a.run.app/getAvailableInventory';
+  const url = process.env.VUE_APP_MENU_SERVICE_URL;
   const response = await fetch(url, {
     mode: 'cors',
     method: 'GET',
@@ -18,7 +17,8 @@ export async function getMenuItems() {
   
 export async function getInventoryCounts() {
   console.time('getInventoryCounts')
-  const url = 'https://spanner-inventory-service-luu7kai33a-uc.a.run.app/getAvailableInventory';
+  const url = process.env.VUE_APP_INVENTORY_SERVICE_URL;
+  //const url = 'https://spanner-inventory-service-luu7kai33a-uc.a.run.app/getAvailableInventory';
   const response = await fetch(url, {
     mode: 'cors',
     method: 'GET',
@@ -32,7 +32,8 @@ export async function getInventoryCounts() {
 }
 
 export async function placeOrder(name, address, city, state, zip, orderItems) {
-  const url = 'https://order-service-luu7kai33a-uc.a.run.app/place-order';
+  const url = process.env.VUE_APP_ORDER_SERVICE_URL;
+  //const url = 'https://order-service-luu7kai33a-uc.a.run.app/place-order';
   const payload = {name, address, city, state, zip, orderItems};
   const response = await fetch(url, {
     method: 'POST',
@@ -44,9 +45,9 @@ export async function placeOrder(name, address, city, state, zip, orderItems) {
   return respObj.orderNumber;
 }
 
-export async function createMenuItem(tagLine, itemName, itemImageURL, itemPrice, spiceLevel) {
-  const url = 'https://menu-service-luu7kai33a-uc.a.run.app/menu';
-  const payload = {tagLine, itemName, itemImageURL, itemPrice, spiceLevel};
+export async function createMenuItem(tagLine, itemName, itemPrice, spiceLevel) {
+  const url = process.env.VUE_APP_MENU_SERVICE_URL;
+  const payload = {tagLine, itemName, itemPrice, spiceLevel};
   const response = await fetch(url, {
     method: 'POST',
     mode: 'cors',
