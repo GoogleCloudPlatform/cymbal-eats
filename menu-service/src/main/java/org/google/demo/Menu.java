@@ -2,6 +2,7 @@ package org.google.demo;
 
 import java.math.BigDecimal;
 import java.net.URL;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,5 +26,22 @@ public class Menu extends PanacheEntity {
 
     @Column(name="item_image_url")
     public URL itemImageURL;
-     
+
+    @Column(name="item_thumbnail_url")
+    public URL itemThumbnailURL;
+
+    @Column(name="item_status")
+    public Status status;
+
+    public static List<Menu> findReady() {
+        return list("status", Status.Ready);
+    }
+    
+    public static List<Menu> findFailed() {
+        return list("status", Status.Failed);
+    }
+
+    public static List<Menu> findProcessing() {
+        return list("status", Status.Processing);
+    }
 }
