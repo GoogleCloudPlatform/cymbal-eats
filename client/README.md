@@ -42,5 +42,7 @@ Example: REGION=us-east4
 ```bash
 gcloud run deploy cymbal-eats-client \
 --image=gcr.io/$PROJECT_NAME/cymbal-eats-client:latest \
---port=80 --region=$REGION
+--port=80 --region=$REGION \
+--allow-unauthenticated \
+-q
 ```
