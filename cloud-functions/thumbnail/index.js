@@ -29,7 +29,7 @@ exports.process_thumbnails = async (file, context) =>
         const bucket = storage.bucket(file.bucket);
         const thumbBucket = storage.bucket(process.env.BUCKET_THUMBNAILS);
 
-        const originalFile = path.resolve('/tmp/original', file.name);
+        const originalFile = `/tmp/original/${file.name}`;
 
         await bucket.file(file.name).download({
             destination: originalFile
