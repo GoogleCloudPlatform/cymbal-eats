@@ -39,7 +39,6 @@ exports.process_thumbnails = async (file, context) =>
         const itemID = parseInt(path.parse(file.name).name);
 
         if (isNaN(itemID)){
-            res.status(500).send("Incorrect File Name");
             return;
         }
 
@@ -90,11 +89,8 @@ exports.process_thumbnails = async (file, context) =>
             })
         })
 
-        // Send response
-        res.status(204).send(`${fileEvent.name} processed`);
     } catch (err) {
         console.log(`Error: creating the thumbnail: ${err}`);
         console.error(err);
-        res.status(500).send(err);
     }
 };
