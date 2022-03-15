@@ -66,7 +66,6 @@ exports.process_thumbnails = async (file, context) =>
         const thumbnailImage = await thumbBucket.upload(thumbFile);
         const thumbnailImageUrl = thumbnailImage[0].publicUrl();
         console.log(`Uploaded thumbnail to Cloud Storage bucket ${process.env.BUCKET_THUMBNAILS}`);
-        console.log(thumbnailImageUrl);
         const menuServer = axios.create({
             baseURL: process.env.MENU_SERVICE_URL,
             headers :{ 
@@ -76,9 +75,8 @@ exports.process_thumbnails = async (file, context) =>
             }
         })
         const item = await menuServer.get(`/menu/${itemID}`);
-        console.log(item);
         // Send update call to menu service
-        const request = menuServer.request({
+        const request = await menuServer.request({
             url: `/menu/${itemID}`,
             method: 'POST',
             data: JSON.stringify({
@@ -93,6 +91,7 @@ exports.process_thumbnails = async (file, context) =>
 
             })
         })
+        console.log(request)
 
     } catch (err) {
         console.log(`Error: creating the thumbnail: ${err}`);
