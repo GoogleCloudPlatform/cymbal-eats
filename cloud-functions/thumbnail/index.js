@@ -40,9 +40,12 @@ exports.process_thumbnails = async (file, context) =>
         const originalFile = `/tmp/original/${file.name}`;
         const thumbFile = `/tmp/thumbnail/${file.name}`
 
-        const originalF = await bucket.file(file.name).download({
+        await bucket.file(file.name).download({
             destination: originalFile
         });
+
+        const originalF = await bucket.file(file.name).publicUrl()
+
         console.log(`Downloaded picture into ${originalFile}`);
 
         const itemID = parseInt(path.parse(file.name).name);
@@ -73,14 +76,14 @@ exports.process_thumbnails = async (file, context) =>
             }
         })
         const item = await menuServer.get(`/menu/${itemID}`);
-
+        console.log(item);
         // Send update call to menu service
         const request = menuServer.request({
             url: `/menu/${itemID}`,
             method: 'POST',
             data: JSON.stringify({
                 id: itemID,
-                itemImageURL: originalF[0].publicUrl(),
+                itemImageURL: originalF,
                 itemName: item.data.itemName,
                 itemPrice: item.data.itemPrice,
                 itemThumbnailURL: thumbnailImageUrl,
