@@ -232,6 +232,37 @@ content-length: 493
 ]
 ```
 
+### Test GET by Id
+
+```
+http GET $URL/menu/2
+```
+
+Output
+
+```
+HTTP/1.1 200 OK
+Alt-Svc: h3=":443"; ma=2592000,h3-29=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"
+Content-Length: 351
+Date: Mon, 14 Mar 2022 21:18:04 GMT
+Server: Google Frontend
+X-Cloud-Trace-Context: 58a648b21ecefc78c5cff41fc8dace65;o=1
+content-type: application/json
+
+{
+    "id": 2,
+    "itemImageURL": "http://nie-images.s3.amazonaws.com/gall_content/2020/10/2020_10$largeimg11_Oct_2020_200729347.jpg",
+    "itemName": "Idly Plate",
+    "itemPrice": 10.25,
+    "itemThumbnailURL": "http://nie-images.s3.amazonaws.com/gall_content/2020/10/2020_10$largeimg11_Oct_2020_200729347.jpg",
+    "spiceLevel": 2,
+    "status": "Ready",
+    "tagLine": "South Indian delight!!"
+}
+
+```
+
+
 ### Test POST
 
 Note the POST request doesnt include status field.
