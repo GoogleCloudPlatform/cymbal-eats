@@ -11,7 +11,8 @@ steps:
   - --region=us-central1
   - --trigger-resource 
   - $_BUCKET
-  - --trigger-event google.storage.object.finalize
+  - --trigger-event
+  - google.storage.object.finalize
   - --runtime=nodejs14
   - --set-env-vars
   - BUCKET_THUMBNAILS=$_BUCKET_THUMBNAILS,MENU_SERVICE_URL=$_MENU_SERVICE_URL
