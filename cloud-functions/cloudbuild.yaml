@@ -9,7 +9,8 @@ steps:
   - deploy
   - process_thumbnails
   - --region=us-central1
-  - --trigger-resource $_BUCKET
+  - --trigger-resource 
+  - $_BUCKET
   - --trigger-event google.storage.object.finalize
   - --runtime=nodejs14
   - --set-env-vars
