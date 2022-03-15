@@ -60,8 +60,9 @@ exports.process_thumbnails = async (file, context) =>
         });
         console.log(`Created local thumbnail in ${thumbFile}`);
 
-        const thumbnailImageUrl = await thumbBucket.upload(thumbFile).getPublicUrl();
-        
+        const thumbnailImage = await thumbBucket.upload(thumbFile);
+        console.log(thumbnailImage);
+        const thumbnailImageUrl = thumbnailImage[0].publicUrl;
         console.log(`Uploaded thumbnail to Cloud Storage bucket ${process.env.BUCKET_THUMBNAILS}`);
 
         const item = axios.create({
