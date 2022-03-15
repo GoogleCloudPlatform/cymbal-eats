@@ -30,17 +30,18 @@ exports.process_thumbnails = async (file, context) =>
         const thumbBucket = storage.bucket(process.env.BUCKET_THUMBNAILS);
 
         const originalFile = path.resolve('/tmp/original', file.name);
+
+        await bucket.file(file.name).download({
+            destination: originalFile
+        });
+        console.log(`Downloaded picture into ${originalFile}`);
+
         const itemID = parseInt(path.parse(file.name).name);
 
         if (isNaN(itemID)){
             res.status(500).send("Incorrect File Name");
             return;
         }
-
-        await bucket.file(file.name).download({
-            destination: originalFile
-        });
-        console.log(`Downloaded picture into ${originalFile}`);
 
         const resizeCrop = Promise.promisify(imageMagick.crop);
         await resizeCrop({
