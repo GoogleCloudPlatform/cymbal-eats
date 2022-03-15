@@ -16,7 +16,7 @@ const imageMagick = require('imagemagick');
 const Promise = require("bluebird");
 const path = require('path');
 const {Storage} = require('@google-cloud/storage');
-import axios from 'axios';
+const {axios} = require('axios');
 
 
 exports.process_thumbnails = async (file, context) => 
