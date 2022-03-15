@@ -89,7 +89,7 @@ exports.process_thumbnails = async (file, context) =>
                 itemThumbnailURL: thumbnailImageUrl,
                 spiaceLevel: item.data.spiaceLevel,
                 status: "ready",
-                tagLine: item.dta.tagLine
+                tagLine: item.data.tagLine
 
             })
         })
