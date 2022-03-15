@@ -76,11 +76,8 @@ exports.process_thumbnails = async (file, context) =>
         })
         const item = await menuServer.get(`/menu/${itemID}`);
         // Send update call to menu service
-        const request = await menuServer.request({
-            url: `/menu/${itemID}`,
-            method: 'PUT',
-            data: JSON.stringify({
-                //id: itemID,
+        const request = await menuServer.put(`/menu/${itemID}`, {
+            data: {
                 itemImageURL: originalF,
                 itemName: item.data.itemName,
                 itemPrice: item.data.itemPrice,
@@ -89,9 +86,8 @@ exports.process_thumbnails = async (file, context) =>
                 status: "ready",
                 tagLine: item.data.tagLine
 
-            })
+            }
         })
-        console.log(request)
 
     } catch (err) {
         console.log(`Error: creating the thumbnail: ${err}`);
