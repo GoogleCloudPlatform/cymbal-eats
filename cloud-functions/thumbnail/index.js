@@ -51,8 +51,21 @@ exports.process_thumbnails = async (file, context) =>
         });
         console.log(`Created local thumbnail in ${thumbFile}`);
 
-        await thumbBucket.upload(thumbFile);
+        const thumbnailImageUrl = await thumbBucket.upload(thumbFile).getPublicUrl();
+        
         console.log(`Uploaded thumbnail to Cloud Storage bucket ${process.env.BUCKET_THUMBNAILS}`);
+
+        const item = axios.create({
+            headers :{ 
+                get: {
+                    "Content-Type": 'application/json'
+                }
+            }
+        }).request({
+            url: `${process.env.MENU_SERVICE_URL}/menu/${itemID}`,
+            method: 'GET'
+        })
+
         // Send update call to menu service
         const request = axios.create({
             headers :{ 
@@ -61,11 +74,18 @@ exports.process_thumbnails = async (file, context) =>
                 }
             }
         }).request({
-            url: process.env.MENU_SERVICE_URL,
+            url: `${process.env.MENU_SERVICE_URL}/menu`,
             method: 'POST',
             data: JSON.stringify({
                 id: itemID,
-                status: "ready"
+                itemImageURL: item.data.itemImageURL,
+                itemName: item.data.itemName,
+                itemPrice: item.data.itemPrice,
+                itemThumbnailURL: thumbnailImageUrl,
+                spiaceLevel: item.data.spiaceLevel,
+                status: "ready",
+                tagLine: item.dta.tagLine
+
             })
         })
 
