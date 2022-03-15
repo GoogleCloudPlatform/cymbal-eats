@@ -17,6 +17,7 @@ const Promise = require("bluebird");
 const path = require('path');
 const {Storage} = require('@google-cloud/storage');
 const {axios} = require('axios');
+var fs = require('fs');
 
 
 exports.process_thumbnails = async (file, context) => 
