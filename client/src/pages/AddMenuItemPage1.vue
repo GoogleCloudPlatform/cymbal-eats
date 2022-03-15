@@ -23,7 +23,6 @@
 
         <q-input filled v-model="tagLine" label="Tagline" />
         <q-input filled v-model="itemName" label="Item name" />
-        <q-file filled v-model="itemImage" label="Item image" />
         <q-input filled v-model="itemPrice" label="Item price" />
         <q-input filled v-model="spiceLevel" label="Spice level" />
         <q-btn
@@ -40,12 +39,16 @@
 
 <script setup>
 
-  import { ref, watch } from 'vue';
+  import { ref } from 'vue';
+  import { useStore } from 'vuex';
+  import { useRouter } from 'vue-router';
   import * as Server from '../utils/Server.js';
+
+  const store = useStore();
+  const router = useRouter();
 
   const tagLine = ref('');
   const itemName = ref('');
-  const itemImage = ref();
   const itemPrice = ref('');
   const spiceLevel = ref('');
 
@@ -54,19 +57,14 @@
   //       will upload the file to GCS. It's too hard/insecure to upload to
   //       GCS directly from the client.
   
-  watch(() => itemImage.value, (newValue) => {
-    const reader = new FileReader();
-    reader.onload = async function(e) {
-      console.log(e.target.result)
-    }
-    reader.readAsDataURL(newValue);
-  })
-  
   async function createMenuItem() {
-    await Server.createMenuItem(
-      tagLine.value, itemName.value, itemPrice.value,
-      spiceLevel.value
-    )
+    const newMenuItem = await Server.createMenuItem(
+      tagLine.value, itemName.value, itemPrice.value, spiceLevel.value
+    );
+    console.log('newMenuItem.id', newMenuItem.id);
+    store.commit('setMenuItemId', newMenuItem.id);
+    console.log(`store.commit('setMenuItemId', "${newMenuItem.id}")`);
+    router.push('/add-menu-item2')
   }
 
 </script>

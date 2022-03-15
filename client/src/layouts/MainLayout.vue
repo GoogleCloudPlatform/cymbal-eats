@@ -77,7 +77,7 @@
   //       On the server, when an image is uploaded, check that it's not adult or violent.
   //       Generate thumbnail.
   //       Generate new entry in menu service.
-  // TODO: Add front-page that is not connected to the database, for demo.
+  // TODO: Add front-page that is not connected to the database, for demo. Put a welcome page under /.
   // TODO: Add +/- buttons to set quantity of each order line in the order.
   // TODO: If you order the same dish twice, make it one single order line with qty of 2.
   // TODO: Send quantity to the order service.

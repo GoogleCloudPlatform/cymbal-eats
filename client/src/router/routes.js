@@ -21,7 +21,11 @@ const routes = [
   },
   {
     path: '/add-menu-item',
-    component: () => import('pages/AddMenuItemPage.vue')
+    component: () => import('pages/AddMenuItemPage1.vue')
+  },
+  {
+    path: '/add-menu-item2',
+    component: () => import('pages/AddMenuItemPage2.vue')
   },
   {
     path: '/:catchAll(.*)*',

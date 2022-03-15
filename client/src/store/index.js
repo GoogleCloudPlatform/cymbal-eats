@@ -9,6 +9,7 @@ export default store(function () {
       menuItems: [],
       orderItems: [],
       status : '',
+      menuItemId: ''
     },
     getters: {
       orderTotal: state => {
@@ -45,6 +46,9 @@ export default store(function () {
       setOrder(state, {orderItems, status}) {
         state.orderItems = orderItems.splice(0);
         state.status = status;
+      },
+      setMenuItemId(state, id) {
+        state.menuItemId = id;
       }
     },
     actions: {
