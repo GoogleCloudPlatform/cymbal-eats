@@ -16,7 +16,7 @@ const imageMagick = require('imagemagick');
 const Promise = require("bluebird");
 const path = require('path');
 const {Storage} = require('@google-cloud/storage');
-const {axios} = require('axios');
+const axios = require('axios');
 var fs = require('fs');
 
 
@@ -61,30 +61,22 @@ exports.process_thumbnails = async (file, context) =>
         console.log(`Created local thumbnail in ${thumbFile}`);
 
         const thumbnailImage = await thumbBucket.upload(thumbFile);
-        console.log(thumbnailImage);
         const thumbnailImageUrl = thumbnailImage[0].publicUrl;
         console.log(`Uploaded thumbnail to Cloud Storage bucket ${process.env.BUCKET_THUMBNAILS}`);
-
-        const item = axios.create({
+        console.log(thumbnailImageUrl);
+        const menuServer = axios.create({
+            baseURL: process.env.MENU_SERVICE_URL,
             headers :{ 
                 get: {
                     "Content-Type": 'application/json'
                 }
             }
-        }).request({
-            url: `${process.env.MENU_SERVICE_URL}/menu/${itemID}`,
-            method: 'GET'
         })
+        const item = await menuServer.get(`/menu/${itemID}`);
 
         // Send update call to menu service
-        const request = axios.create({
-            headers :{ 
-                post: {
-                    "Content-Type": 'application/json'
-                }
-            }
-        }).request({
-            url: `${process.env.MENU_SERVICE_URL}/menu`,
+        const request = menuServer.request({
+            url: `/menu/${itemID}`,
             method: 'POST',
             data: JSON.stringify({
                 id: itemID,
