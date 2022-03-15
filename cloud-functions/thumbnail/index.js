@@ -80,7 +80,7 @@ exports.process_thumbnails = async (file, context) =>
             url: `/menu/${itemID}`,
             method: 'PUT',
             data: JSON.stringify({
-                id: itemID,
+                //id: itemID,
                 itemImageURL: originalF,
                 itemName: item.data.itemName,
                 itemPrice: item.data.itemPrice,
