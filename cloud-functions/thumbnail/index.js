@@ -78,7 +78,7 @@ exports.process_thumbnails = async (file, context) =>
         // Send update call to menu service
         const request = await menuServer.request({
             url: `/menu/${itemID}`,
-            method: 'POST',
+            method: 'PUT',
             data: JSON.stringify({
                 id: itemID,
                 itemImageURL: originalF,
