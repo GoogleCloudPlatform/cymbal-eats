@@ -40,7 +40,7 @@ exports.process_thumbnails = async (file, context) =>
         const originalFile = `/tmp/original/${file.name}`;
         const thumbFile = `/tmp/thumbnail/${file.name}`
 
-        await bucket.file(file.name).download({
+        const originalF = await bucket.file(file.name).download({
             destination: originalFile
         });
         console.log(`Downloaded picture into ${originalFile}`);
@@ -61,7 +61,7 @@ exports.process_thumbnails = async (file, context) =>
         console.log(`Created local thumbnail in ${thumbFile}`);
 
         const thumbnailImage = await thumbBucket.upload(thumbFile);
-        const thumbnailImageUrl = thumbnailImage[0].publicUrl;
+        const thumbnailImageUrl = thumbnailImage[0].publicUrl();
         console.log(`Uploaded thumbnail to Cloud Storage bucket ${process.env.BUCKET_THUMBNAILS}`);
         console.log(thumbnailImageUrl);
         const menuServer = axios.create({
@@ -80,7 +80,7 @@ exports.process_thumbnails = async (file, context) =>
             method: 'POST',
             data: JSON.stringify({
                 id: itemID,
-                itemImageURL: item.data.itemImageURL,
+                itemImageURL: originalF[0].publicUrl(),
                 itemName: item.data.itemName,
                 itemPrice: item.data.itemPrice,
                 itemThumbnailURL: thumbnailImageUrl,
