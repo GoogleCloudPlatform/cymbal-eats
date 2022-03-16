@@ -1,0 +1,49 @@
+{
+    "name": "@types/webpack-bundle-analyzer",
+    "version": "4.4.1",
+    "description": "TypeScript definitions for webpack-bundle-analyzer",
+    "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/webpack-bundle-analyzer",
+    "license": "MIT",
+    "contributors": [
+        {
+            "name": "Michael Strobel",
+            "url": "https://github.com/kryops",
+            "githubUsername": "kryops"
+        },
+        {
+            "name": "Vladimir Grenaderov",
+            "url": "https://github.com/VladimirGrenaderov",
+            "githubUsername": "VladimirGrenaderov"
+        },
+        {
+            "name": "Max Boguslavskiy",
+            "url": "https://github.com/maxbogus",
+            "githubUsername": "maxbogus"
+        },
+        {
+            "name": "Piotr Błażejewicz",
+            "url": "https://github.com/peterblazejewicz",
+            "githubUsername": "peterblazejewicz"
+        },
+        {
+            "name": "Kyle Hensel",
+            "url": "https://github.com/k-yle",
+            "githubUsername": "k-yle"
+        }
+    ],
+    "main": "",
+    "types": "index.d.ts",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
+        "directory": "types/webpack-bundle-analyzer"
+    },
+    "scripts": {},
+    "dependencies": {
+        "@types/node": "*",
+        "tapable": "^2.2.0",
+        "webpack": "^5"
+    },
+    "typesPublisherContentHash": "f9d9a2fffbecff3d523e33df61a0a720c4e48c863874c319a844e3c1eb66bd38",
+    "typeScriptVersion": "3.7"
+}
