@@ -77,7 +77,6 @@ exports.process_thumbnails = async (file, context) =>
         const item = await menuServer.get(`/menu/${itemID}`);
         // Send update call to menu service
         const request = await menuServer.put(`/menu/${itemID}`, {
-            data: {
                 itemImageURL: originalF,
                 itemName: item.data.itemName,
                 itemPrice: item.data.itemPrice,
@@ -86,7 +85,6 @@ exports.process_thumbnails = async (file, context) =>
                 status: "ready",
                 tagLine: item.data.tagLine
 
-            }
         })
 
     } catch (err) {
