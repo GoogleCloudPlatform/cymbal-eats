@@ -1,16 +1,14 @@
 TODOs
 
-Split up employee and customer UI.
 Refactor UI code (remove layouts, clean up the store, name things properly).
-Send quantity to the order service.
 Put /add-menu-item under /.
-Add "quasar build" to the README.
 Put employee-ui and picture-upload-service in the same Cloud Run service.
 Migrate customer-ui to Express (from nginx).
 Add URL to employee-ui that shows all menu items, regardless of status.
-Order service should check inventory svc, and deduct from inventory.
-Add placeholder for / when the dishes are loaded from the server.
-Remove inventory from / page.
+Display a placeholder at / while the dishes are loaded from the server.
+Don't display inventory on the / page.
+Write up README file for customer-ui.
+Write up README file for employee-ui.
 Display all prices with two decimals.
 Change mouse cursor look over Google Pay button.
 Display a "wait" screen after the user clicks the Google Pay button.

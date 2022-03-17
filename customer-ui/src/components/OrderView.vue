@@ -27,7 +27,7 @@
       <q-space/>
       <q-item-section side>
         <div class="text-grey-8">
-          ${{ item.price }}
+          ${{ item.price.toFixed(2) }}
         </div>
       </q-item-section>
     </q-item>

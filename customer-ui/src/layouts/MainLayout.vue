@@ -45,7 +45,7 @@
               </div>
               <q-btn
                 color="primary"
-                :label="'Order $' + dish.price"
+                :label="'Order $' + dish.price.toFixed(2)"
                 @click="addDishToOrder(dish.id)"
               />
               <div>
