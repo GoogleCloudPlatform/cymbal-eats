@@ -71,21 +71,6 @@
   const dish = ref(1);
   const dishes = computed(() => store.state.menuItems);
 
-  // TODO: Add admin UI for adding new menu items.
-  //       Create the new item in the menu database, with status=draft.
-  //       Upload image to GCS, with name being the menu item id.
-  //       On the server, when an image is uploaded, check that it's not adult or violent.
-  //       Generate thumbnail.
-  //       Generate new entry in menu service.
-  // TODO: Order service should check inventory svc, and deduct from inventory.
-  // TODO: Add front-page that is not connected to the database, for demo. Put a welcome page under /.
-  // TODO: Add +/- buttons to set quantity of each order line in the order.
-  // TODO: If you order the same dish twice, make it one single order line with qty of 2.
-  // TODO: Send quantity to the order service.
-  // TODO: Deploy the consumer web front-end to the cloud.
-  // TODO: Deploy the admin web front-end to the cloud.
-  // TODO: Update order status through the Order service, not directly in Firestore.
-
   onMounted(async () => {
     await store.dispatch('loadMenu');
   });
