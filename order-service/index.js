@@ -10,6 +10,15 @@ app.listen(port, () => {
 const {Firestore} = require('@google-cloud/firestore');
 const firestore = new Firestore();
 
+const inventoryServer = axios.create({
+  baseURL: process.env.INVENTORY_SERVICE_URL,
+  headers :{ 
+      get: {
+          "Content-Type": 'application/json'
+      }
+  }
+})
+
 app.post('/place-order', async (req, res) => {
   try {
     const orderNumber = getNewOrderNumber();
@@ -26,6 +35,14 @@ app.post('/place-order', async (req, res) => {
       statusUpdatedAt: new Date(),
       placedAt: new Date()
     })
+
+    inventoryServer.POST("/updateInventoryItem", 
+      req.body.orderItems.map(x => ({
+        itemID: x.id,
+        inventoryChange: x.quantity
+      }))
+    );
+
     res.json({orderNumber: orderNumber});
   }
   catch(ex) {
