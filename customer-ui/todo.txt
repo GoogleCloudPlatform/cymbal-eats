@@ -16,3 +16,4 @@ Deploy the consumer web front-end to the cloud.
 Deploy the admin web front-end to the cloud.
 Update order status through the Order service, not directly in Firestore.
 Migrate customer-ui to Express (from nginx).
+Add  Cymbal Apps graphics.

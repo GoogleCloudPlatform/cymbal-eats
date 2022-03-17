@@ -19,43 +19,53 @@
 
     <q-page-container>
 
-      <div class="q-gutter-md q-pa-md">
+      <div class="q-pa-md">
 
-        <h3>
-          Delivery address
-        </h3>
-
-        <q-input
-          filled
-          v-model="name"
-          label="Name"
-        />
-
-        <q-input
-          filled
-          v-model="address"
-          label="Address"
-        />
-
-        <q-input
-          filled
-          v-model="city"
-          label="City"
-        />
-
-        <div style="display:flex; justify-content:space-between">
-          <q-select
-            style="width:45%"
-            filled
-            v-model="state"
-            :options="states"
-            label="State"
+        <div>
+          <OrderView
+            :items="orderItems"
+            :allowdelete="true"
+            v-on:delete-item="deleteItem"
           />
+        </div>
+
+        <div class="q-pt-xl q-gutter-md">
+          <h4>
+            Delivery address
+          </h4>
+
           <q-input
             filled
-            v-model="zip"
-            label="Zip"
+            v-model="name"
+            label="Name"
           />
+
+          <q-input
+            filled
+            v-model="address"
+            label="Address"
+          />
+
+          <q-input
+            filled
+            v-model="city"
+            label="City"
+          />
+
+          <div style="display:flex; justify-content:space-between">
+            <q-select
+              style="width:45%"
+              filled
+              v-model="state"
+              :options="states"
+              label="State"
+            />
+            <q-input
+              filled
+              v-model="zip"
+              label="Zip"
+            />
+          </div>
         </div>
 
         <br><br>
@@ -82,15 +92,17 @@
 
 <script setup>
 
-  import { ref } from 'vue';
+  import { ref, computed } from 'vue';
   import { useStore } from 'vuex';
   import { useRouter } from 'vue-router';
-  import statesFile from '../assets/us-states.json';
+  import OrderView from '../components/OrderView.vue';
   import * as Server from '../utils/Server.js';
+  import statesFile from '../assets/us-states.json';
 
   const store = useStore();
   const router = useRouter();
 
+  const orderItems = computed(() => store.state.orderItems);
   const name = ref('Angela Jensen');
   const address = ref('1845 Denise St');
   const city = ref('Mountain View');
@@ -100,6 +112,11 @@
 
   function goBackToShopping() {
     router.push('/');
+  }
+
+  function deleteItem(itemIndex) {
+    console.log(`deleteItem(${itemIndex}) called`);
+    store.commit('deleteItem', itemIndex);
   }
 
   async function placeOrder() {
@@ -117,3 +134,11 @@
   }
 
 </script>
+
+<style lang="sass" scoped>
+  .custom-caption
+    text-align: center
+    padding: 12px
+    color: white
+    background-color: rgba(0, 0, 0, .3)
+</style>

@@ -1,19 +1,15 @@
 const routes = [
   {
     path: '/',
-    component: () => import('layouts/MainLayout.vue')
+    component: () => import('pages/MenuPage.vue')
   },
   {
     path: '/edit-order',
-    component: () => import('layouts/EditOrderLayout.vue')
-  },
-  {
-    path: '/place-order',
-    component: () => import('layouts/PlaceOrderLayout.vue')
+    component: () => import('pages/EditOrderPage.vue')
   },
   {
     path: '/order-status/:orderNumber',
-    component: () => import('layouts/OrderStatusLayout.vue')
+    component: () => import('pages/OrderStatusPage.vue')
   },
   {
     path: '/:catchAll(.*)*',
