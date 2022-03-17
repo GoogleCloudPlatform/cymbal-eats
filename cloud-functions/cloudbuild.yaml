@@ -1,0 +1,18 @@
+steps:
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  id: 'Deploy Thumbnail Function'
+  waitFor: ['-']
+  dir: 'cloud-functions/thumbnail'
+  args:
+  - gcloud
+  - functions
+  - deploy
+  - process_thumbnails
+  - --region=us-central1
+  - --trigger-resource 
+  - $_BUCKET
+  - --trigger-event
+  - google.storage.object.finalize
+  - --runtime=nodejs14
+  - --set-env-vars
+  - BUCKET_THUMBNAILS=$_BUCKET_THUMBNAILS,MENU_SERVICE_URL=$_MENU_SERVICE_URL
