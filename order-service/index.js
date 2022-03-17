@@ -21,6 +21,19 @@ const inventoryServer = axios.create({
 
 app.post('/place-order', async (req, res) => {
   try {
+
+    const inventory = await inventoryServer.get("/getAvailableInventory")
+    const inventoryDict = {}
+    for (item in inventory.data){
+      inventoryDict[item.ItemID] = item.Inventory
+    }
+    for (orderItem in req.body.orderItems){
+      if(!(orderItem.id in inventoryDict) || (inventoryDict[orderItem.id] < orderItem.quantity)){
+        throw "Incorrect Order Quantity or Item"
+      }
+    }
+    
+
     const orderNumber = getNewOrderNumber();
     const orderDoc = firestore.doc(`orders/${orderNumber}`);
     await orderDoc.set({
@@ -36,7 +49,7 @@ app.post('/place-order', async (req, res) => {
       placedAt: new Date()
     })
 
-    inventoryServer.POST("/updateInventoryItem", 
+    await inventoryServer.POST("/updateInventoryItem", 
       req.body.orderItems.map(x => ({
         itemID: x.id,
         inventoryChange: x.quantity
