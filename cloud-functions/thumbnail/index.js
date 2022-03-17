@@ -78,12 +78,11 @@ exports.process_thumbnails = async (file, context) =>
         const thumbnailImageUrl = thumbnailImage[0].publicUrl();
         console.log(`Uploaded thumbnail to Cloud Storage bucket ${process.env.BUCKET_THUMBNAILS}`);
         const visionResponse = await visionPromise;
-        console.log(`Raw vision output for: ${file.name}: ${JSON.stringify(visionResponse)}`);
+        console.log(`Raw vision output for: ${file.name}: ${JSON.stringify(visionResponse[0])}`);
         let status = "Failed"
-        if (visionResponse.labelAnnotations.contains("Food")){
-            status = "Ready"
+        for (label of visionResponse[0].labelAnnotations){
+            status = label.descriptions == "Food" ? "Ready" : status
         }
-
 
         const menuServer = axios.create({
             baseURL: process.env.MENU_SERVICE_URL,
