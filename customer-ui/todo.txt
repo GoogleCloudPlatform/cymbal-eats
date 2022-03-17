@@ -1,9 +1,7 @@
 TODOs
 
 Refactor UI code (remove layouts, clean up the store, name things properly).
-Put /add-menu-item under /.
 Put employee-ui and picture-upload-service in the same Cloud Run service.
-Migrate customer-ui to Express (from nginx).
 Add URL to employee-ui that shows all menu items, regardless of status.
 Display a placeholder at / while the dishes are loaded from the server.
 Don't display inventory on the / page.
@@ -17,3 +15,4 @@ If you order the same dish twice, make it one single order line with qty of 2.
 Deploy the consumer web front-end to the cloud.
 Deploy the admin web front-end to the cloud.
 Update order status through the Order service, not directly in Firestore.
+Migrate customer-ui to Express (from nginx).

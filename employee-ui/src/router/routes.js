@@ -1,5 +1,9 @@
 const routes = [
   {
+    path: '/',
+    component: () => import('pages/WelcomePage.vue')
+  },
+  {
     path: '/kitchen',
     component: () => import('layouts/KitchenLayout.vue')
   },
