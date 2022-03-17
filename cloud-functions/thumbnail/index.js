@@ -77,7 +77,7 @@ exports.process_thumbnails = async (file, context) =>
         const thumbnailImage = await thumbBucket.upload(thumbFile);
         const thumbnailImageUrl = thumbnailImage[0].publicUrl();
         console.log(`Uploaded thumbnail to Cloud Storage bucket ${process.env.BUCKET_THUMBNAILS}`);
-        const visionResponse = Promise.resolve(visionPromise);
+        const visionResponse = await visionPromise;
         console.log(`Raw vision output for: ${file.name}: ${JSON.stringify(visionResponse)}`);
         let status = "Failed"
         if (visionResponse.labelAnnotations.contains("Food")){
