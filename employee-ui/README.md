@@ -2,6 +2,9 @@
 
 An app for hungry people
 
+Add a bucket that is public read + write.
+"allUsers" should have the role "Storage Object Viewer".
+
 ## Install the dependencies
 ```bash
 npm install
