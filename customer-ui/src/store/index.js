@@ -36,7 +36,7 @@ export default store(function () {
       addDishToOrder(state, dishId) {
         const dish = state.menuItems.find(d => d.id==dishId);
         if (dish) {
-          state.orderItems.push(dish);
+          state.orderItems.push({...dish, quantity: 1});
         }
       },
       deleteItem(state, index) {
