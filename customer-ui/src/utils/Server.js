@@ -1,5 +1,5 @@
 export async function getMenuItems() {
-  const url = process.env.VUE_APP_MENU_SERVICE_URL+"/menu";
+  const url = process.env.VUE_APP_MENU_SERVICE_URL+"/menu/ready";
   const response = await fetch(url, {
     mode: 'cors',
     method: 'GET',
@@ -10,6 +10,7 @@ export async function getMenuItems() {
     title: m.tagLine,
     subtitle: m.itemName,
     image: m.itemImageURL,
+    thumbnail: m.itemThumbnailURL,
     price: m.itemPrice,
     spiceLevel: m.spiceLevel
   }));
