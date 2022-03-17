@@ -15,6 +15,7 @@
 const imageMagick = require('imagemagick');
 const Promise = require("bluebird");
 const path = require('path');
+const vision = require('@google-cloud/vision');
 const {Storage} = require('@google-cloud/storage');
 const axios = require('axios');
 var fs = require('fs');
@@ -29,6 +30,16 @@ exports.process_thumbnails = async (file, context) =>
         const storage = new Storage();
         const bucket = storage.bucket(file.bucket);
         const thumbBucket = storage.bucket(process.env.BUCKET_THUMBNAILS);
+
+        const client = new vision.ImageAnnotatorClient();
+        const request = {
+            image: { source: { imageUri: `gs://${file.bucket}/${file.name}` } },
+            features: [
+                { type: 'LABEL_DETECTION' },
+            ]
+        };
+        // We launch the vision call first so we can process the thumbnail while we wait for the response.
+        const visionPromise = client.annotateImage(request);
 
         if (!fs.existsSync("/tmp/original")){
             fs.mkdirSync("/tmp/original");
@@ -66,6 +77,14 @@ exports.process_thumbnails = async (file, context) =>
         const thumbnailImage = await thumbBucket.upload(thumbFile);
         const thumbnailImageUrl = thumbnailImage[0].publicUrl();
         console.log(`Uploaded thumbnail to Cloud Storage bucket ${process.env.BUCKET_THUMBNAILS}`);
+        const visionResponse = Promise.resolve(visionPromise);
+        console.log(`Raw vision output for: ${file.name}: ${JSON.stringify(visionResponse)}`);
+        let status = "Failed"
+        if (visionResponse.labelAnnotations.contains("Food")){
+            status = "Ready"
+        }
+
+
         const menuServer = axios.create({
             baseURL: process.env.MENU_SERVICE_URL,
             headers :{ 
