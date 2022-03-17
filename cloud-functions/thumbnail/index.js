@@ -100,7 +100,7 @@ exports.process_thumbnails = async (file, context) =>
                 itemPrice: item.data.itemPrice,
                 itemThumbnailURL: thumbnailImageUrl,
                 spiaceLevel: item.data.spiaceLevel,
-                status: "ready",
+                status: status,
                 tagLine: item.data.tagLine
 
         })
