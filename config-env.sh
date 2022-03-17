@@ -14,10 +14,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-export INVENTORY_SERVICE_NAME=inventory-system
+export INVENTORY_SERVICE_NAME=inventory-service
 export MENU_SERVICE_NAME=menu-service
 export ORDER_SERVICE_NAME=order-service
-export CLIENT_SERVICE_NAME=client-service
+export PICTURE_UPLOAD_SERVICE_NAME=picture-upload-service
+
+export CUSTOMER_SERVICE_NAME=customer-ui
+export EMPLOYEE_SERVICE_NAME=employee-ui
 
 export PROJECT_ID=$(gcloud config get-value project)
 export PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID --format='value(projectNumber)')

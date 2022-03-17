@@ -14,30 +14,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source config-env.sh
+source ../config-env.sh
 
 export BASE_DIR=$PWD
 
-cd ${BASE_DIR}/menu-service
-./setup.sh
-cd $BASE_DIR
+gcloud services enable \
+    run.googleapis.com \
+    artifactregistry.googleapis.com \
+    cloudbuild.googleapis.com
 
-cd ${BASE_DIR}/order-service
-./setup.sh
-cd $BASE_DIR
-
-cd ${BASE_DIR}/inventory-service/spanner
-./setup.sh
-cd $BASE_DIR
-
-cd ${BASE_DIR}/picture-upload-service
-./setup.sh
-cd $BASE_DIR
-
-cd ${BASE_DIR}/employee-ui
-./setup.sh
-cd $BASE_DIR
-
-cd ${BASE_DIR}/customer-ui
-./setup.sh
-cd $BASE_DIR
+gcloud run deploy $PICTURE_UPLOAD_SERVICE_NAME \
+  --source . \
+  --platform managed \
+  --region $REGION \
+  --allow-unauthenticated \
+  --project=$PROJECT_ID \
+  --quiet

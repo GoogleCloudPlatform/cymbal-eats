@@ -1,4 +1,4 @@
-# Inventory System 
+# Inventory Service 
 
 ## Technology Stack
 
