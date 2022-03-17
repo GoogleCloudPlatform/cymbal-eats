@@ -50,7 +50,8 @@ app.post('/', async (req, res) => {
   await pictureBucket.upload(newPicture, { resumable: false });
   console.log(`Uploaded "${newPictureName}" to Cloud Storage bucket "${process.env.UPLOAD_BUCKET}"`);
 
-  res.json({status: 'Success'});
+  res.set('Content-Type', 'text/html');
+  res.send('<html>Your menu item is being processed.</html>');
 });
 
 function getFileExtension(fileName) {
