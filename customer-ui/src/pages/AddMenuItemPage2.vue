@@ -48,11 +48,12 @@
   import { onMounted, computed } from 'vue';
   import { useRouter } from 'vue-router';
   import { useStore } from 'vuex';
+  import * as Server from '../utils/Server.js';
 
   const store = useStore();
   const router = useRouter();
 
-  const pictureServiceUrl = 'https://picture-upload-service-luu7kai33a-uc.a.run.app';
+  const pictureServiceUrl = Server.getPictureUploadServiceUrl();
 
   onMounted(() => {
     if (!store.state.menuItemId) {

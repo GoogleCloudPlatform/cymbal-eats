@@ -57,3 +57,7 @@ export async function createMenuItem(tagLine, itemName, itemPrice, spiceLevel) {
   const respObj = await response.json();
   return respObj;
 }
+
+export function getPictureUploadServiceUrl() {
+  return process.env.VUE_APP_PICTURE_UPLOAD_SERVICE_URL;
+}

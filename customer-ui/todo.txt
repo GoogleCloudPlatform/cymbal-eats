@@ -1,8 +1,5 @@
 TODOs
 
-Add admin UI for adding new menu items.
-Display a page of all menu items after picture upload of new menu item.
-Put the picture-upload-service URL in the env file.
 Order service should check inventory svc, and deduct from inventory.
 Split up employee and customer UI.
 Refactor UI code (remove layouts, clean up the store, name things properly).
