@@ -9,8 +9,6 @@ Display a placeholder at / while the dishes are loaded from the server.
 Don't display inventory on the / page.
 Write up README file for customer-ui.
 Write up README file for employee-ui.
-Display all prices with two decimals.
-Change mouse cursor look over Google Pay button.
 Display a "wait" screen after the user clicks the Google Pay button.
 Put the address fields on the same page as the dishes in the shopping basket.
 Add front-page that is not connected to the database, for demo. Put a welcome page under /.

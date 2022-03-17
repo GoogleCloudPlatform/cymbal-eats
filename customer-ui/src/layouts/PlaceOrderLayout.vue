@@ -68,6 +68,7 @@
           <br><br><br>
           <img
             class="float-right"
+            style="cursor: pointer;"
             src="/images/order-with-g-pay.png"
             @click="placeOrder"
           />
