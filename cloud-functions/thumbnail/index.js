@@ -81,7 +81,7 @@ exports.process_thumbnails = async (file, context) =>
         console.log(`Raw vision output for: ${file.name}: ${JSON.stringify(visionResponse[0])}`);
         let status = "Failed"
         for (label of visionResponse[0].labelAnnotations){
-            status = label.descriptions == "Food" ? "Ready" : status
+            status = label.description == "Food" ? "Ready" : status
         }
 
         const menuServer = axios.create({
