@@ -32,14 +32,14 @@ exports.process_thumbnails = async (file, context) =>
         const thumbBucket = storage.bucket(process.env.BUCKET_THUMBNAILS);
 
         const client = new vision.ImageAnnotatorClient();
-        const request = {
+        const visionRequest = {
             image: { source: { imageUri: `gs://${file.bucket}/${file.name}` } },
             features: [
                 { type: 'LABEL_DETECTION' },
             ]
         };
         // We launch the vision call first so we can process the thumbnail while we wait for the response.
-        const visionPromise = client.annotateImage(request);
+        const visionPromise = client.annotateImage(visionRequest);
 
         if (!fs.existsSync("/tmp/original")){
             fs.mkdirSync("/tmp/original");
