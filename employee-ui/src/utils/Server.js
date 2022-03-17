@@ -44,3 +44,20 @@ export async function placeOrder(name, address, city, state, zip, orderItems) {
   const respObj = await response.json();
   return respObj.orderNumber;
 }
+
+export async function createMenuItem(tagLine, itemName, itemPrice, spiceLevel) {
+  const url = process.env.VUE_APP_MENU_SERVICE_URL+"/menu";
+  const payload = {tagLine, itemName, itemPrice, spiceLevel};
+  const response = await fetch(url, {
+    method: 'POST',
+    mode: 'cors',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(payload)
+  });
+  const respObj = await response.json();
+  return respObj;
+}
+
+export function getPictureUploadServiceUrl() {
+  return process.env.VUE_APP_PICTURE_UPLOAD_SERVICE_URL;
+}

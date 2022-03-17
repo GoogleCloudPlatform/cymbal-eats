@@ -8,7 +8,8 @@ export default store(function () {
     state: {
       menuItems: [],
       orderItems: [],
-      status : ''
+      status : '',
+      menuItemId: ''
     },
     getters: {
       orderTotal: state => {
@@ -46,6 +47,9 @@ export default store(function () {
         state.orderItems = orderItems.splice(0);
         state.status = status;
       },
+      setMenuItemId(state, id) {
+        state.menuItemId = id;
+      }
     },
     actions: {
       async loadMenu(context) {

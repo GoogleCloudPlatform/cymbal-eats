@@ -53,7 +53,6 @@
   import { useStore } from 'vuex';
   import { useRouter } from 'vue-router';
   import OrderView from '../components/OrderView.vue';
-  import dishesFile from '../assets/dishes.json';
 
   const store = useStore();
   const router = useRouter();
