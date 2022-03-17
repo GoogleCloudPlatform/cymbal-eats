@@ -22,7 +22,6 @@ import io.quarkus.panache.common.Sort;
 @Produces(MediaType.APPLICATION_JSON)
 public class MenuResource {
 
-    private Long id;
 
     @GET
     public List<Menu> getAll() throws Exception {

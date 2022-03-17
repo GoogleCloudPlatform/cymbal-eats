@@ -2,10 +2,14 @@ package org.google.demo;
 
 import java.math.BigDecimal;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
@@ -32,6 +36,14 @@ public class Menu extends PanacheEntity {
 
     @Column(name="item_status")
     public Status status;
+
+    @CreationTimestamp
+    @Column(name="creation_timestamp")
+    public LocalDateTime createDateTime;
+ 
+    @UpdateTimestamp
+    @Column(name="update_timestamp")
+    public LocalDateTime updateDateTime;
 
     public static List<Menu> findReady() {
         return list("status", Status.Ready);
