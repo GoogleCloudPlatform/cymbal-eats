@@ -1,7 +1,5 @@
 TODOs
 
-Refactor UI code (remove layouts, clean up the store, name things properly).
-Put employee-ui and picture-upload-service in the same Cloud Run service.
 Add URL to employee-ui that shows all menu items, regardless of status.
 Display a placeholder at / while the dishes are loaded from the server.
 Don't display inventory on the / page.
