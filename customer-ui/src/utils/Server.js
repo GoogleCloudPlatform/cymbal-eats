@@ -1,25 +1,17 @@
 export async function getMenuItems() {
+  console.time('getMenuItems');
   const url = process.env.VUE_APP_MENU_SERVICE_URL+"/menu/ready";
   const response = await fetch(url, {
     mode: 'cors',
     method: 'GET',
   })
-  const menuItems = await response.json();
-  return menuItems.map(m => ({
-    id: m.id,
-    title: m.tagLine,
-    subtitle: m.itemName,
-    image: m.itemImageURL,
-    thumbnail: m.itemThumbnailURL,
-    price: m.itemPrice,
-    spiceLevel: m.spiceLevel
-  }));
+  console.timeEnd('getMenuItems');
+  return await response.json();
 }
 
 export async function getInventoryCounts() {
-  console.time('getInventoryCounts')
+  console.time('getInventoryCounts');
   const url = process.env.VUE_APP_INVENTORY_SERVICE_URL+"/getAvailableInventory";
-  //const url = 'https://spanner-inventory-service-luu7kai33a-uc.a.run.app/getAvailableInventory';
   const response = await fetch(url, {
     mode: 'cors',
     method: 'GET',

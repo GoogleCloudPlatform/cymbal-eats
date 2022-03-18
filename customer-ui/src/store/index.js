@@ -13,8 +13,9 @@ export default store(function () {
     getters: {
       orderTotal: state => {
         let retVal = 0;
+        console.log('state.orderItems', state.orderItems)
         for (const item of state.orderItems) {
-          retVal += parseFloat(item.price);
+          retVal += parseFloat(item.itemPrice);
         }
         return retVal.toFixed(2);
       }
@@ -50,6 +51,7 @@ export default store(function () {
     actions: {
       async loadMenu(context) {
         const menuItems = await Server.getMenuItems();
+        console.log(menuItems);
         context.commit('setMenuItems', menuItems);
         const inventoryCounts = await Server.getInventoryCounts();
         context.commit('setInventoryCounts', inventoryCounts);

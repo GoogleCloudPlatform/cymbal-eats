@@ -34,18 +34,18 @@
             v-for="dish in dishes"
             :name="dish.id"
             :key="dish.id"
-            :img-src="dish.image"
+            :img-src="dish.itemImageURL"
           >
             <div class="absolute-bottom custom-caption">
               <div class="text-h2">
-                {{ dish.title }}
+                {{ dish.tagLine }}
               </div>
               <div class="text-subtitle1">
-                {{ dish.subtitle }}
+                {{ dish.itemName }}
               </div>
               <q-btn
                 color="primary"
-                :label="'Order $' + dish.price.toFixed(2)"
+                :label="'Order $' + dish.itemPrice.toFixed(2)"
                 @click="addDishToOrder(dish.id)"
               />
               <div>
@@ -65,14 +65,18 @@
   import { ref, onMounted, computed } from 'vue';
   import { useStore } from 'vuex';
   import { useRouter } from 'vue-router';
+  import { useQuasar } from 'quasar';
 
   const store = useStore();
   const router = useRouter();
+  const $q = useQuasar();
   const dish = ref(1);
   const dishes = computed(() => store.state.menuItems);
 
   onMounted(async () => {
+    $q.loading.show();
     await store.dispatch('loadMenu');
+    $q.loading.hide();
   });
 
   function addDishToOrder(dishId) {
