@@ -23,7 +23,7 @@
 
         <form
           method="POST"
-          :action="pictureServiceUrl"
+          action="/upload-picture"
           enctype="multipart/form-data"
         >
           <input class="file-input" type="file" name="picture">
@@ -48,12 +48,9 @@
   import { onMounted, computed } from 'vue';
   import { useRouter } from 'vue-router';
   import { useStore } from 'vuex';
-  import * as Server from '../utils/Server.js';
 
   const store = useStore();
   const router = useRouter();
-
-  const pictureServiceUrl = Server.getPictureUploadServiceUrl();
 
   onMounted(() => {
     if (!store.state.menuItemId) {
