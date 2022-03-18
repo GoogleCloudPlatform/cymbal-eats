@@ -1,7 +1,6 @@
 import { store } from 'quasar/wrappers';
 import { createStore } from 'vuex';
 import * as Server from '../utils/Server.js';
-// import dishesFile from '../assets/dishes.json';
 
 export default store(function () {
   const Store = createStore({

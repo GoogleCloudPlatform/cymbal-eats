@@ -1,7 +1,6 @@
 import { store } from 'quasar/wrappers';
 import { createStore } from 'vuex';
 import * as Server from '../utils/Server.js';
-// import dishesFile from '../assets/dishes.json';
 
 export default store(function () {
   const Store = createStore({
@@ -11,14 +10,6 @@ export default store(function () {
       status : ''
     },
     getters: {
-      orderTotal: state => {
-        let retVal = 0;
-        console.log('state.orderItems', state.orderItems)
-        for (const item of state.orderItems) {
-          retVal += parseFloat(item.itemPrice);
-        }
-        return retVal.toFixed(2);
-      }
     },
     mutations: {
       setMenuItems(state, menuItems) {

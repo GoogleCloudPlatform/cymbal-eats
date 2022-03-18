@@ -22,7 +22,10 @@
         {{ item.itemName }}
       </q-item-section>
       <q-item-section side v-if="item.inventory<5">
-        <q-badge color="orange" label="about to run out" />
+        <q-badge color="orange" label="About to run out!" />
+      </q-item-section>
+      <q-item-section side v-if="item.inventory==null">
+        <q-badge color="red" label="Unknown inventory!" />
       </q-item-section>
       <q-space/>
       <q-item-section side>
