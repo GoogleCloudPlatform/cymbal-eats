@@ -70,6 +70,8 @@ quasar build
 cp -r dist/spa/* cloud-run/public
 cd cloud-run
 
+gsutil mb -p $PROJECT_ID -l $REGION $UPLOAD_BUCKET
+
 gcloud run deploy $SERVICE_NAME \
   --source . \
   --platform managed \
