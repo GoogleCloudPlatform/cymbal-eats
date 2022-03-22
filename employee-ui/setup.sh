@@ -58,29 +58,21 @@ else
   echo "Using pre-defined MENU_SERVICE_URL=$MENU_SERVICE_URL"
 fi
 
-if [[ -z "${PICTURE_UPLOAD_SERVICE_URL}" ]]; then
-  PICTURE_UPLOAD_SERVICE_URL=$(gcloud run services describe $PICTURE_UPLOAD_SERVICE_NAME \
-    --region=$REGION \
-    --format=json | jq \
-    --raw-output ".status.url")
-  export PICTURE_UPLOAD_SERVICE_URL
-else
-  echo "Using pre-defined PICTURE_UPLOAD_SERVICE_URL=$PICTURE_UPLOAD_SERVICE_URL"
-fi
-
 envsub .env.tmpl .env
+
+cd cloud-run
+rm -r public/*
+cd ..
 
 quasar clean
 quasar build
 
-docker build -f Dockerfile \
-  --tag gcr.io/$PROJECT_NAME/$EMPLOYEE_SERVICE_NAME dist
+cp -r dist/spa/* cloud-run/public
+cd cloud-run
 
-docker push gcr.io/$PROJECT_NAME/$EMPLOYEE_SERVICE_NAME
-
-gcloud run deploy $EMPLOYEE_SERVICE_NAME \
-  --image=gcr.io/$PROJECT_NAME/$EMPLOYEE_SERVICE_NAME:latest \
-  --port=80 \
-  --region=$REGION \
+gcloud run deploy $SERVICE_NAME \
+  --source . \
+  --platform managed \
+  --region $REGION \
   --allow-unauthenticated \
   --quiet
