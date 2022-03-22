@@ -58,16 +58,6 @@ else
   echo "Using pre-defined MENU_SERVICE_URL=$MENU_SERVICE_URL"
 fi
 
-if [[ -z "${PICTURE_UPLOAD_SERVICE_URL}" ]]; then
-  PICTURE_UPLOAD_SERVICE_URL=$(gcloud run services describe $PICTURE_UPLOAD_SERVICE_NAME \
-    --region=$REGION \
-    --format=json | jq \
-    --raw-output ".status.url")
-  export PICTURE_UPLOAD_SERVICE_URL
-else
-  echo "Using pre-defined PICTURE_UPLOAD_SERVICE_URL=$PICTURE_UPLOAD_SERVICE_URL"
-fi
-
 envsub .env.tmpl .env
 
 quasar clean
