@@ -31,8 +31,6 @@ app.listen(PORT, () => {
   console.log(`Started employee-ui-service on port ${PORT}`);
 });
 
-process.env.UPLOAD_BUCKET = 'gs://menu-item-uploads';
-
 app.post('/upload-picture', async (req, res) => {
   if (!req.files || Object.keys(req.files).length === 0) {
     console.log("No file uploaded");
