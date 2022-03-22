@@ -30,10 +30,6 @@ cd ${BASE_DIR}/inventory-service/spanner
 ./setup.sh
 cd $BASE_DIR
 
-cd ${BASE_DIR}/picture-upload-service
-./setup.sh
-cd $BASE_DIR
-
 cd ${BASE_DIR}/employee-ui
 ./setup.sh
 cd $BASE_DIR
