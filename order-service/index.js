@@ -50,7 +50,7 @@ app.post('/place-order', async (req, res) => {
       placedAt: new Date()
     })
 
-    await inventoryServer.POST("/updateInventoryItem", 
+    await inventoryServer.post("/updateInventoryItem", 
       req.body.orderItems.map(x => ({
         itemID: x.id,
         inventoryChange: x.quantity
