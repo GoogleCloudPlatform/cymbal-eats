@@ -18,14 +18,14 @@ export INVENTORY_SERVICE_NAME=inventory-service
 export MENU_SERVICE_NAME=menu-service
 export ORDER_SERVICE_NAME=order-service
 
-export UPLOAD_BUCKET=gs://menu-item-uploads
-
 export CUSTOMER_SERVICE_NAME=customer-ui-service
 export EMPLOYEE_SERVICE_NAME=employee-ui-service
 
 export PROJECT_ID=$(gcloud config get-value project)
 export PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID --format='value(projectNumber)')
 export PROJECT_NAME=$(gcloud projects describe $PROJECT_ID --format='value(name)')
+
+export UPLOAD_BUCKET=gs://menu-item-uploads-$PROJECT_ID
 
 export REGION=us-east4
 
