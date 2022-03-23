@@ -29,10 +29,21 @@ gcloud app create --region=$REGION
 
 gcloud firestore databases create --region=$REGION
 
+if [[ -z "${INVENTORY_SERVICE_URL}" ]]; then
+  INVENTORY_SERVICE_URL=$(gcloud run services describe $INVENTORY_SERVICE_NAME \
+    --region=$REGION \
+    --format=json | jq \
+    --raw-output ".status.url")
+  export INVENTORY_SERVICE_URL
+else
+  echo "Using pre-defined INVENTORY_SERVICE_URL=$INVENTORY_SERVICE_URL"
+fi
+
 gcloud run deploy $ORDER_SERVICE_NAME \
   --source . \
   --platform managed \
   --region $REGION \
   --allow-unauthenticated \
   --project=$PROJECT_ID \
+  --set-env-vars=INVENTORY_SERVICE_URL=$INVENTORY_SERVICE_URL \
   --quiet
