@@ -19,7 +19,8 @@ source ../config-env.sh
 export BASE_DIR=$PWD
 
 gcloud services enable \
-    vision.googleapis.com
+    vision.googleapis.com \
+    cloudfunctions.googleapis.com
 
 if [[ -z "${MENU_SERVICE_URL}" ]]; then
   MENU_SERVICE_URL=$(gcloud run services describe $MENU_SERVICE_NAME \
