@@ -36,5 +36,5 @@ gcloud functions deploy process_thumbnails \
   --trigger-event=google.storage.object.finalize \
   --runtime=nodejs14 \
   --set-env-vars=BUCKET_THUMBNAILS=$BUCKET_THUMBNAILS,MENU_SERVICE_URL=$MENU_SERVICE_URL \
-  --source=thumbnail
+  --source=thumbnail \
   --quiet
