@@ -22,11 +22,11 @@ cd ${BASE_DIR}/menu-service
 ./setup.sh
 cd $BASE_DIR
 
-cd ${BASE_DIR}/order-service
+cd ${BASE_DIR}/inventory-service/spanner
 ./setup.sh
 cd $BASE_DIR
 
-cd ${BASE_DIR}/inventory-service/spanner
+cd ${BASE_DIR}/order-service
 ./setup.sh
 cd $BASE_DIR
 
