@@ -26,6 +26,7 @@ export PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID --format='value(pro
 export PROJECT_NAME=$(gcloud projects describe $PROJECT_ID --format='value(name)')
 
 export UPLOAD_BUCKET=gs://menu-item-uploads-$PROJECT_ID
+export BUCKET_THUMBNAILS=gs://menu-item-thumbnails-$PROJECT_ID
 
 export REGION=us-east4
 
