@@ -34,6 +34,8 @@ fi
 
 gsutil mb -p $PROJECT_ID -l $REGION $BUCKET_THUMBNAILS
 
+gsutil iam ch allUsers:objectViewer $BUCKET_THUMBNAILS
+
 gcloud functions deploy process_thumbnails \
   --region=$REGION \
   --trigger-resource=$UPLOAD_BUCKET \
