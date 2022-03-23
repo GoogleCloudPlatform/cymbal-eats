@@ -60,21 +60,21 @@ fi
 
 envsub .env.tmpl .env
 
-cd cloud-run
-rm -r public/*
-cd ..
+rm -r cloud-run/public/*
 
 quasar clean
 quasar build
 
+mkdir -p cloud-run/public
 cp -r dist/spa/* cloud-run/public
 cd cloud-run
 
 gsutil mb -p $PROJECT_ID -l $REGION $UPLOAD_BUCKET
 
-gcloud run deploy $SERVICE_NAME \
+gcloud run deploy $EMPLOYEE_SERVICE_NAME \
   --source . \
   --platform managed \
   --region $REGION \
   --allow-unauthenticated \
+  --set-env-vars UPLOAD_BUCKET=$UPLOAD_BUCKET \
   --quiet
