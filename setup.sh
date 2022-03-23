@@ -37,3 +37,7 @@ cd $BASE_DIR
 cd ${BASE_DIR}/customer-ui
 ./setup.sh
 cd $BASE_DIR
+
+cd ${BASE_DIR}/cloud-functions
+./setup.sh
+cd $BASE_DIR
