@@ -27,6 +27,9 @@ app.post('/place-order', async (req, res) => {
     for (item in inventory.data){
       inventoryDict[item] = inventory.data[item].Inventory
     }
+    console.log(req.body);
+    console.log(orderItem);
+    console.log(inventoryDict);
     for (orderItem in req.body.orderItems){
       if(!(orderItem.id in inventoryDict) || (inventoryDict[orderItem.id] < orderItem.quantity)){
         throw "Incorrect Order Quantity or Item"
