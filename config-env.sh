@@ -41,24 +41,15 @@ gcloud auth configure-docker -q
 gcloud services enable \
     compute.googleapis.com \
     appengine.googleapis.com \
-    run.googleapis.com \
-    artifactregistry.googleapis.com \
-    cloudbuild.googleapis.com \
-    firestore.googleapis.com
-
-gcloud services enable \
+    firestore.googleapis.com \
     sqladmin.googleapis.com \
-    run.googleapis.com \
     vpcaccess.googleapis.com \
-    servicenetworking.googleapis.com
-
-gcloud services enable \
+    servicenetworking.googleapis.com \
     spanner.googleapis.com \
     run.googleapis.com \
     cloudbuild.googleapis.com \
     artifactregistry.googleapis.com \
-    vpcaccess.googleapis.com
-
-gcloud services enable \
+    vpcaccess.googleapis.com \
     vision.googleapis.com \
-    cloudfunctions.googleapis.com
+    cloudfunctions.googleapis.com \
+    --quiet

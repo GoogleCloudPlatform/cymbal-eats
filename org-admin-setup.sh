@@ -1,5 +1,7 @@
 # New project setup - Run as org admin
 
+PROJECT_ID=cymbal-eats-<random number>
+
 gcloud projects create $PROJECT_ID --organization=$ORGANIZAITON_ID
 
 gcloud beta billing projects link ${PROJECT_ID} --billing-account=$BILLING_ACCOUNT
@@ -14,7 +16,6 @@ spec:
  rules:
  - allowAll: true
 ENDOFFILE
-
 
 gcloud org-policies set-policy vmCanIpForward.yaml --project=$PROJECT_ID
 
@@ -62,7 +63,7 @@ ENDOFFILE
 gcloud org-policies set-policy allowedIngressSettings.yaml --project=$PROJECT_ID
 
 # Grant your GCP account owner role on the new project
-GCP_USER_ACCOUNT=user@user.altostrat.com
+GCP_USER_ACCOUNT=user@userdomain.altostrat.com
 gcloud projects add-iam-policy-binding $PROJECT_ID --member=user:$GCP_USER_ACCOUNT --role=roles/owner
 
 # Login with your GCP account, clone the repo and and run ```./setup.sh```
