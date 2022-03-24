@@ -28,6 +28,8 @@ export PROJECT_NAME=$(gcloud projects describe $PROJECT_ID --format='value(name)
 export UPLOAD_BUCKET=gs://menu-item-uploads-$PROJECT_ID
 export BUCKET_THUMBNAILS=gs://menu-item-thumbnails-$PROJECT_ID
 
+gcloud config set project $PROJECT_ID
+
 gcloud services enable \
     compute.googleapis.com \
     appengine.googleapis.com \
