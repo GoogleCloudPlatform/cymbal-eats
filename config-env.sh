@@ -30,6 +30,32 @@ export BUCKET_THUMBNAILS=gs://menu-item-thumbnails-$PROJECT_ID
 
 export REGION=us-east4
 
+gcloud compute networks create default --subnet-mode=auto
+
 gcloud config set run/region $REGION
 
 gcloud auth configure-docker -q
+
+gcloud services enable \
+    appengine.googleapis.com \
+    run.googleapis.com \
+    artifactregistry.googleapis.com \
+    cloudbuild.googleapis.com \
+    firestore.googleapis.com
+
+gcloud services enable \
+    sqladmin.googleapis.com \
+    run.googleapis.com \
+    vpcaccess.googleapis.com \
+    servicenetworking.googleapis.com
+
+gcloud services enable \
+    spanner.googleapis.com \
+    run.googleapis.com \
+    cloudbuild.googleapis.com \
+    artifactregistry.googleapis.com \
+    vpcaccess.googleapis.com
+
+gcloud services enable \
+    vision.googleapis.com \
+    cloudfunctions.googleapis.com
