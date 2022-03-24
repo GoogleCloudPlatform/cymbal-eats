@@ -2,7 +2,6 @@
 
 gcloud projects create $PROJECT_ID --organization=$ORGANIZAITON_ID
 
-PROJECT_ID=cymbal-eats-NNNN
 gcloud beta billing projects link ${PROJECT_ID} --billing-account=$BILLING_ACCOUNT
 
 gcloud config set project ${PROJECT_ID}
@@ -28,7 +27,7 @@ ENDOFFILE
 
 gcloud org-policies set-policy allowedPolicyMemberDomains.yaml --project=$PROJECT_ID
 
-cat > trusted-images-policy.yaml <<
+cat > trusted-images-policy.yaml << ENDOFFILE
 constraint: constraints/compute.trustedImageProjects
 listPolicy:
  allowedValues:
@@ -49,7 +48,7 @@ listPolicy:
  - projects/windows-cloud
  - projects/ubuntu-os-pro-cloud
  - projects/serverless-vpc-access-images
- ENDOFFILE
+ENDOFFILE
 
 
 gcloud resource-manager org-policies set-policy trusted-images-policy.yaml --project=$PROJECT_ID
