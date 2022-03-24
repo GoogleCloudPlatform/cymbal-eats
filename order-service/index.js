@@ -25,7 +25,7 @@ app.post('/place-order', async (req, res) => {
     const inventory = await inventoryServer.get("/getAvailableInventory")
     const inventoryDict = {}
     for (item in inventory.data){
-      inventoryDict[inventory.data[item].itemID] = inventory.data[item].Inventory
+      inventoryDict[parseInt(inventory.data[item].ItemID)] = inventory.data[item].Inventory
     }
     for (oI in req.body.orderItems){
       var orderItem = req.body.orderItems[oI]

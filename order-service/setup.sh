@@ -39,6 +39,10 @@ else
   echo "Using pre-defined INVENTORY_SERVICE_URL=$INVENTORY_SERVICE_URL"
 fi
 
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:$PROJECT_NUMBER-compute@developer.gserviceaccount.com" \
+  --role="roles/datastore.user"
+
 gcloud run deploy $ORDER_SERVICE_NAME \
   --source . \
   --platform managed \
