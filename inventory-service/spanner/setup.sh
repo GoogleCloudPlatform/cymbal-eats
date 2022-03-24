@@ -35,6 +35,10 @@ gcloud spanner instances create $DB_INSTANCE \
 
 export DB_CONNECTION_STRING=projects/$PROJECT_ID/instances/$DB_INSTANCE/databases/$DB_NAME
 
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:service-$PROJECT_NUMBER@serverless-robot-prod.iam.gserviceaccount.com" \
+  --role="roles/spanner.databaseAdmin"
+
 gcloud run deploy $INVENTORY_SERVICE_NAME \
     --source . \
     --region $REGION \
