@@ -28,16 +28,6 @@ export PROJECT_NAME=$(gcloud projects describe $PROJECT_ID --format='value(name)
 export UPLOAD_BUCKET=gs://menu-item-uploads-$PROJECT_ID
 export BUCKET_THUMBNAILS=gs://menu-item-thumbnails-$PROJECT_ID
 
-export REGION=us-east4
-
-gcloud config set run/region $REGION
-
-gcloud config set compute/region $REGION
-
-gcloud compute networks create default --subnet-mode=auto
-
-gcloud auth configure-docker -q
-
 gcloud services enable \
     compute.googleapis.com \
     appengine.googleapis.com \
@@ -53,3 +43,14 @@ gcloud services enable \
     vision.googleapis.com \
     cloudfunctions.googleapis.com \
     --quiet
+
+export REGION=us-east4
+
+gcloud config set run/region $REGION
+
+gcloud config set compute/region $REGION
+
+gcloud compute networks create default --subnet-mode=auto
+
+gcloud auth configure-docker -q
+
