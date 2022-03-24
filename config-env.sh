@@ -37,6 +37,7 @@ gcloud config set run/region $REGION
 gcloud auth configure-docker -q
 
 gcloud services enable \
+    compute.googleapis.com \
     appengine.googleapis.com \
     run.googleapis.com \
     artifactregistry.googleapis.com \
