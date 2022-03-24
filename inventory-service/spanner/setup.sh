@@ -18,7 +18,7 @@ source ../../config-env.sh
 
 export BASE_DIR=$PWD
 
-export DB_INSTANCE=menu-catalog
+export DB_INSTANCE=menu-inventory
 export DB_NAME=menu-inventory
 
 gcloud services enable \
