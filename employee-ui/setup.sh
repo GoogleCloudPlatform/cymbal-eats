@@ -73,6 +73,10 @@ gsutil mb -p $PROJECT_ID -l $REGION $UPLOAD_BUCKET
 
 gsutil iam ch allUsers:objectViewer $UPLOAD_BUCKET
 
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:$PROJECT_NUMBER-compute@developer.gserviceaccount.com" \
+  --role="roles/storage.objectCreator"
+
 gcloud run deploy $EMPLOYEE_SERVICE_NAME \
   --source . \
   --platform managed \
