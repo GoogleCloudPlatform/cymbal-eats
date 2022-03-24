@@ -30,9 +30,11 @@ export BUCKET_THUMBNAILS=gs://menu-item-thumbnails-$PROJECT_ID
 
 export REGION=us-east4
 
-gcloud compute networks create default --subnet-mode=auto
-
 gcloud config set run/region $REGION
+
+gcloud config set compute/region $REGION
+
+gcloud compute networks create default --subnet-mode=auto
 
 gcloud auth configure-docker -q
 

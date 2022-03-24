@@ -36,6 +36,10 @@ gsutil mb -p $PROJECT_ID -l $REGION $BUCKET_THUMBNAILS
 
 gsutil iam ch allUsers:objectViewer $BUCKET_THUMBNAILS
 
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:$PROJECT_ID@appspot.gserviceaccount.com" \
+  --role="roles/storage.objectCreator"
+
 gcloud functions deploy process_thumbnails \
   --region=$REGION \
   --trigger-resource=$UPLOAD_BUCKET \
@@ -43,4 +47,5 @@ gcloud functions deploy process_thumbnails \
   --runtime=nodejs14 \
   --set-env-vars=BUCKET_THUMBNAILS=$BUCKET_THUMBNAILS,MENU_SERVICE_URL=$MENU_SERVICE_URL \
   --source=thumbnail \
+  --allow-unauthenticated \
   --quiet

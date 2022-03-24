@@ -50,8 +50,16 @@ listPolicy:
  - projects/serverless-vpc-access-images
 ENDOFFILE
 
-
 gcloud resource-manager org-policies set-policy trusted-images-policy.yaml --project=$PROJECT_ID
+
+cat > allowedIngressSettings.yaml << ENDOFFILE
+name: projects/$PROJECT_ID/policies/cloudfunctions.allowedIngressSettings
+spec:
+ rules:
+ - allowAll: true
+ENDOFFILE
+
+gcloud org-policies set-policy allowedIngressSettings.yaml --project=$PROJECT_ID
 
 # Grant your GCP account owner role on the new project
 GCP_USER_ACCOUNT=user@user.altostrat.com
