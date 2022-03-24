@@ -1,9 +1,9 @@
 # New project setup - Run as org admin
 
-gcloud projects create cymbal-eats-NNNN --organization=NNNN
+gcloud projects create $PROJECT_ID --organization=$ORGANIZAITON_ID
 
 PROJECT_ID=cymbal-eats-NNNN
-gcloud beta billing projects link ${PROJECT_ID} --billing-account=NNNN
+gcloud beta billing projects link ${PROJECT_ID} --billing-account=$BILLING_ACCOUNT
 
 gcloud config set project ${PROJECT_ID}
 
