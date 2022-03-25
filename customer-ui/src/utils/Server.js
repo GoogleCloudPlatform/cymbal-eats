@@ -26,7 +26,6 @@ export async function getInventoryCounts() {
 
 export async function placeOrder(name, address, city, state, zip, orderItems) {
   const url = process.env.VUE_APP_ORDER_SERVICE_URL+"/place-order";
-  //const url = 'https://order-service-luu7kai33a-uc.a.run.app/place-order';
   const payload = {name, address, city, state, zip, orderItems};
   const response = await fetch(url, {
     method: 'POST',
