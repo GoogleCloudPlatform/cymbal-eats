@@ -58,29 +58,29 @@ else
   echo "Using pre-defined MENU_SERVICE_URL=$MENU_SERVICE_URL"
 fi
 
-if [[ -z "${PICTURE_UPLOAD_SERVICE_URL}" ]]; then
-  PICTURE_UPLOAD_SERVICE_URL=$(gcloud run services describe $PICTURE_UPLOAD_SERVICE_NAME \
-    --region=$REGION \
-    --format=json | jq \
-    --raw-output ".status.url")
-  export PICTURE_UPLOAD_SERVICE_URL
-else
-  echo "Using pre-defined PICTURE_UPLOAD_SERVICE_URL=$PICTURE_UPLOAD_SERVICE_URL"
-fi
-
 envsub .env.tmpl .env
+
+rm -r cloud-run/public/*
 
 quasar clean
 quasar build
 
-docker build -f Dockerfile \
-  --tag gcr.io/$PROJECT_NAME/$EMPLOYEE_SERVICE_NAME dist
+mkdir -p cloud-run/public
+cp -r dist/spa/* cloud-run/public
+cd cloud-run
 
-docker push gcr.io/$PROJECT_NAME/$EMPLOYEE_SERVICE_NAME
+gsutil mb -p $PROJECT_ID -l $REGION $UPLOAD_BUCKET
+
+gsutil iam ch allUsers:objectViewer $UPLOAD_BUCKET
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:$PROJECT_NUMBER-compute@developer.gserviceaccount.com" \
+  --role="roles/storage.objectCreator"
 
 gcloud run deploy $EMPLOYEE_SERVICE_NAME \
-  --image=gcr.io/$PROJECT_NAME/$EMPLOYEE_SERVICE_NAME:latest \
-  --port=80 \
-  --region=$REGION \
+  --source . \
+  --platform managed \
+  --region $REGION \
   --allow-unauthenticated \
+  --set-env-vars UPLOAD_BUCKET=$UPLOAD_BUCKET \
   --quiet

@@ -17,17 +17,42 @@
 export INVENTORY_SERVICE_NAME=inventory-service
 export MENU_SERVICE_NAME=menu-service
 export ORDER_SERVICE_NAME=order-service
-export PICTURE_UPLOAD_SERVICE_NAME=picture-upload-service
 
-export CUSTOMER_SERVICE_NAME=customer-ui
-export EMPLOYEE_SERVICE_NAME=employee-ui
+export CUSTOMER_SERVICE_NAME=customer-ui-service
+export EMPLOYEE_SERVICE_NAME=employee-ui-service
 
 export PROJECT_ID=$(gcloud config get-value project)
 export PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID --format='value(projectNumber)')
 export PROJECT_NAME=$(gcloud projects describe $PROJECT_ID --format='value(name)')
 
+export UPLOAD_BUCKET=gs://menu-item-uploads-$PROJECT_ID
+export BUCKET_THUMBNAILS=gs://menu-item-thumbnails-$PROJECT_ID
+
+gcloud config set project $PROJECT_ID
+
+gcloud services enable \
+    compute.googleapis.com \
+    appengine.googleapis.com \
+    firestore.googleapis.com \
+    sqladmin.googleapis.com \
+    vpcaccess.googleapis.com \
+    servicenetworking.googleapis.com \
+    spanner.googleapis.com \
+    run.googleapis.com \
+    cloudbuild.googleapis.com \
+    artifactregistry.googleapis.com \
+    vpcaccess.googleapis.com \
+    vision.googleapis.com \
+    cloudfunctions.googleapis.com \
+    --quiet
+
 export REGION=us-east4
 
 gcloud config set run/region $REGION
 
-gcloud auth configure-docker -q
+gcloud config set compute/region $REGION
+
+gcloud compute networks create default --subnet-mode=auto
+
+gcloud auth configure-docker gcr.io -q
+

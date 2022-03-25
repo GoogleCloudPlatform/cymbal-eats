@@ -22,15 +22,11 @@ cd ${BASE_DIR}/menu-service
 ./setup.sh
 cd $BASE_DIR
 
-cd ${BASE_DIR}/order-service
-./setup.sh
-cd $BASE_DIR
-
 cd ${BASE_DIR}/inventory-service/spanner
 ./setup.sh
 cd $BASE_DIR
 
-cd ${BASE_DIR}/picture-upload-service
+cd ${BASE_DIR}/order-service
 ./setup.sh
 cd $BASE_DIR
 
@@ -39,5 +35,9 @@ cd ${BASE_DIR}/employee-ui
 cd $BASE_DIR
 
 cd ${BASE_DIR}/customer-ui
+./setup.sh
+cd $BASE_DIR
+
+cd ${BASE_DIR}/cloud-functions
 ./setup.sh
 cd $BASE_DIR
