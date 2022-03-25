@@ -30,6 +30,15 @@ export default store(function () {
         context.commit('setMenuItems', menuItems);
         const inventoryCounts = await Server.getInventoryCounts();
         context.commit('setInventoryCounts', inventoryCounts);
+      },
+      async updateInventoryCount(context, params) {
+        let inventoryChange = params.inventoryCount;
+        if (params.dishId.inventory) {
+          inventoryChange = params.inventoryCount - params.dishId.inventory;
+        }
+        await Server.updateInventoryCount(params.dishId, inventoryChange);
+        const inventoryCounts = await Server.getInventoryCounts();
+        context.commit('setInventoryCounts', inventoryCounts);
       }
     },
     // enable strict mode (adds overhead!)

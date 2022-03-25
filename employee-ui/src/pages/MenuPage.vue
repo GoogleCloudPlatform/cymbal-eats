@@ -24,8 +24,8 @@
         <q-markup-table>
           <thead>
             <tr>
-              <th class="text-left">Tagline</th>
               <th class="text-left">Name</th>
+              <th class="text-left">Tagline</th>
               <th>Price</th>
               <th class="text-left">Inventory</th>
             </tr>
@@ -35,8 +35,8 @@
               v-for="dish in dishes"
               :key="dish.id"
             >
-              <td>{{ dish.tagLine }}</td>
               <td>{{ dish.itemName }}</td>
+              <td>{{ dish.tagLine }}</td>
               <td class="text-center">${{ dish.itemPrice.toFixed(2) }}</td>
               <td>
                 {{ dish.inventory || '?' }}
@@ -86,10 +86,12 @@
         filled: true,
         dense: true
       },
-      cancel: true,
-      persistent: true
-    }).onOk(data => {
-      console.log('>>>> OK, send ', data, ' to inventory service')
+      cancel: true
+    }).onOk(inventoryCount => {
+      store.dispatch('updateInventoryCount', {
+        dishId: dishId,
+        inventoryCount: parseInt(inventoryCount)
+      });
     })
   }
 
