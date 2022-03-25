@@ -118,6 +118,7 @@ func updateInventoryItem(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Please POST the following format for data:  [{'itemID': int,'inventoryChange': int}]"))
 		return
 	case "OPTIONS":
+		(w).Header().Set("content-type", "application/json")
 		w.WriteHeader((http.StatusOK))
 		w.Write([]byte("Active"))
 		return
