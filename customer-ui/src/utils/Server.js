@@ -34,5 +34,6 @@ export async function placeOrder(name, address, city, state, zip, orderItems) {
     body: JSON.stringify(payload)
   });
   const respObj = await response.json();
+  if (respObj.error) throw respObj.error;
   return respObj.orderNumber;
 }
