@@ -51,3 +51,17 @@ export async function createMenuItem(tagLine, itemName, itemPrice, spiceLevel) {
   const respObj = await response.json();
   return respObj;
 }
+
+export async function updateInventoryCount(menuItemId, inventoryCountChange) {
+  const url = process.env.VUE_APP_INVENTORY_SERVICE_URL + '/updateInventoryItem';
+  const payload = {itemID: menuItemId, inventoryChange: inventoryCountChange};
+  console.log('Hitting ', url);
+  console.log('Payload ', payload);
+  const response = await fetch(url, {
+    method: 'POST',
+    mode: 'cors',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(payload)
+  });
+  console.log(response);
+}
