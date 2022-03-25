@@ -1,18 +1,12 @@
 export async function getMenuItems() {
-  const url = process.env.VUE_APP_MENU_SERVICE_URL+"/menu";
+  console.time('getMenuItems');
+  const url = process.env.VUE_APP_MENU_SERVICE_URL+"/menu/ready";
   const response = await fetch(url, {
     mode: 'cors',
     method: 'GET',
   })
-  const menuItems = await response.json();
-  return menuItems.map(m => ({
-    id: m.id,
-    title: m.tagLine,
-    subtitle: m.itemName,
-    image: m.itemImageURL,
-    price: m.itemPrice,
-    spiceLevel: m.spiceLevel
-  }));
+  console.timeEnd('getMenuItems');
+  return await response.json();
 }
 
 export async function getInventoryCounts() {
