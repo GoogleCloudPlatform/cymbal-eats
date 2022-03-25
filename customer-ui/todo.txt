@@ -1,8 +1,10 @@
 TODOs
 
-Add URL to employee-ui that shows all menu items, regardless of status.
+Update order status through the Order service, not directly in Firestore.
+Make order service a proper REST API.
+Add read operation to order service.
 Display a placeholder at / while the dishes are loaded from the server.
-Don't display inventory on the / page.
+Delete inventory from the / page.
 Write up README file for customer-ui.
 Write up README file for employee-ui.
 Display a "wait" screen after the user clicks the Google Pay button.
@@ -13,6 +15,5 @@ Add +/- buttons to set quantity of each order line in the order.
 If you order the same dish twice, make it one single order line with qty of 2.
 Deploy the consumer web front-end to the cloud.
 Deploy the admin web front-end to the cloud.
-Update order status through the Order service, not directly in Firestore.
-Migrate customer-ui to Express (from nginx).
-Add  Cymbal Apps graphics.
+Add URL to employee-ui that shows all menu items, regardless of status.
+Add Cymbal Apps graphics.
