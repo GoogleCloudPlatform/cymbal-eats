@@ -12,6 +12,7 @@ gcloud config set project ${PROJECT_ID}
 
 gcloud services enable orgpolicy.googleapis.com
 
+# vpc-access connectors creation.
 cat > vmCanIpForward.yaml << ENDOFFILE
 name: projects/$PROJECT_ID/policies/compute.vmCanIpForward
 spec:
@@ -21,6 +22,7 @@ ENDOFFILE
 
 gcloud org-policies set-policy vmCanIpForward.yaml --project=$PROJECT_ID
 
+# Domain restricted sharing. To allow allUsers access on resource, ex. GCS.
 cat > allowedPolicyMemberDomains.yaml << ENDOFFILE
 name: projects/$PROJECT_ID/policies/iam.allowedPolicyMemberDomains
 spec:
@@ -30,6 +32,7 @@ ENDOFFILE
 
 gcloud org-policies set-policy allowedPolicyMemberDomains.yaml --project=$PROJECT_ID
 
+# Define trusted image projects. serverless-vpc-access-images.
 cat > trusted-images-policy.yaml << ENDOFFILE
 constraint: constraints/compute.trustedImageProjects
 listPolicy:
@@ -55,6 +58,7 @@ ENDOFFILE
 
 gcloud resource-manager org-policies set-policy trusted-images-policy.yaml --project=$PROJECT_ID
 
+# Allowed ingress settings (Cloud Functions)
 cat > allowedIngressSettings.yaml << ENDOFFILE
 name: projects/$PROJECT_ID/policies/cloudfunctions.allowedIngressSettings
 spec:
