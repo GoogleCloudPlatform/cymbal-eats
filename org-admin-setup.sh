@@ -23,6 +23,7 @@ ENDOFFILE
 gcloud org-policies set-policy vmCanIpForward.yaml --project=$PROJECT_ID
 
 # Domain restricted sharing. To allow allUsers access on resource, ex. GCS.
+# Allow Cloud Run public access
 cat > allowedPolicyMemberDomains.yaml << ENDOFFILE
 name: projects/$PROJECT_ID/policies/iam.allowedPolicyMemberDomains
 spec:
