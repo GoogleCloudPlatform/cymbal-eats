@@ -18,7 +18,7 @@ source ../config-env.sh
 
 export BASE_DIR=$PWD
 
-export SUPPORT_EMAIL=$(gcloud config list account --format "value(core.account)")
+export USER_EMAIL=$(gcloud config list account --format "value(core.account)")
 
 gcloud services enable \
     iap.googleapis.com \
@@ -26,7 +26,7 @@ gcloud services enable \
 
 gcloud alpha iap oauth-brands create \
     --application_title="Cymbal Eats" \
-    --support_email=$SUPPORT_EMAIL
+    --support_email=$USER_EMAIL
 
 gcloud alpha iap oauth-clients create \
     projects/$PROJECT_ID/brands/$PROJECT_NUMBER \
@@ -49,6 +49,7 @@ export CLIENT_SECRET=$(gcloud alpha iap oauth-clients describe $CLIENT_NAME --fo
 gcloud compute backend-services create employee-ui-iap-backend \
     --load-balancing-scheme=EXTERNAL \
     --global \
+    --protocol=HTTPS \
     --iap=enabled,oauth2-client-id=$CLIENT_ID,oauth2-client-secret=$CLIENT_SECRET
 
 gcloud compute backend-services add-backend employee-ui-iap-backend \
@@ -86,7 +87,6 @@ gcloud compute forwarding-rules create employee-ui-iap-forwarding-rule \
     --target-https-proxy employee-ui-iap-http-proxy
 
 export BACKEND_SERVICE=$(gcloud compute backend-services list --filter="name~'employee-ui-iap-backend'" --format="value(name)")
-export USER_EMAIL=$(gcloud config list account --format "value(core.account)")
 
 gcloud iap web add-iam-policy-binding \
     --resource-type=backend-services \
