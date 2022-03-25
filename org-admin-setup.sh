@@ -1,8 +1,10 @@
 # New project setup - Run as org admin
 
 PROJECT_ID=cymbal-eats-<random number>
+ORGANIZATION_ID=your org id
+BILLING_ACCOUNT=your billing account id
 
-gcloud projects create $PROJECT_ID --organization=$ORGANIZAITON_ID
+gcloud projects create $PROJECT_ID --organization=$ORGANIZATION_ID
 
 gcloud beta billing projects link ${PROJECT_ID} --billing-account=$BILLING_ACCOUNT
 
@@ -66,4 +68,4 @@ gcloud org-policies set-policy allowedIngressSettings.yaml --project=$PROJECT_ID
 GCP_USER_ACCOUNT=user@userdomain.altostrat.com
 gcloud projects add-iam-policy-binding $PROJECT_ID --member=user:$GCP_USER_ACCOUNT --role=roles/owner
 
-# Login with your GCP account, clone the repo and and run ```./setup.sh```
+# Login with your GCP account, clone the repo and run ```./setup.sh```
