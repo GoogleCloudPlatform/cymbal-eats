@@ -101,3 +101,6 @@ gcloud run services update $EMPLOYEE_SERVICE_NAME \
 # Manual Steps
 # Go to [OAuth consent screen](https://console.cloud.google.com/apis/credentials/consent?_ga=2.130198351.1761251243.1647864901-1887242533.1645241331) and change User type to External, set Publishing status to Testing.
 echo "Go to [OAuth consent screen](https://console.cloud.google.com/apis/credentials/consent?_ga=2.130198351.1761251243.1647864901-1887242533.1645241331) and change User type to External, set Publishing status to Testing."
+
+echo "Cert provisioning might take up to 15 minutes"
+echo "Navigate to https://$DOMAIN to access the service"
