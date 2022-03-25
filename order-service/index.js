@@ -14,9 +14,9 @@ const firestore = new Firestore();
 const inventoryServer = axios.create({
   baseURL: process.env.INVENTORY_SERVICE_URL,
   headers :{ 
-      get: {
-          "Content-Type": 'application/json'
-      }
+    get: {
+      "Content-Type": 'application/json'
+    }
   }
 })
 
@@ -59,6 +59,7 @@ app.post('/place-order', async (req, res) => {
     res.json({orderNumber: orderNumber});
   }
   catch(ex) {
+    console.error(ex);
     res.status(500).json({error: ex.toString()});
   }
 })
