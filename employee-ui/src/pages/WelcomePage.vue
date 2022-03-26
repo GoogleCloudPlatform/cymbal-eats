@@ -30,7 +30,7 @@
           </li>
           <li>
             <router-link to="menu">
-              View the menu items in the system
+              Update inventory
             </router-link>
           </li>
           <li>
