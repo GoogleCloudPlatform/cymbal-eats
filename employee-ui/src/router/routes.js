@@ -5,7 +5,7 @@ const routes = [
   },
   {
     path: '/kitchen',
-    component: () => import('layouts/KitchenLayout.vue')
+    component: () => import('pages/KitchenPage.vue')
   },
   {
     path: '/menu',
