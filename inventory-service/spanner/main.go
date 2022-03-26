@@ -120,6 +120,7 @@ func updateInventoryItem(w http.ResponseWriter, r *http.Request) {
 	case "OPTIONS":
 		(w).Header().Set("content-type", "application/json")
 		(w).Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		(w).Header().Set("Access-Control-Allow-Headers", "POST, GET, OPTIONS")
 		w.WriteHeader((http.StatusOK))
 		return
 	case "POST":
