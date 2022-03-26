@@ -12,6 +12,7 @@ Speed up the display of menu items on /.
 Add front-page that is not connected to the database, for demo. Put a welcome page under /.
 Add +/- buttons to set quantity of each order line in the order.
 If you order the same dish twice, make it one single order line with qty of 2.
+Show live inventory on kitchen page, based on the Inventory service.
 Deploy the consumer web front-end to the cloud.
 Deploy the admin web front-end to the cloud.
 Add URL to employee-ui that shows all menu items, regardless of status.

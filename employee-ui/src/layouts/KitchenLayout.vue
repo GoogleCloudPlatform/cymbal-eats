@@ -89,64 +89,56 @@
 
 <script setup>
 
-  import { ref } from 'vue';
+  import { ref, onMounted } from 'vue';
   import { useStore } from 'vuex';
   import { useRouter, useRoute } from 'vue-router';
   import { useTimeAgo } from '@vueuse/core';
-  import { initializeApp } from 'firebase/app';
-  import { getAnalytics } from "firebase/analytics";
-  import { getFirestore, query, orderBy, doc, deleteDoc, collection, onSnapshot, updateDoc } from 'firebase/firestore';
+  import { query, orderBy, doc, deleteDoc, collection, onSnapshot, updateDoc } from 'firebase/firestore';
   import OrderView from '../components/OrderView.vue';
+  import * as Firestore from '../utils/Firestore.js';
 
-  // TODO: Show live inventory, based on the Inventory service.
   const store = useStore();
   const router = useRouter();
   const route = useRoute();
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyCUyX0Gr2PagBPr9Mu1FovoFIF2UbjiHdA",
-    authDomain: "cymbal-eats.firebaseapp.com",
-    projectId: "cymbal-eats",
-    storageBucket: "cymbal-eats.appspot.com",
-    messagingSenderId: "713244360550",
-    appId: "1:713244360550:web:527af1da8b5a83f26c92a7",
-    measurementId: "G-WBKZRJC2DP"
-  };
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-  const db = getFirestore();
-
   const orders = ref([]);
   const activeOrder = ref({});
 
-  const q = query(collection(db, 'orders'), orderBy('placedAt', 'desc'));
-  onSnapshot(q, (querySnapshot) => {
-    orders.value = [];
-    querySnapshot.forEach((doc) => {
-      const order = doc.data();
-      order.age = useTimeAgo(order.placedAt.seconds * 1000);
-      orders.value.push(order);
+  onMounted(async () => {
+    const db = await Firestore.getDb();
+    const q = query(collection(db, 'orders'), orderBy('placedAt', 'desc'));
+    onSnapshot(q, (querySnapshot) => {
+      orders.value = [];
+      querySnapshot.forEach((doc) => {
+        const order = doc.data();
+        order.age = useTimeAgo(order.placedAt.seconds * 1000);
+        orders.value.push(order);
+      });
     });
-  });
+  })
 
   async function cancel(orderNumber) {
     if (confirm(`Are you sure you want to delete order ${orderNumber}?`)) {
+      // TODO: Replace this db update with a call to the order service.
       const orderDoc = doc(db, 'orders', orderNumber.toString());
       await deleteDoc(orderDoc);
     }
   }
 
   async function startPreparing(orderNumber) {
+    // TODO: Replace this db update with a call to the order service.
     const orderDoc = doc(db, 'orders', orderNumber.toString());
     await updateDoc(orderDoc, { status: 'Being prepared' });
   }
 
   async function readyForPickup(orderNumber) {
+    // TODO: Replace this db update with a call to the order service.
     const orderDoc = doc(db, 'orders', orderNumber.toString());
     await updateDoc(orderDoc, { status: 'Ready for pickup' });
   }
 
   async function pickedUp(orderNumber) {
+    // TODO: Replace this db update with a call to the order service.
     const orderDoc = doc(db, 'orders', orderNumber.toString());
     await updateDoc(orderDoc, { status: 'Out for delivery' });
   }
