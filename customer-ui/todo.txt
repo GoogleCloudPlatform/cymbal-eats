@@ -1,7 +1,5 @@
 TODOs
 
-Fix bug where Order service doesn't let you place a new order.
-Break out project id to an env var and read it from Firestore.js.
 Update order status through the Order service, not directly in Firestore.
 Make order service a proper REST API.
 Add read operation to order service.
