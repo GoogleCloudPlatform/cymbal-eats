@@ -1,6 +1,5 @@
 TODOs
 
-Fix bug: names of dishes don't show up on kitchen page.
 Make order list on kitchen page scrollable.
 Make order service a proper REST API.
 Add read operation to order service.
