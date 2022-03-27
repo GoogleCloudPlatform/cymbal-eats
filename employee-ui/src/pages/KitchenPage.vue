@@ -59,25 +59,25 @@
           <q-btn
             color="red"
             label="Cancel &amp; refund"
-            @click="cancel(activeOrder.orderNumber)"
+            @click="cancelOrder(activeOrder.orderNumber)"
           />
           <q-btn
             v-if="activeOrder.status=='New'"
             color="primary"
             label="Start preparing"
-            @click="startPreparing(activeOrder.orderNumber)"
+            @click="updateOrderStatus(activeOrder.orderNumber, 'Being prepared')"
           />
           <q-btn
             v-if="activeOrder.status=='Being prepared'"
             color="primary"
             label="Ready for pickup"
-            @click="readyForPickup(activeOrder.orderNumber)"
+            @click="updateOrderStatus(activeOrder.orderNumber, 'Ready for pickup')"
           />
           <q-btn
             v-if="activeOrder.status=='Ready for pickup'"
             color="primary"
             label="Picked up"
-            @click="pickedUp(activeOrder.orderNumber)"
+            @click="updateOrderStatus(activeOrder.orderNumber, 'Picked up')"
           />
         </q-card>
 
@@ -96,6 +96,7 @@
   import { query, orderBy, doc, deleteDoc, collection, onSnapshot, updateDoc } from 'firebase/firestore';
   import OrderView from '../components/OrderView.vue';
   import * as Firestore from '../utils/Firestore.js';
+  import * as Server from '../utils/Server.js';
 
   const store = useStore();
   const router = useRouter();
@@ -117,30 +118,24 @@
     });
   })
 
-  async function cancel(orderNumber) {
-    if (confirm(`Are you sure you want to delete order ${orderNumber}?`)) {
-      // TODO: Replace this db update with a call to the order service.
-      const orderDoc = doc(db, 'orders', orderNumber.toString());
-      await deleteDoc(orderDoc);
+  async function cancelOrder(orderNumber) {
+    if (confirm(`Are you sure you want to cancel order ${orderNumber}?`)) {
+      try {
+        await Server.cancelOrder(orderNumber);
+      }
+      catch (ex) {
+        alert(ex);
+      }
     }
   }
 
-  async function startPreparing(orderNumber) {
-    // TODO: Replace this db update with a call to the order service.
-    const orderDoc = doc(db, 'orders', orderNumber.toString());
-    await updateDoc(orderDoc, { status: 'Being prepared' });
-  }
-
-  async function readyForPickup(orderNumber) {
-    // TODO: Replace this db update with a call to the order service.
-    const orderDoc = doc(db, 'orders', orderNumber.toString());
-    await updateDoc(orderDoc, { status: 'Ready for pickup' });
-  }
-
-  async function pickedUp(orderNumber) {
-    // TODO: Replace this db update with a call to the order service.
-    const orderDoc = doc(db, 'orders', orderNumber.toString());
-    await updateDoc(orderDoc, { status: 'Out for delivery' });
+  async function updateOrderStatus(orderNumber, newStatus) {
+    try {
+      await Server.updateOrderStatus(orderNumber, newStatus);
+    }
+    catch (ex) {
+      alert(ex);
+    }
   }
 
 </script>

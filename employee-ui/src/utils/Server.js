@@ -25,22 +25,8 @@ export async function getInventoryCounts() {
   }));
 }
 
-export async function placeOrder(name, address, city, state, zip, orderItems) {
-  const url = process.env.VUE_APP_ORDER_SERVICE_URL+"/place-order";
-  //const url = 'https://order-service-luu7kai33a-uc.a.run.app/place-order';
-  const payload = {name, address, city, state, zip, orderItems};
-  const response = await fetch(url, {
-    method: 'POST',
-    mode: 'cors',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(payload)
-  });
-  const respObj = await response.json();
-  return respObj.orderNumber;
-}
-
 export async function createMenuItem(tagLine, itemName, itemPrice, spiceLevel) {
-  const url = process.env.VUE_APP_MENU_SERVICE_URL+"/menu";
+  const url = process.env.VUE_APP_MENU_SERVICE_URL + '/menu';
   const payload = {tagLine, itemName, itemPrice, spiceLevel};
   const response = await fetch(url, {
     method: 'POST',
@@ -64,4 +50,30 @@ export async function updateInventoryCount(menuItemId, inventoryCountChange) {
     body: JSON.stringify(payload)
   });
   console.log(response);
+}
+
+export async function cancelOrder(orderNumber) {
+  const url = process.env.VUE_APP_ORDER_SERVICE_URL + '/' + orderNumber;
+  console.log('Hitting ', url);
+  const response = await fetch(url, {
+    method: 'DELETE',
+    mode: 'cors'
+  });
+  const respObj = await response.json();
+  if (respObj.error) throw error;
+}
+
+export async function updateOrderStatus(orderNumber, newStatus) {
+  const url = process.env.VUE_APP_ORDER_SERVICE_URL + '/' + orderNumber;
+  const payload = {'status': newStatus};
+  console.log('Hitting ', url);
+  console.log('Payload ', payload);
+  const response = await fetch(url, {
+    method: 'PATCH',
+    mode: 'cors',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(payload)
+  });
+  const respObj = await response.json();
+  if (respObj.error) throw error;
 }
