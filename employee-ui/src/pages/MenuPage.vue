@@ -79,7 +79,7 @@
   function editInventory(dishId, dishName, dishInventory) {
     $q.dialog({
       title: dishName,
-      message: 'What is the new inventory count?',
+      message: 'How much to add to the inventory count?',
       prompt: {
         model: dishInventory,
         type: 'number',
