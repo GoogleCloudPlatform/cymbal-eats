@@ -65,7 +65,7 @@ export async function cancelOrder(orderNumber) {
 
 export async function updateOrderStatus(orderNumber, newStatus) {
   const url = process.env.VUE_APP_ORDER_SERVICE_URL + '/' + orderNumber;
-  const payload = {'status': newStatus};
+  const payload = [{'status': newStatus}];
   console.log('Hitting ', url);
   console.log('Payload ', payload);
   const response = await fetch(url, {
