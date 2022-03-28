@@ -81,7 +81,7 @@
       title: dishName,
       message: 'How much to add to the inventory count?',
       prompt: {
-        model: dishInventory,
+        model: '',
         type: 'number',
         filled: true,
         dense: true
