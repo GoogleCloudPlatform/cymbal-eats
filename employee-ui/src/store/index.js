@@ -5,11 +5,15 @@ import * as Server from '../utils/Server.js';
 export default store(function () {
   const Store = createStore({
     state: {
-      menuItems: []
+      menuItems: [],
+      menuItemId: ''
     },
     getters: {
     },
     mutations: {
+      setMenuItemId(state, id) {
+        state.menuItemId = id;
+      },
       setMenuItems(state, menuItems) {
         state.menuItems = menuItems;
       },
