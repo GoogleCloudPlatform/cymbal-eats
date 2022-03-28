@@ -84,6 +84,6 @@ gcloud run deploy $EMPLOYEE_SERVICE_NAME \
   --platform managed \
   --region $REGION \
   --allow-unauthenticated \
-  --set-env-vars UPLOAD_BUCKET=$UPLOAD_BUCKET \
+  --set-env-vars=VUE_APP_PROJECT_ID=$PROJECT_ID,UPLOAD_BUCKET=$UPLOAD_BUCKET \
   --project=$PROJECT_ID \
   --quiet
