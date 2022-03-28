@@ -90,6 +90,7 @@ func main() {
 
 func enableCors(w *http.ResponseWriter) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
@@ -114,8 +115,16 @@ func updateInventoryItem(w http.ResponseWriter, r *http.Request) {
 	}
 	switch r.Method {
 	case "GET":
-		w.Write([]byte("Please POST the following format for data:  [{'itemName': string,'inventoryChange': int}]"))
+		w.Write([]byte("Please POST the following format for data:  [{'itemID': int,'inventoryChange': int}]"))
+		return
+	case "OPTIONS":
+		(w).Header().Set("Content-Type", "application/json")
+		(w).Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		(w).Header().Set("Access-Control-Allow-Headers", "POST, GET, OPTIONS")
+		w.WriteHeader((http.StatusOK))
+		return
 	case "POST":
+		(w).Header().Set("content-type", "application/json")
 		d := json.NewDecoder(r.Body)
 		d.DisallowUnknownFields()
 		il := []struct {

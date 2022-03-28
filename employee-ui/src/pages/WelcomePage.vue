@@ -29,8 +29,9 @@
             </router-link>
           </li>
           <li>
-            View the menu items in the system
-            <i>[Not yet implemented]</i>
+            <router-link to="menu">
+              Update inventory
+            </router-link>
           </li>
           <li>
             <router-link to="add-menu-item">

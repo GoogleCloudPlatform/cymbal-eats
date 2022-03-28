@@ -76,6 +76,8 @@
   onMounted(async () => {
     $q.loading.show();
     await store.dispatch('loadMenu');
+    // Open the first dish in the carousel.
+    dish.value = dishes.value[0].id;
     $q.loading.hide();
   });
 

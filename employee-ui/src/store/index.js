@@ -5,19 +5,9 @@ import * as Server from '../utils/Server.js';
 export default store(function () {
   const Store = createStore({
     state: {
-      menuItems: [],
-      orderItems: [],
-      status : '',
-      menuItemId: ''
+      menuItems: []
     },
     getters: {
-      orderTotal: state => {
-        let retVal = 0;
-        for (const item of state.orderItems) {
-          retVal += parseFloat(item.price);
-        }
-        return retVal.toFixed(2);
-      }
     },
     mutations: {
       setMenuItems(state, menuItems) {
@@ -33,27 +23,20 @@ export default store(function () {
         }
         state.menuItems = newMenuItems;
       },
-      addDishToOrder(state, dishId) {
-        const dish = state.menuItems.find(d => d.id==dishId);
-        if (dish) {
-          state.orderItems.push(dish);
-        }
-      },
-      deleteItem(state, index) {
-        state.orderItems.splice(index, 1);
-      },
-      setOrder(state, {orderItems, status}) {
-        state.orderItems = orderItems.splice(0);
-        state.status = status;
-      },
-      setMenuItemId(state, id) {
-        state.menuItemId = id;
-      }
     },
     actions: {
       async loadMenu(context) {
         const menuItems = await Server.getMenuItems();
         context.commit('setMenuItems', menuItems);
+        const inventoryCounts = await Server.getInventoryCounts();
+        context.commit('setInventoryCounts', inventoryCounts);
+      },
+      async updateInventoryCount(context, params) {
+        let inventoryChange = params.inventoryCount;
+        if (params.dishId.inventory) {
+          inventoryChange = params.inventoryCount - params.dishId.inventory;
+        }
+        await Server.updateInventoryCount(params.dishId, inventoryChange);
         const inventoryCounts = await Server.getInventoryCounts();
         context.commit('setInventoryCounts', inventoryCounts);
       }

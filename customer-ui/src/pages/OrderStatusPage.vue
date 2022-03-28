@@ -63,40 +63,29 @@
 
 <script setup>
 
-  import { ref } from 'vue';
+  import { ref, onMounted } from 'vue';
   import { useStore } from 'vuex';
   import { useRouter, useRoute } from 'vue-router';
-  import { initializeApp } from 'firebase/app';
-  import { getAnalytics } from "firebase/analytics";
-  import { getFirestore, doc, onSnapshot } from 'firebase/firestore';
+  import { doc, onSnapshot } from 'firebase/firestore';
+  import * as Firestore from '../utils/Firestore.js';
   import OrderView from '../components/OrderView.vue';
 
   const store = useStore();
   const router = useRouter();
   const route = useRoute();
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyCUyX0Gr2PagBPr9Mu1FovoFIF2UbjiHdA",
-    authDomain: "cymbal-eats.firebaseapp.com",
-    projectId: "cymbal-eats",
-    storageBucket: "cymbal-eats.appspot.com",
-    messagingSenderId: "713244360550",
-    appId: "1:713244360550:web:527af1da8b5a83f26c92a7",
-    measurementId: "G-WBKZRJC2DP"
-  };
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-  const db = getFirestore();
-
   const orderNumber = ref(route.params.orderNumber);
   const orderItems = ref([]);
   const status = ref('');
 
-  onSnapshot(doc(db, 'orders', orderNumber.value), (doc) => {
-    const order = doc.data();
-    orderItems.value = order.orderItems;
-    status.value = order.status;
-  });
-
+  onMounted(async () => {
+    const db = await Firestore.getDb();
+    onSnapshot(doc(db, 'orders', orderNumber.value), (doc) => {
+      const order = doc.data();
+      console.log(order)
+      orderItems.value = order.orderItems;
+      status.value = order.status;
+    });
+  })
 
 </script>

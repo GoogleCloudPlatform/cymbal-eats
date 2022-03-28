@@ -124,7 +124,8 @@
       const orderNumber = await Server.placeOrder(
         name.value, address.value, city.value, state.value, zip.value,
         store.state.orderItems
-      )
+      );
+      if (!orderNumber) throw 'No order number returned from server';
       router.push('/order-status/' + orderNumber);
     }
     catch(ex) {
