@@ -40,7 +40,7 @@ export async function createMenuItem(tagLine, itemName, itemPrice, spiceLevel) {
 
 export async function updateInventoryCount(menuItemId, inventoryCountChange) {
   const url = process.env.VUE_APP_INVENTORY_SERVICE_URL + '/updateInventoryItem';
-  const payload = {itemID: menuItemId, inventoryChange: inventoryCountChange};
+  const payload = [{itemID: menuItemId, inventoryChange: inventoryCountChange}];
   console.log('Hitting ', url);
   console.log('Payload ', payload);
   const response = await fetch(url, {
@@ -65,7 +65,7 @@ export async function cancelOrder(orderNumber) {
 
 export async function updateOrderStatus(orderNumber, newStatus) {
   const url = process.env.VUE_APP_ORDER_SERVICE_URL + '/' + orderNumber;
-  const payload = [{'status': newStatus}];
+  const payload = {'status': newStatus};
   console.log('Hitting ', url);
   console.log('Payload ', payload);
   const response = await fetch(url, {
