@@ -73,6 +73,7 @@ gcloud run deploy $CUSTOMER_SERVICE_NAME \
   --source . \
   --platform managed \
   --region $REGION \
+  --project=$PROJECT_ID \
   --allow-unauthenticated \
   --set-env-vars=VUE_APP_MENU_SERVICE_URL=$MENU_SERVICE_URL,VUE_APP_INVENTORY_SERVICE_URL=$INVENTORY_SERVICE_URL,VUE_APP_ORDER_SERVICE_URL=$ORDER_SERVICE_URL \
   --quiet

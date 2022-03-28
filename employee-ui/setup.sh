@@ -83,4 +83,5 @@ gcloud run deploy $EMPLOYEE_SERVICE_NAME \
   --region $REGION \
   --allow-unauthenticated \
   --set-env-vars UPLOAD_BUCKET=$UPLOAD_BUCKET \
+  --project=$PROJECT_ID \
   --quiet
