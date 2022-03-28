@@ -37,6 +37,7 @@ export default store(function () {
       },
       async updateInventoryCount(context, params) {
         let inventoryChange = params.inventoryCount;
+        // TODO: Why isn't this working? It adds too much to the inventory.
         if (params.dishId.inventory) {
           inventoryChange = params.inventoryCount - params.dishId.inventory;
         }
