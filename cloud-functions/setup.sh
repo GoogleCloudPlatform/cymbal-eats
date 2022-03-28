@@ -48,4 +48,5 @@ gcloud functions deploy process_thumbnails \
   --set-env-vars=BUCKET_THUMBNAILS=$BUCKET_THUMBNAILS,MENU_SERVICE_URL=$MENU_SERVICE_URL \
   --source=thumbnail \
   --allow-unauthenticated \
+  --project=$PROJECT_ID \
   --quiet

@@ -44,6 +44,8 @@ gcloud services enable \
     vpcaccess.googleapis.com \
     vision.googleapis.com \
     cloudfunctions.googleapis.com \
+    iap.googleapis.com \
+    cloudresourcemanager.googleapis.com \
     --quiet
 
 export REGION=us-east4
