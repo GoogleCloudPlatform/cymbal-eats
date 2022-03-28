@@ -3,13 +3,13 @@ TODOs
 Make order list on kitchen page scrollable.
 Make order service a proper REST API.
 Add read operation to order service.
-Display a placeholder at / while the dishes are loaded from the server.
+Add animation while new menu item is being created.
 Delete inventory from the / page.
 Write up README file for customer-ui.
 Write up README file for employee-ui.
 Display a "wait" screen after the user clicks the Google Pay button.
 Speed up the display of menu items on /.
-Make Firestoer read-only in security rules.
+Make Firestore read-only in security rules.
 Add front-page that is not connected to the database, for demo. Put a welcome page under /.
 Add +/- buttons to set quantity of each order line in the order.
 If you order the same dish twice, make it one single order line with qty of 2.

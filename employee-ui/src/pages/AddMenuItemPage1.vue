@@ -52,11 +52,6 @@
   const itemPrice = ref('');
   const spiceLevel = ref('');
 
-  // TODO: Send the item properties and the file to a new endpoint on the server.
-  //       That serverside code will add the record in the menu service and it
-  //       will upload the file to GCS. It's too hard/insecure to upload to
-  //       GCS directly from the client.
-  
   async function createMenuItem() {
     const newMenuItem = await Server.createMenuItem(
       tagLine.value, itemName.value, itemPrice.value, spiceLevel.value

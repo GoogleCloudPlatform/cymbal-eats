@@ -58,8 +58,6 @@ else
   echo "Using pre-defined MENU_SERVICE_URL=$MENU_SERVICE_URL"
 fi
 
-# TODO: Add PROJECT_ID environment variable.
-
 envsub .env.tmpl .env
 
 rm -r cloud-run/public/*
