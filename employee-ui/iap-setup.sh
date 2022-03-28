@@ -49,7 +49,6 @@ export CLIENT_SECRET=$(gcloud alpha iap oauth-clients describe $CLIENT_NAME --fo
 gcloud compute backend-services create employee-ui-iap-backend \
     --load-balancing-scheme=EXTERNAL \
     --global \
-    --protocol=HTTPS \
     --iap=enabled,oauth2-client-id=$CLIENT_ID,oauth2-client-secret=$CLIENT_SECRET
 
 gcloud compute backend-services add-backend employee-ui-iap-backend \
