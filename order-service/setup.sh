@@ -29,6 +29,9 @@ gcloud app create --region=$REGION
 
 gcloud firestore databases create --region=$REGION
 
+curl -sL https://firebase.tools | bash
+firebase deploy --only firestore:rules
+
 if [[ -z "${INVENTORY_SERVICE_URL}" ]]; then
   INVENTORY_SERVICE_URL=$(gcloud run services describe $INVENTORY_SERVICE_NAME \
     --region=$REGION \
