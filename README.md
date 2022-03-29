@@ -83,9 +83,7 @@ After that navigate to ```Network services / Load Balancing / Frontends``` secti
 Copy ```Address``` for ```employee-ui-iap-forwarding-rule``` rule.
 
 Replace IP-ADDRESS with actual IP and open URL in the browser to access Employee Portal.
-
-Certificate provisioning might take up to 15 minutes.
-
 ```
 https://IP-ADDRESS.nip.io
 ```
+Certificate provisioning might take up to 15 minutes.
