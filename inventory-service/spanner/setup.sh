@@ -29,7 +29,7 @@ gcloud services enable \
 
 gcloud spanner instances create $DB_INSTANCE \
     --config=regional-${REGION} \
-    --description="Cymbal Menu Catalog" \
+    --description="Cymbal Menu Inventory" \
     --nodes=1
 
 export DB_CONNECTION_STRING=projects/$PROJECT_ID/instances/$DB_INSTANCE/databases/$DB_NAME
