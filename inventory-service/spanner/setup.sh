@@ -25,8 +25,7 @@ gcloud services enable \
     spanner.googleapis.com \
     run.googleapis.com \
     cloudbuild.googleapis.com \
-    artifactregistry.googleapis.com \
-    vpcaccess.googleapis.com
+    artifactregistry.googleapis.com
 
 gcloud spanner instances create $DB_INSTANCE \
     --config=regional-${REGION} \
