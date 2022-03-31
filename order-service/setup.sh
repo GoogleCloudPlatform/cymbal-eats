@@ -55,5 +55,4 @@ gcloud run deploy $ORDER_SERVICE_NAME \
   --allow-unauthenticated \
   --project=$PROJECT_ID \
   --set-env-vars=INVENTORY_SERVICE_URL=$INVENTORY_SERVICE_URL \
-  --project=$PROJECT_ID \
   --quiet
