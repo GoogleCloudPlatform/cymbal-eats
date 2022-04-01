@@ -22,9 +22,9 @@ const inventoryServer = axios.create({
 
 app.post('/place-order', async (req, res) => {
   try {
-    // if (! await inventoryAvailable(req.body.orderItems)) {
-    //   throw 'Incorrect Order Quantity or Item';
-    // }
+    if (! await inventoryAvailable(req.body.orderItems)) {
+      throw 'Incorrect Order Quantity or Item';
+    }
     const orderNumber = await createOrderRecord(req.body);
     await subtractFromInventory(req.body.orderItems);
     res.json({orderNumber: orderNumber});
