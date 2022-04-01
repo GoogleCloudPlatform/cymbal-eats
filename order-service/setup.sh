@@ -29,6 +29,8 @@ gcloud app create --region=$REGION
 
 gcloud firestore databases create --region=$REGION
 
+sed -i "s/PROJECT_ID/$PROJECT_ID/g" .firebaserc
+
 curl -sL https://firebase.tools | bash
 firebase deploy --only firestore:rules
 
@@ -53,5 +55,4 @@ gcloud run deploy $ORDER_SERVICE_NAME \
   --allow-unauthenticated \
   --project=$PROJECT_ID \
   --set-env-vars=INVENTORY_SERVICE_URL=$INVENTORY_SERVICE_URL \
-  --project=$PROJECT_ID \
   --quiet

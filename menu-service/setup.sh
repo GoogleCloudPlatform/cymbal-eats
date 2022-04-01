@@ -91,3 +91,61 @@ gcloud run deploy $MENU_SERVICE_NAME \
     --vpc-connector $VPC_CONNECTOR \
     --project=$PROJECT_ID \
     --quiet
+
+if [[ -z "${MENU_SERVICE_URL}" ]]; then
+  MENU_SERVICE_URL=$(gcloud run services describe $MENU_SERVICE_NAME \
+    --region=$REGION \
+    --format=json | jq \
+    --raw-output ".status.url")
+  export MENU_SERVICE_URL
+else
+  echo "Using pre-defined MENU_SERVICE_URL=$MENU_SERVICE_URL"
+fi
+
+curl -X POST "${MENU_SERVICE_URL}/menu" \
+   -H 'Content-Type: application/json' \
+   -d '{
+        "itemImageURL": "https://sheikahplate.files.wordpress.com/2018/03/vegetable_curry_header.jpg?w=720",
+        "itemName": "Curry Plate",
+        "itemPrice": 12.5,
+        "itemThumbnailURL": "https://sheikahplate.files.wordpress.com/2018/03/vegetable_curry_header.jpg?w=720",
+        "spiceLevel": 3,
+        "status": "Ready",
+        "tagLine": "Spicy touch for your taste buds!!"
+    }'
+
+curl -X PUT "${MENU_SERVICE_URL}/menu/1" \
+   -H 'Content-Type: application/json' \
+   -d '{"status": "Ready"}'
+
+curl -X POST "${MENU_SERVICE_URL}/menu" \
+   -H 'Content-Type: application/json' \
+   -d '{
+        "itemImageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Gulab_jamun_%28Gibraltar%2C_November_2020%29.jpg/1200px-Gulab_jamun_%28Gibraltar%2C_November_2020%29.jpg",
+        "itemName": "Gulab Jamoon",
+        "itemPrice": 2.4,
+        "itemThumbnailURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Gulab_jamun_%28Gibraltar%2C_November_2020%29.jpg/1200px-Gulab_jamun_%28Gibraltar%2C_November_2020%29.jpg",
+        "spiceLevel": 0,
+        "status": "Ready",
+        "tagLine": "Sweet cottage cheese dumplings"
+    }'
+
+curl -X PUT "${MENU_SERVICE_URL}/menu/2" \
+   -H 'Content-Type: application/json' \
+   -d '{"status": "Ready"}'
+
+curl -X POST "${MENU_SERVICE_URL}/menu" \
+   -H 'Content-Type: application/json' \
+   -d '{
+        "itemImageURL": "http://nie-images.s3.amazonaws.com/gall_content/2020/10/2020_10$largeimg11_Oct_2020_200729347.jpg",
+        "itemName": "Idly Plate",
+        "itemPrice": 10.25,
+        "itemThumbnailURL": "http://nie-images.s3.amazonaws.com/gall_content/2020/10/2020_10$largeimg11_Oct_2020_200729347.jpg",
+        "spiceLevel": 2,
+        "status": "Ready",
+        "tagLine": "South Indian delight!!"
+    }'
+
+curl -X PUT "${MENU_SERVICE_URL}/menu/3" \
+   -H 'Content-Type: application/json' \
+   -d '{"status": "Ready"}'
