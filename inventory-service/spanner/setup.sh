@@ -32,6 +32,8 @@ gcloud spanner instances create $DB_INSTANCE \
     --description="Cymbal Menu Inventory" \
     --nodes=1
 
+gcloud spanner instances update $DB_INSTANCE --processing-units=100
+
 export DB_CONNECTION_STRING=projects/$PROJECT_ID/instances/$DB_INSTANCE/databases/$DB_NAME
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
