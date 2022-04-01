@@ -1,5 +1,10 @@
 TODOs
 
+When an order has been finished/picked up, make it not appear in the kitchen view.
+Make the carousel taller.
+Add URL to employee-ui that shows all menu items, regardless of status.
+Fix kitchen view: you have to click the order again after updating its status. You shouldn't have to.
+When you cancel an order from the kitchen ui, update the customer ui accordingly.
 Make order list on kitchen page scrollable.
 Make order service a proper REST API.
 Add read operation to order service.
@@ -8,7 +13,6 @@ Delete inventory from the / page.
 Write up README file for customer-ui.
 Write up README file for employee-ui.
 Display a "wait" screen after the user clicks the Google Pay button.
-Speed up the display of menu items on /.
 Make Firestore read-only in security rules.
 Add front-page that is not connected to the database, for demo. Put a welcome page under /.
 Add +/- buttons to set quantity of each order line in the order.
@@ -16,5 +20,4 @@ If you order the same dish twice, make it one single order line with qty of 2.
 Show live inventory on kitchen page, based on the Inventory service.
 Deploy the consumer web front-end to the cloud.
 Deploy the admin web front-end to the cloud.
-Add URL to employee-ui that shows all menu items, regardless of status.
 Add Cymbal Apps graphics.

@@ -96,7 +96,7 @@ async function subtractFromInventory(orderItems) {
   await inventoryServer.post("/updateInventoryItem", 
     orderItems.map(x => ({
       itemID: x.id,
-      inventoryChange: x.quantity
+      inventoryChange: -x.quantity
     }))
   );
 }
