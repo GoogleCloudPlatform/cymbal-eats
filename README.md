@@ -93,7 +93,7 @@ Certificate provisioning might take up to 15 minutes.
 Run script and pass valid user email, ex: `user@google.com` or `user@userdomain.altostrat.com`. 
 ```bash
 cd employee-ui
-./add-iap-setup.sh user@email.com
+./add-iap-user.sh user@email.com
 ```
 
 ### View urls for Customer and Employee sites
