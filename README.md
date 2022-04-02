@@ -87,3 +87,18 @@ Replace IP-ADDRESS with actual IP and open URL in the browser to access Employee
 https://IP-ADDRESS.nip.io
 ```
 Certificate provisioning might take up to 15 minutes.
+
+### Add Additional Employee Portal users
+
+Run script and pass valid user email, ex: `user@google.com` or `user@userdomain.altostrat.com`. 
+```bash
+cd employee-ui
+./add-iap-setup.sh user@email.com
+```
+
+### View urls for Customer and Employee sites
+
+Run script in the root of the repo:
+```bash
+./get-site-users.sh
+```
