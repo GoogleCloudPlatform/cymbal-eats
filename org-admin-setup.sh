@@ -1,6 +1,6 @@
 # New project setup - Run as org admin
 
-PROJECT_ID=cymbal-eats-$RANDOM
+PROJECT_ID=cymbal-eats-$RANDOM-$RANDOM
 ORGANIZATION_ID=your org id
 BILLING_ACCOUNT=your billing account id
 GCP_USER_ACCOUNT=user@userdomain.altostrat.com
