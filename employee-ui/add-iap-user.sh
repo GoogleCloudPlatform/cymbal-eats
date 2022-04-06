@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 export BACKEND_SERVICE=$(gcloud compute backend-services list --filter="name~'employee-ui-iap-backend'" --format="value(name)")
 
 gcloud iap web add-iam-policy-binding \
