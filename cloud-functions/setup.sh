@@ -44,9 +44,8 @@ gcloud functions deploy process_thumbnails \
   --region=$REGION \
   --trigger-resource=$UPLOAD_BUCKET \
   --trigger-event=google.storage.object.finalize \
-  --runtime=nodejs14 \
+  --runtime=nodejs16 \
   --set-env-vars=BUCKET_THUMBNAILS=$BUCKET_THUMBNAILS,MENU_SERVICE_URL=$MENU_SERVICE_URL \
   --source=thumbnail \
-  --allow-unauthenticated \
   --project=$PROJECT_ID \
   --quiet
