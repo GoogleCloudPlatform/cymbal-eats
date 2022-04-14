@@ -60,7 +60,7 @@ fi
 
 envsub .env.tmpl .env
 
-rm -r cloud-run/public/*
+rm -rf cloud-run/public
 
 quasar clean
 quasar build
