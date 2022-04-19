@@ -55,7 +55,7 @@ exports.process_thumbnails = async (file, context) =>
             destination: originalFile
         });
 
-        const originalF = await bucket.file(file.name).publicUrl()
+        const originalImageUrl = await bucket.file(file.name).publicUrl()
 
         console.log(`Downloaded picture into ${originalFile}`);
 
@@ -95,7 +95,7 @@ exports.process_thumbnails = async (file, context) =>
         const item = await menuServer.get(`/menu/${itemID}`);
         // Send update call to menu service
         const request = await menuServer.put(`/menu/${itemID}`, {
-                itemImageURL: originalF,
+                itemImageURL: originalImageUrl,
                 itemName: item.data.itemName,
                 itemPrice: item.data.itemPrice,
                 itemThumbnailURL: thumbnailImageUrl,
