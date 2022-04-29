@@ -13,6 +13,8 @@ gcloud config set project ${PROJECT_ID}
 
 gcloud services enable orgpolicy.googleapis.com
 
+gcloud compute networks create default --subnet-mode=auto
+
 sleep 1m
 
 # vpc-access connectors creation.
