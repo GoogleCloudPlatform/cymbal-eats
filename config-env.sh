@@ -54,7 +54,5 @@ gcloud config set run/region $REGION
 
 gcloud config set compute/region $REGION
 
-gcloud compute networks create default --subnet-mode=auto
-
 gcloud auth configure-docker gcr.io -q
 

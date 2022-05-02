@@ -11,7 +11,11 @@ gcloud beta billing projects link ${PROJECT_ID} --billing-account=$BILLING_ACCOU
 
 gcloud config set project ${PROJECT_ID}
 
-gcloud services enable orgpolicy.googleapis.com
+gcloud services enable \
+    orgpolicy.googleapis.com \
+    compute.googleapis.com
+
+gcloud compute networks create default --subnet-mode=auto
 
 sleep 1m
 
