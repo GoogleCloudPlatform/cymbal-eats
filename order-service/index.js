@@ -41,7 +41,7 @@ app.post('/place-order', async (req, res) => {
       }
     };
     
-    topic.publishJSON(req.body, callback);
+    topic.publish(Buffer.from(req.body), callback);
     res.json({orderNumber: orderNumber});
   }
   catch(ex) {
