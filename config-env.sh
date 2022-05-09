@@ -46,6 +46,8 @@ gcloud services enable \
     cloudfunctions.googleapis.com \
     iap.googleapis.com \
     cloudresourcemanager.googleapis.com \
+    pubsub.googleapis.com \
+    workflows.googleapis.com \
     --quiet
 
 export REGION=us-east4

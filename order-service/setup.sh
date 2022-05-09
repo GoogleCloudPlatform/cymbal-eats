@@ -23,7 +23,9 @@ gcloud services enable \
     run.googleapis.com \
     artifactregistry.googleapis.com \
     cloudbuild.googleapis.com \
-    firestore.googleapis.com
+    firestore.googleapis.com \
+    pubsub.googleapis.com \
+    workflows.googleapis.com
 
 gcloud app create --region=$REGION
 
@@ -56,3 +58,5 @@ gcloud run deploy $ORDER_SERVICE_NAME \
   --project=$PROJECT_ID \
   --set-env-vars=INVENTORY_SERVICE_URL=$INVENTORY_SERVICE_URL \
   --quiet
+
+gcloud pubsub topics create orderTopic

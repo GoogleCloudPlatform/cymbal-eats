@@ -42,6 +42,12 @@
 
           <q-input
             filled
+            v-model="email"
+            label="Email"
+          />
+
+          <q-input
+            filled
             v-model="address"
             label="Address"
           />

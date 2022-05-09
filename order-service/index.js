@@ -9,7 +9,13 @@ app.listen(port, () => {
   console.log(`API listening on port ${port}`);
 });
 const {Firestore} = require('@google-cloud/firestore');
+const PubSub = require('pubsub-js');
 const db = new Firestore();
+
+var topic = 'orderTopic';
+PubSub.subscribe(topic, function (msg, data) {
+	console.log(data)
+});
 
 const inventoryServer = axios.create({
   baseURL: process.env.INVENTORY_SERVICE_URL,
@@ -27,6 +33,7 @@ app.post('/place-order', async (req, res) => {
     }
     const orderNumber = await createOrderRecord(req.body);
     await subtractFromInventory(req.body.orderItems);
+    PubSub.publish(topic, req.body)
     res.json({orderNumber: orderNumber});
   }
   catch(ex) {
