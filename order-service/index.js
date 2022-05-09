@@ -34,10 +34,10 @@ app.post('/place-order', async (req, res) => {
 
     await subtractFromInventory(req.body.orderItems);
     
-    const data = req.body;
-    publishMessage(data)
-    
     res.json({orderNumber: orderNumber});
+
+    const data = req.body;
+    publishMessage(data);
   }
   catch(ex) {
     console.error(ex);
