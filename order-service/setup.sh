@@ -60,3 +60,4 @@ gcloud run deploy $ORDER_SERVICE_NAME \
   --quiet
 
 gcloud pubsub topics create order-topic --project=$PROJECT_ID
+gcloud pubsub subscriptions create order-subscription --topic=order-topic --topic-project=$PROJECT_ID

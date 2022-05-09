@@ -33,12 +33,6 @@ app.post('/place-order', async (req, res) => {
     }
     const orderNumber = await createOrderRecord(req.body);
     const topic = pubsub.topic(TOPIC_NAME);
-    const subscription = topic.createSubscription(SUB_NAME)
-
-    subscription.on('message', message => {
-      console.log('Received message:', message.data.toString());
-      process.exit(0);
-    });
 
     await subtractFromInventory(req.body.orderItems);
     const callback = (err, messageId) => {
