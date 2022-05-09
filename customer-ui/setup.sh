@@ -27,7 +27,6 @@ nvm install 12.22.1
 npm install
 npm install -g @quasar/cli
 npm install -g envsub
-npm install pubsub-js
 
 if [[ -z "${ORDER_SERVICE_URL}" ]]; then
   ORDER_SERVICE_URL=$(gcloud run services describe $ORDER_SERVICE_NAME \
