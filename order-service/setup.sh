@@ -65,6 +65,12 @@ gcloud pubsub subscriptions create order-subscription --topic=order-topic --topi
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
 --member="serviceAccount:$PROJECT_NUMBER-compute@developer.gserviceaccount.com" \
---role="roles/pubsub.publisher" \
---role="roles/pubsub.subscriber" \
+--role="roles/pubsub.publisher" 
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+--member="serviceAccount:$PROJECT_NUMBER-compute@developer.gserviceaccount.com" \
+--role="roles/pubsub.subscriber" 
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+--member="serviceAccount:$PROJECT_NUMBER-compute@developer.gserviceaccount.com" \
 --role="roles/workflows.invoker"
