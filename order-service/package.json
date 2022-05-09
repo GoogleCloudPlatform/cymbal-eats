@@ -12,7 +12,7 @@
   "author": "Google Inc.",
   "dependencies": {
     "@google-cloud/firestore": "^5.0.2",
-    "@google-cloud/pubsub": "^5.0.2",
+    "@google-cloud/pubsub": "^2.19.4",
     "axios": "^0.26.1",
     "cors": "^2.8.5",
     "express": "^4.17.1"
