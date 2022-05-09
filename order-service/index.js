@@ -15,7 +15,6 @@ const pubsub = new PubSub();
 
 
 const TOPIC_NAME = 'order-topic';
-const SUB_NAME = "order-subscription"
 
 const inventoryServer = axios.create({
   baseURL: process.env.INVENTORY_SERVICE_URL,
