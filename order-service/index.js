@@ -35,13 +35,16 @@ app.post('/place-order', async (req, res) => {
     const topic = pubsub.topic(TOPIC_NAME);
 
     await subtractFromInventory(req.body.orderItems);
+    const data = Buffer.from('Hello, world!');
+
     const callback = (err, messageId) => {
       if (err) {
-        console.err("Error publishing to topic")
+        console.err("Error publishing event to pubsub")
       }
     };
+
+    topic.publish(data, callback);
     
-    topic.publishJSON(req.body, callback);
     console.log(req.body)
     res.json({orderNumber: orderNumber});
   }
