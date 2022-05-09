@@ -58,5 +58,3 @@ gcloud run deploy $ORDER_SERVICE_NAME \
   --project=$PROJECT_ID \
   --set-env-vars=INVENTORY_SERVICE_URL=$INVENTORY_SERVICE_URL \
   --quiet
-
-gcloud pubsub topics create orderTopic --project=$PROJECT_ID
