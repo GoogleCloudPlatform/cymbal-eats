@@ -9,7 +9,7 @@ app.listen(port, () => {
   console.log(`API listening on port ${port}`);
 });
 const {Firestore} = require('@google-cloud/firestore');
-const PubSub = require('pubsub-js');
+const {PubSub} = require('pubsub-js');
 const db = new Firestore();
 
 var topic = 'orderTopic';
@@ -87,6 +87,7 @@ async function createOrderRecord(requestBody) {
   await orderDoc.set({
     orderNumber: orderNumber,
     name: requestBody.name,
+    email : requestBody.email,
     address: requestBody.address,
     city: requestBody.city,
     state: requestBody.state,
