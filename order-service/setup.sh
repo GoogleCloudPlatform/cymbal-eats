@@ -25,7 +25,8 @@ gcloud services enable \
     cloudbuild.googleapis.com \
     firestore.googleapis.com \
     pubsub.googleapis.com \
-    workflows.googleapis.com
+    workflows.googleapis.com \
+    eventarc.googleapis.com 
 
 gcloud app create --region=$REGION
 
@@ -65,4 +66,5 @@ gcloud pubsub subscriptions create order-subscription --topic=order-topic --topi
 gcloud projects add-iam-policy-binding $PROJECT_ID \
 --member="serviceAccount:$PROJECT_NUMBER-compute@developer.gserviceaccount.com" \
 --role="roles/pubsub.publisher" \
---role="roles/pubsub.subscriber" 
+--role="roles/pubsub.subscriber" \
+--role="roles/workflows.invoker"
