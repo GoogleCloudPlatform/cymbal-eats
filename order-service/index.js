@@ -119,7 +119,7 @@ function getNewOrderNumber() {
 
 async function publishMessage(data) {
   // Publishes the message as a string, e.g. "Hello, world!" or JSON.stringify(someObject)
-  const dataBuffer = JSON.stringify(data)
+  const dataBuffer = Buffer.from(JSON.stringify(data))
 
   try {
     const messageId = await pubsub
