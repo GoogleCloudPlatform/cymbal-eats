@@ -217,9 +217,9 @@ func seedDatabase(db string) error {
 		"InventoryChange",
 		"TimeStamp"}
 	m := []*spanner.Mutation{
-		spanner.Insert("inventoryHistory", inventoryHistoryColumns, []interface{}{uuid.New().String(), 1, "5", time.Now()}),
-		spanner.Insert("inventoryHistory", inventoryHistoryColumns, []interface{}{uuid.New().String(), 2, "3", time.Now()}),
-		spanner.Insert("inventoryHistory", inventoryHistoryColumns, []interface{}{uuid.New().String(), 3, "1", time.Now()}),
+		spanner.Insert("inventoryHistory", inventoryHistoryColumns, []interface{}{uuid.New().String(), 1, "10", time.Now()}),
+		spanner.Insert("inventoryHistory", inventoryHistoryColumns, []interface{}{uuid.New().String(), 2, "10", time.Now()}),
+		spanner.Insert("inventoryHistory", inventoryHistoryColumns, []interface{}{uuid.New().String(), 3, "10", time.Now()}),
 	}
 	_, err := dataClient.Apply(context.Background(), m)
 	if err != nil {
