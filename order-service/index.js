@@ -14,7 +14,8 @@ const db = new Firestore();
 const pubsub = new PubSub();
 
 
-var TOPIC_NAME = 'orderTopic';
+const TOPIC_NAME = 'order-topic';
+const SUB_NAME = "order-subscription"
 
 const inventoryServer = axios.create({
   baseURL: process.env.INVENTORY_SERVICE_URL,
@@ -32,6 +33,13 @@ app.post('/place-order', async (req, res) => {
     }
     const orderNumber = await createOrderRecord(req.body);
     const topic = pubsub.topic(TOPIC_NAME);
+    const subscription = topic.createSubscription(SUB_NAME)
+
+    subscription.on('message', message => {
+      console.log('Received message:', message.data.toString());
+      process.exit(0);
+    });
+
     await subtractFromInventory(req.body.orderItems);
     const callback = (err, messageId) => {
       if (err) {
