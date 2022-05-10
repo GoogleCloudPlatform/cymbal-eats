@@ -32,7 +32,7 @@ gcloud app create --region=$REGION
 
 gcloud firestore databases create --region=$REGION
 
-sed -i "s/PROJECT_ID/$PROJECT_ID/g" .firebaserc
+sed "s/PROJECT_ID/$PROJECT_ID/g" firebaserc.tmpl > .firebaserc
 
 curl -sL https://firebase.tools | bash
 firebase deploy --only firestore:rules
