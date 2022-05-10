@@ -8,3 +8,4 @@ gcloud run deploy $SERVICE_NAME \
   --allow-unauthenticated \
   --project=$GOOGLE_PROJECT_ID \
   --set-env-vars INVENTORY_SERVICE_URL=https://spanner-inventory-service-luu7kai33a-uc.a.run.app/
+

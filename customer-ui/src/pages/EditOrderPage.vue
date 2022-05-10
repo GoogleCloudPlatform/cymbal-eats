@@ -42,6 +42,12 @@
 
           <q-input
             filled
+            v-model="email"
+            label="Email"
+          />
+
+          <q-input
+            filled
             v-model="address"
             label="Address"
           />
@@ -104,6 +110,7 @@
 
   const orderItems = computed(() => store.state.orderItems);
   const name = ref('Angela Jensen');
+  const email = ref('ajensen9090+eats@gmail.com')
   const address = ref('1845 Denise St');
   const city = ref('Mountain View');
   const state = ref('CA');
@@ -122,7 +129,7 @@
   async function placeOrder() {
     try {
       const orderNumber = await Server.placeOrder(
-        name.value, address.value, city.value, state.value, zip.value,
+        name.value, email.value, address.value, city.value, state.value, zip.value,
         store.state.orderItems
       );
       if (!orderNumber) throw 'No order number returned from server';

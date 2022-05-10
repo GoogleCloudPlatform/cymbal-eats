@@ -9,7 +9,12 @@ app.listen(port, () => {
   console.log(`API listening on port ${port}`);
 });
 const {Firestore} = require('@google-cloud/firestore');
+const {PubSub} = require('@google-cloud/pubsub');
 const db = new Firestore();
+const pubsub = new PubSub();
+
+
+const TOPIC_NAME = 'order-topic';
 
 const inventoryServer = axios.create({
   baseURL: process.env.INVENTORY_SERVICE_URL,
@@ -26,8 +31,13 @@ app.post('/place-order', async (req, res) => {
       throw 'Incorrect Order Quantity or Item';
     }
     const orderNumber = await createOrderRecord(req.body);
+
     await subtractFromInventory(req.body.orderItems);
+    
     res.json({orderNumber: orderNumber});
+
+    const data = req.body;
+    publishMessage(data);
   }
   catch(ex) {
     console.error(ex);
@@ -80,6 +90,7 @@ async function createOrderRecord(requestBody) {
   await orderDoc.set({
     orderNumber: orderNumber,
     name: requestBody.name,
+    email : requestBody.email,
     address: requestBody.address,
     city: requestBody.city,
     state: requestBody.state,
@@ -103,4 +114,19 @@ async function subtractFromInventory(orderItems) {
 
 function getNewOrderNumber() {
   return Math.round(10000 + Math.random() * 90000);
+}
+
+async function publishMessage(data) {
+  // Publishes the message as a string, e.g. "Hello, world!" or JSON.stringify(someObject)
+  const dataBuffer = Buffer.from(JSON.stringify(data))
+
+  try {
+    const messageId = await pubsub
+      .topic(TOPIC_NAME)
+      .publishMessage({data: dataBuffer});
+    console.log(`Message ${messageId} published.`);
+  } catch (error) {
+    console.error(`Received error while publishing: ${error.message}`);
+    process.exitCode = 1;
+  }
 }

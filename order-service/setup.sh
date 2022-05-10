@@ -23,7 +23,10 @@ gcloud services enable \
     run.googleapis.com \
     artifactregistry.googleapis.com \
     cloudbuild.googleapis.com \
-    firestore.googleapis.com
+    firestore.googleapis.com \
+    pubsub.googleapis.com \
+    workflows.googleapis.com \
+    eventarc.googleapis.com 
 
 gcloud app create --region=$REGION
 
@@ -56,3 +59,18 @@ gcloud run deploy $ORDER_SERVICE_NAME \
   --project=$PROJECT_ID \
   --set-env-vars=INVENTORY_SERVICE_URL=$INVENTORY_SERVICE_URL \
   --quiet
+
+gcloud pubsub topics create order-topic --project=$PROJECT_ID
+gcloud pubsub subscriptions create order-subscription --topic=order-topic --topic-project=$PROJECT_ID
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+--member="serviceAccount:$PROJECT_NUMBER-compute@developer.gserviceaccount.com" \
+--role="roles/pubsub.publisher" 
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+--member="serviceAccount:$PROJECT_NUMBER-compute@developer.gserviceaccount.com" \
+--role="roles/pubsub.subscriber" 
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+--member="serviceAccount:$PROJECT_NUMBER-compute@developer.gserviceaccount.com" \
+--role="roles/workflows.invoker"
