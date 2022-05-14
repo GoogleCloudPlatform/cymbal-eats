@@ -1,20 +1,7 @@
 <template>
   <q-layout view="hhh lpr fff">
     <q-header elevated>
-      <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-        />
-
-        <q-toolbar-title>
-          Cymbal Eats
-        </q-toolbar-title>
-
-      </q-toolbar>
+      <Toolbar/>
     </q-header>
 
     <q-page-container>
@@ -104,6 +91,7 @@
   import OrderView from '../components/OrderView.vue';
   import * as Server from '../utils/Server.js';
   import statesFile from '../assets/us-states.json';
+  import Toolbar from '../components/Toolbar.vue';
 
   const store = useStore();
   const router = useRouter();

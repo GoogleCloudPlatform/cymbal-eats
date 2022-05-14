@@ -1,20 +1,7 @@
 <template>
   <q-layout view="hhh lpr fff">
     <q-header elevated>
-      <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-        />
-
-        <q-toolbar-title>
-          Cymbal Eats
-        </q-toolbar-title>
-
-      </q-toolbar>
+      <Toolbar/>
     </q-header>
 
     <q-page-container>
@@ -69,6 +56,7 @@
   import { doc, onSnapshot } from 'firebase/firestore';
   import * as Firestore from '../utils/Firestore.js';
   import OrderView from '../components/OrderView.vue';
+  import Toolbar from '../components/Toolbar.vue';
 
   const store = useStore();
   const router = useRouter();
