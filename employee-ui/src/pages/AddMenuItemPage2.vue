@@ -1,20 +1,7 @@
 <template>
   <q-layout view="hhh lpr fff">
     <q-header elevated>
-      <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-        />
-
-        <q-toolbar-title>
-          Upload image
-        </q-toolbar-title>
-
-      </q-toolbar>
+      <Toolbar/>
     </q-header>
 
     <q-page-container>
@@ -48,6 +35,7 @@
   import { onMounted, computed } from 'vue';
   import { useRouter } from 'vue-router';
   import { useStore } from 'vuex';
+  import Toolbar from '../components/Toolbar.vue';
 
   const store = useStore();
   const router = useRouter();

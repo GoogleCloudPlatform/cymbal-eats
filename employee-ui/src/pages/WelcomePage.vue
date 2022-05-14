@@ -1,20 +1,7 @@
 <template>
   <q-layout view="hhh lpr fff">
     <q-header elevated>
-      <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-        />
-
-        <q-toolbar-title>
-          Cymbal Eats Employee Portal
-        </q-toolbar-title>
-
-      </q-toolbar>
+      <Toolbar/>
     </q-header>
 
     <q-page-container>
@@ -47,5 +34,7 @@
 </template>
 
 <script setup>
+
+  import Toolbar from '../components/Toolbar.vue';
 
 </script>

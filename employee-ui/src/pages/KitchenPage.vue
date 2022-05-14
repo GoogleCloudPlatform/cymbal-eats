@@ -1,20 +1,7 @@
 <template>
   <q-layout view="hhh lpr fff">
     <q-header elevated>
-      <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="restaurant"
-          aria-label="Menu"
-        />
-
-        <q-toolbar-title>
-          Kitchen
-        </q-toolbar-title>
-
-      </q-toolbar>
+      <Toolbar/>
     </q-header>
 
     <q-page-container>
@@ -97,6 +84,7 @@
   import OrderView from '../components/OrderView.vue';
   import * as Firestore from '../utils/Firestore.js';
   import * as Server from '../utils/Server.js';
+  import Toolbar from '../components/Toolbar.vue';
 
   const store = useStore();
   const router = useRouter();

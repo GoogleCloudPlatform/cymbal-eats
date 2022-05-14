@@ -1,20 +1,7 @@
 <template>
   <q-layout view="hhh lpr fff">
     <q-header elevated>
-      <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-        />
-
-        <q-toolbar-title>
-          Menu items
-        </q-toolbar-title>
-
-      </q-toolbar>
+      <Toolbar/>
     </q-header>
 
     <q-page-container>
@@ -64,6 +51,7 @@
   import { onMounted, computed } from 'vue';
   import { useStore } from 'vuex';
   import { useQuasar } from 'quasar';
+  import Toolbar from '../components/Toolbar.vue';
 
   const store = useStore();
   const $q = useQuasar();
