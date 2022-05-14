@@ -13,7 +13,6 @@
           infinite
           transition-prev="slide-right"
           transition-next="slide-left"
-          :autoplay="true"
           v-model="dish"
           height="400px"
         >

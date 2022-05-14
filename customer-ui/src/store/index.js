@@ -42,7 +42,6 @@ export default store(function () {
     actions: {
       async loadMenu(context) {
         const menuItems = await Server.getMenuItems();
-        console.log(menuItems);
         context.commit('setMenuItems', menuItems);
         const inventoryCounts = await Server.getInventoryCounts();
         context.commit('setInventoryCounts', inventoryCounts);

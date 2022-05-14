@@ -110,7 +110,6 @@
   }
 
   function deleteItem(itemIndex) {
-    console.log(`deleteItem(${itemIndex}) called`);
     store.commit('deleteItem', itemIndex);
   }
 

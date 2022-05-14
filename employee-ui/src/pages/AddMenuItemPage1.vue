@@ -44,9 +44,7 @@
     const newMenuItem = await Server.createMenuItem(
       tagLine.value, itemName.value, itemPrice.value, spiceLevel.value
     );
-    console.log('newMenuItem.id', newMenuItem.id);
     store.commit('setMenuItemId', newMenuItem.id);
-    console.log(`store.commit('setMenuItemId', "${newMenuItem.id}")`);
     router.push('/add-menu-item2')
   }
 

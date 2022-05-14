@@ -1,7 +1,11 @@
 const routes = [
   {
     path: '/',
-    component: () => import('pages/MenuPage.vue')
+    component: () => import('pages/StartPage.vue')
+  },
+  {
+    path: '/carousel',
+    component: () => import('pages/CarouselPage.vue')
   },
   {
     path: '/edit-order',

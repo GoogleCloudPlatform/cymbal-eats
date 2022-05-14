@@ -1,6 +1,5 @@
 TODOs
 
-In employee and customer views, the hamburger menu should show options. The top option should be to go back to the first screen.
 In the employee-ui add a page to display all menu items, with status and inventory.
 In the customer-ui add a page to display all menu items, with a button to order it. The item name should be the most visible text. Include spice level.
 When the kitchen cancels and refunds an order, put the order in the "Canceled" state.

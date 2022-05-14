@@ -60,7 +60,6 @@
   onMounted(async () => {
     $q.loading.show();
     await store.dispatch('loadMenu');
-    console.log(dishes.value)
     $q.loading.hide();
   });
 

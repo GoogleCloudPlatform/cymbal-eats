@@ -70,7 +70,6 @@
     const db = await Firestore.getDb();
     onSnapshot(doc(db, 'orders', orderNumber.value), (doc) => {
       const order = doc.data();
-      console.log(order)
       orderItems.value = order.orderItems;
       status.value = order.status;
     });
