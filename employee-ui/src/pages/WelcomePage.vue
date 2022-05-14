@@ -16,6 +16,11 @@
             </router-link>
           </li>
           <li>
+            <router-link to="view-menu">
+              View menu items
+            </router-link>
+          </li>
+          <li>
             <router-link to="menu">
               Update inventory
             </router-link>

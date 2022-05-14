@@ -8,6 +8,10 @@ const routes = [
     component: () => import('pages/KitchenPage.vue')
   },
   {
+    path: '/view-menu',
+    component: () => import('pages/ViewMenuPage.vue')
+  },
+  {
     path: '/menu',
     component: () => import('pages/MenuPage.vue')
   },
