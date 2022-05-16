@@ -20,11 +20,6 @@
               Manage menu
             </router-link>
           </li>
-          <li>
-            <router-link to="add-menu-item">
-              Create new menu items in the system
-            </router-link>
-          </li>
         </ul>
 
       </div>

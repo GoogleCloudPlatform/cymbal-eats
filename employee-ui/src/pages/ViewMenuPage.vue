@@ -6,8 +6,8 @@
 
     <q-page-container>
 
-      <div class="q-pa-md row">
-        <div class="col">
+      <div class="q-pa-md row flex-center">
+        <div class="col-auto">
           <q-checkbox
             size="lg"
             v-model="displayOnlyReadyItems"
@@ -16,6 +16,14 @@
               Display only Ready items
             </span>
           </q-checkbox>
+        </div>
+        <div class="col q-ml-lg">
+          <q-btn
+            size="lg"
+            color="primary"
+            label="Create a new menu item"
+            @click="goToCreateMenuItemPage"
+          />
         </div>
       </div>
       <div class="q-pa-md row">
@@ -57,18 +65,6 @@
             </q-card-section>
           </q-card>
         </div>
-        <div class="col-3 q-pa-md">
-          <q-card style="height: 100%">
-            <q-card-section style="padding-top: 40%">
-              <div class="text-subtitle2" style="text-align: center">
-                <q-btn
-                  color="primary"
-                  label="Create a new menu item"
-                />
-              </div>
-            </q-card-section>
-          </q-card>
-        </div>
       </div>
 
     </q-page-container>
@@ -80,8 +76,10 @@
   import { ref, onMounted, computed } from 'vue';
   import { useStore } from 'vuex';
   import { useQuasar } from 'quasar';
+  import { useRouter } from 'vue-router';
   import Toolbar from '../components/Toolbar.vue';
 
+  const router = useRouter();
   const store = useStore();
   const $q = useQuasar();
   const dishes = computed(() =>
@@ -114,6 +112,10 @@
         inventoryCount: parseInt(inventoryCount)
       });
     })
+  }
+
+  function goToCreateMenuItemPage() {
+    router.push('/add-menu-item');
   }
 
 </script>
