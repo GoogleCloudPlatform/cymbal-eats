@@ -1,6 +1,5 @@
 TODOs
 
-Make peppers red in the customer ui.
 Rename "View menu items" to "Manage menu" in the employee ui home page.
 Remove the "Update inventory" link from the employee ui homepage.
 In employee ui menu page, hook up the Create Menu Item button to the creation page.
