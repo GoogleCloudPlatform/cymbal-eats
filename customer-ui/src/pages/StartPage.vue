@@ -16,10 +16,14 @@
             />
             <q-card-section>
               <div class="text-h6">
-                {{ dish.itemName }}              
+                {{ dish.itemName }}
               </div>
               <div class="text-subtitle2">
-                {{ dish.tagLine }}              
+                {{ dish.tagLine }}
+              </div>
+              <div class="text-subtitle2">
+                Spice level:
+                <span v-html="getSpiceLevel(dish.spiceLevel)"/>
               </div>
             </q-card-section>
             <q-card-section>
@@ -62,6 +66,15 @@
   function addDishToOrder(dishId) {
     store.commit('addDishToOrder', dishId);
     router.push('edit-order');
+  }
+
+  function getSpiceLevel(spiceLevel) {
+    if (spiceLevel==0) return 'Mild';
+    let retVal = '';
+    for (let i=0; i<spiceLevel; i++) {
+      retVal += '<i class="fas fa-pepper-hot"></i>';
+    }
+    return retVal;
   }
 
 </script>
