@@ -1,6 +1,5 @@
 TODOs
 
-In kitchen view, display the number of the selected order below the list of orders.
 When the kitchen updates an order, keep the order selected in the list of orders.
 Hide the Cancel & Refund button if an order is ready for pickup.
 

@@ -39,6 +39,9 @@
           v-if="activeOrder.orderItems"
           class="q-pa-lg q-gutter-md"
         >
+          <h5 class="text-h5">
+            Order {{ activeOrder.orderNumber }}
+          </h5>
           <OrderView
             :items="activeOrder.orderItems"
             :allowdelete="false"
