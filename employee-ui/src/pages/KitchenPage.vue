@@ -109,7 +109,7 @@
   async function cancelOrder(orderNumber) {
     if (confirm(`Are you sure you want to cancel order ${orderNumber}?`)) {
       try {
-        await Server.cancelOrder(orderNumber);
+        await Server.updateOrderStatus(orderNumber, 'Canceled');
       }
       catch (ex) {
         alert(ex);

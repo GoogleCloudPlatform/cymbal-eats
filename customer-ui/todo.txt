@@ -1,7 +1,5 @@
 TODOs
 
-Include spice level in customer ui.
-When the kitchen cancels and refunds an order, put the order in the "Canceled" state.
 In kitchen view, display the number of the selected order below the list of orders.
 When the kitchen updates an order, keep the order selected in the list of orders.
 Hide the Cancel & Refund button if an order is ready for pickup.
