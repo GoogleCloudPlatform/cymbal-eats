@@ -1,6 +1,11 @@
 TODOs
 
 Make peppers red in the customer ui.
+Rename "View menu items" to "Manage menu" in the employee ui home page.
+Remove the "Update inventory" link from the employee ui homepage.
+In employee ui menu page, hook up the Create Menu Item button to the creation page.
+Move "Create new menu item" from a card to the top, next to "Display only Ready items" in the employee ui.
+Let Veer know when done.
 
 When an order has been finished/picked up, make it not appear in the kitchen view.
 Make the carousel taller.

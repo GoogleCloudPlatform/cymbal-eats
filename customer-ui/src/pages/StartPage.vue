@@ -69,11 +69,12 @@
   }
 
   function getSpiceLevel(spiceLevel) {
-    if (spiceLevel==0) return '-';
-    let retVal = '';
+    if (!spiceLevel) return '-';
+    let retVal = '<span style="color:red">';
     for (let i=0; i<spiceLevel; i++) {
       retVal += '<i class="fas fa-pepper-hot"></i>';
     }
+    retVal += '</span>';
     return retVal;
   }
 
