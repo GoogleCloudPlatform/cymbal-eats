@@ -13,12 +13,12 @@
           separator
         >
           <q-item
-            v-for="order in orders"
+            v-for="(order, i) in orders"
             :key="order.orderNumber"
             clickable
             v-ripple
-            :active="activeOrder==order"
-            @click="activeOrder=order"
+            :active="activeOrderIndex==i"
+            @click="activeOrderIndex=i"
             active-class="active-order"
           >
             <q-item-section>
@@ -44,6 +44,7 @@
             :allowdelete="false"
           />
           <q-btn
+            v-if="orderCanBeCanceled(activeOrder.status)"
             color="red"
             label="Cancel &amp; refund"
             @click="cancelOrder(activeOrder.orderNumber)"
@@ -76,7 +77,7 @@
 
 <script setup>
 
-  import { ref, onMounted } from 'vue';
+  import { ref, onMounted, computed } from 'vue';
   import { useStore } from 'vuex';
   import { useRouter, useRoute } from 'vue-router';
   import { useTimeAgo } from '@vueuse/core';
@@ -91,7 +92,16 @@
   const route = useRoute();
 
   const orders = ref([]);
-  const activeOrder = ref({});
+  const activeOrderIndex = ref(-1);
+
+  const activeOrder = computed(() => {
+    if (activeOrderIndex.value > -1 && activeOrderIndex.value < orders.value.length) {
+      return orders.value[activeOrderIndex.value];
+    }
+    else {
+      return {};
+    }
+  })
 
   onMounted(async () => {
     const db = await Firestore.getDb();
@@ -115,6 +125,11 @@
         alert(ex);
       }
     }
+  }
+
+  function orderCanBeCanceled(orderStatus) {
+    const allowedStatuses = ['New', 'Being prepared'];
+    return allowedStatuses.includes(orderStatus);
   }
 
   async function updateOrderStatus(orderNumber, newStatus) {
