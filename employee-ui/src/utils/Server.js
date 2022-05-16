@@ -1,6 +1,6 @@
-export async function getMenuItems() {
+export async function getAllMenuItems() {
   console.time('getMenuItems');
-  const url = process.env.VUE_APP_MENU_SERVICE_URL+"/menu/ready";
+  const url = process.env.VUE_APP_MENU_SERVICE_URL+"/menu";
   const response = await fetch(url, {
     mode: 'cors',
     method: 'GET',

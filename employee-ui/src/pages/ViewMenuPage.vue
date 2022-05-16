@@ -7,6 +7,18 @@
     <q-page-container>
 
       <div class="q-pa-md row">
+        <div class="col">
+          <q-checkbox
+            size="lg"
+            v-model="displayOnlyReadyItems"
+          >
+            <span style="font-size:150%">
+              Display only Ready items
+            </span>
+          </q-checkbox>
+        </div>
+      </div>
+      <div class="q-pa-md row">
         <div class="col-3 q-pa-md" v-for="dish in dishes" :key="dish.id">
           <q-card>
             <div
@@ -21,12 +33,25 @@
               <div class="text-subtitle2">
                 {{ dish.tagLine }}              
               </div>
+              <div class="q-mt-lg">
+                Status: {{ dish.status }}
+              </div>
+              <div>
+                Price: ${{ dish.itemPrice.toFixed(2) }}
+              </div>
+              <div>
+                Spice level: {{ dish.spiceLevel }}
+              </div>
+              <div>
+                Inventory: {{ dish.inventory }}
+              </div>
             </q-card-section>
             <q-card-section>
               <div class="text-subtitle2">
                 <q-btn
                   color="primary"
                   label="Adjust inventory"
+                  @click="editInventory(dish.id, dish.name, dish.inventory)"
                 />
               </div>
             </q-card-section>
@@ -52,14 +77,19 @@
 
 <script setup>
 
-  import { onMounted, computed } from 'vue';
+  import { ref, onMounted, computed } from 'vue';
   import { useStore } from 'vuex';
   import { useQuasar } from 'quasar';
   import Toolbar from '../components/Toolbar.vue';
 
   const store = useStore();
   const $q = useQuasar();
-  const dishes = computed(() => store.state.menuItems);
+  const dishes = computed(() =>
+    store.state.menuItems
+    .filter(item => item.status=='Ready' || !displayOnlyReadyItems.value)
+  );
+
+  const displayOnlyReadyItems = ref(true);
 
   onMounted(async () => {
     $q.loading.show();
