@@ -1,13 +1,9 @@
 TODOs
 
-When the kitchen updates an order, keep the order selected in the list of orders.
-Hide the Cancel & Refund button if an order is ready for pickup.
-
+Make peppers red in the customer ui.
 
 When an order has been finished/picked up, make it not appear in the kitchen view.
 Make the carousel taller.
-Add URL to employee-ui that shows all menu items, regardless of status, with thumbnails.
-Add URL to customer-ui that shows all menu items, only ready items, with thumbnails.
 Let the user delete menu items from the employee-ui.
 Rename the "Menu items" screen "Inventory" in the blue menu bar.
 Stop the user from placing an empty order.

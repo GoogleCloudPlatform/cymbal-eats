@@ -69,7 +69,7 @@
   }
 
   function getSpiceLevel(spiceLevel) {
-    if (spiceLevel==0) return 'Mild';
+    if (spiceLevel==0) return '-';
     let retVal = '';
     for (let i=0; i<spiceLevel; i++) {
       retVal += '<i class="fas fa-pepper-hot"></i>';
