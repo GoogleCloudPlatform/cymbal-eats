@@ -21,7 +21,7 @@ const axios = require('axios');
 var fs = require('fs');
 
 
-exports.process_thumbnails = async (file, context) => 
+exports.process_thumbnails = async (file, context) =>
 {
     try {
 
@@ -80,13 +80,17 @@ exports.process_thumbnails = async (file, context) =>
         const visionResponse = await visionPromise;
         console.log(`Raw vision output for: ${file.name}: ${JSON.stringify(visionResponse[0])}`);
         let status = "Failed"
+        let labels = "";
         for (label of visionResponse[0].labelAnnotations){
             status = label.description == "Food" ? "Ready" : status
+            labels = labels.concat(label.description, ", ");
         }
+        console.log(`\nVision API labels: ${labels}\n`);
+        console.log(`Menu Item status will be set to: ${status}\n`);
 
         const menuServer = axios.create({
             baseURL: process.env.MENU_SERVICE_URL,
-            headers :{ 
+            headers :{
                 get: {
                     "Content-Type": 'application/json'
                 }
@@ -106,7 +110,6 @@ exports.process_thumbnails = async (file, context) =>
         })
 
     } catch (err) {
-        console.log(`Error: creating the thumbnail: ${err}`);
-        console.error(err);
+        console.log(`Error: processing the thumbnail: ${err}`);
     }
 };
