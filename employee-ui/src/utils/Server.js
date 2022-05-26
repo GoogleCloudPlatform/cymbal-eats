@@ -21,6 +21,11 @@ export async function getInventoryCounts() {
     mode: 'cors',
     method: 'GET',
   })
+  if (!response.ok) {
+    const message = `An error has occured: ${response.status}`;
+    console.log(message);
+    return JSON.parse("[]");
+  }
   const inventoryCounts = await response.json();
   console.timeEnd('getInventoryCounts')
   return inventoryCounts.map(ic => ({
