@@ -25,17 +25,43 @@ const inventoryServer = axios.create({
   }
 })
 
+app.get('/order', async (req, res) => {
+  try {
+    const orderColl = await db.collection(`orders`).get();
+    const orders = orderColl.docs.map(d => d.data());
+    res.json({status: 'success', data: orders});
+  }
+  catch(ex) {
+    console.error(ex);
+    res.status(500).json({error: ex.toString()});
+  }
+})
+
+app.get('/order/:orderNumber', async (req, res) => {
+  try {
+    const orderNumber = req.params.orderNumber;
+    const orderDoc = await db.doc(`orders/${orderNumber}`).get();
+    if (orderDoc.exists) {
+      res.json({status: 'success', data: orderDoc.data()});
+    }
+    else {
+      res.status(404).json({error: `Order "${orderNumber}" not found`});
+    }
+  }
+  catch(ex) {
+    console.error(ex);
+    res.status(500).json({error: ex.toString()});
+  }
+})
+
 app.post('/place-order', async (req, res) => {
   try {
     if (! await inventoryAvailable(req.body.orderItems)) {
       throw 'Incorrect Order Quantity or Item';
     }
     const orderNumber = await createOrderRecord(req.body);
-
-    await subtractFromInventory(req.body.orderItems);
-    
+    await subtractFromInventory(req.body.orderItems);    
     res.json({orderNumber: orderNumber});
-
     const data = req.body;
     publishMessage(data);
   }
