@@ -48,13 +48,21 @@ gcloud services enable \
     cloudresourcemanager.googleapis.com \
     pubsub.googleapis.com \
     workflows.googleapis.com \
+    workflowexecutions.googleapis.com \
+    eventarc.googleapis.com \
     --quiet
 
-export REGION=us-east4
+export REGION=us-east1
+export WORKFLOW_LOCATION=$REGION
+export TRIGGER_LOCATION=$REGION
 
 gcloud config set run/region $REGION
 
 gcloud config set compute/region $REGION
+
+gcloud config set workflows/location ${WORKFLOW_LOCATION}
+
+gcloud config set eventarc/location ${TRIGGER_LOCATION}
 
 gcloud auth configure-docker gcr.io -q
 

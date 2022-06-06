@@ -39,7 +39,7 @@ cd cymbal-eats
 
 Review ```config-env.sh``` file and set ```REGION``` to location where you want services to be deployed.
 
-By default ```REGION``` is set to ```us-east4```.
+By default ```REGION``` is set to ```us-east1```.
 
 If you want to use existing services,
 you can set following environmental variables before running ```./setup.sh``` script.

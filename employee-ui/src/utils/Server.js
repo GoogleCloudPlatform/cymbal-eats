@@ -6,17 +6,26 @@ export async function getAllMenuItems() {
     method: 'GET',
   })
   console.timeEnd('getMenuItems');
+  if (!response.ok) {
+    const message = `An error has occured: ${response.status}`;
+    console.log(message);
+    return JSON.parse("[]");
+  }
   return await response.json();
 }
 
 export async function getInventoryCounts() {
   console.time('getInventoryCounts')
   const url = process.env.VUE_APP_INVENTORY_SERVICE_URL+"/getAvailableInventory";
-  //const url = 'https://spanner-inventory-service-luu7kai33a-uc.a.run.app/getAvailableInventory';
   const response = await fetch(url, {
     mode: 'cors',
     method: 'GET',
   })
+  if (!response.ok) {
+    const message = `An error has occured: ${response.status}`;
+    console.log(message);
+    return JSON.parse("[]");
+  }
   const inventoryCounts = await response.json();
   console.timeEnd('getInventoryCounts')
   return inventoryCounts.map(ic => ({

@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-REGION=us-east4
+REGION=us-east1
 
 CUSTOMER_SERVICE_URL=$(gcloud run services describe customer-ui-service \
   --region=$REGION \

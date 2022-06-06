@@ -36,10 +36,6 @@ gsutil mb -p $PROJECT_ID -l $REGION $BUCKET_THUMBNAILS
 
 gsutil iam ch allUsers:objectViewer $BUCKET_THUMBNAILS
 
-gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:$PROJECT_ID@appspot.gserviceaccount.com" \
-  --role="roles/storage.objectCreator"
-
 gcloud functions deploy process_thumbnails \
   --region=$REGION \
   --trigger-resource=$UPLOAD_BUCKET \
@@ -49,3 +45,7 @@ gcloud functions deploy process_thumbnails \
   --source=thumbnail \
   --project=$PROJECT_ID \
   --quiet
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:$PROJECT_ID@appspot.gserviceaccount.com" \
+  --role="roles/storage.objectCreator"

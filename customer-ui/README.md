@@ -43,7 +43,7 @@ docker push gcr.io/$PROJECT_NAME/cymbal-eats-client
 
 Check/set REGION before deploying the app.
 
-Example: REGION=us-east4
+Example: REGION=us-east1
 ```bash
 gcloud run deploy cymbal-eats-client \
 --image=gcr.io/$PROJECT_NAME/cymbal-eats-client:latest \
