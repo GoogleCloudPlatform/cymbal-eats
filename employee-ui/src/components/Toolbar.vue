@@ -1,5 +1,8 @@
 <template>
   <q-toolbar>
+    <q-toolbar-title>
+      <img src="/images/Cymbal_Apps_Horizontal.png" height="45" style="margin-top:7px"/>
+    </q-toolbar-title>
     <q-btn
       flat
       dense
@@ -20,9 +23,6 @@
       </q-list>
       </q-menu>
     </q-btn>
-    <q-toolbar-title>
-      Cymbal Eats
-    </q-toolbar-title>
   </q-toolbar>
 </template>
 
