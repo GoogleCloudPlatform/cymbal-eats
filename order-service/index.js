@@ -54,7 +54,7 @@ app.get('/order/:orderNumber', async (req, res) => {
   }
 })
 
-app.post('/place-order', async (req, res) => {
+app.post('/order', async (req, res) => {
   try {
     if (! await inventoryAvailable(req.body.orderItems)) {
       throw 'Incorrect Order Quantity or Item';
@@ -71,7 +71,7 @@ app.post('/place-order', async (req, res) => {
   }
 })
 
-app.delete('/:orderNumber', async (req, res) => {
+app.delete('/order/:orderNumber', async (req, res) => {
   try {
     const orderDoc = db.doc(`orders/${req.params.orderNumber}`);
     await orderDoc.delete();
@@ -83,7 +83,7 @@ app.delete('/:orderNumber', async (req, res) => {
   }
 })
 
-app.patch('/:orderNumber', async (req, res) => {
+app.patch('/order/:orderNumber', async (req, res) => {
   try {
     const orderDoc = db.doc(`orders/${req.params.orderNumber}`);
     await orderDoc.update(req.body);

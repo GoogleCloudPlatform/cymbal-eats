@@ -62,7 +62,7 @@ export async function updateInventoryCount(menuItemId, inventoryCountChange) {
 }
 
 export async function cancelOrder(orderNumber) {
-  const url = process.env.VUE_APP_ORDER_SERVICE_URL + '/' + orderNumber;
+  const url = process.env.VUE_APP_ORDER_SERVICE_URL + '/order/' + orderNumber;
   console.log('Hitting ', url);
   const response = await fetch(url, {
     method: 'DELETE',
@@ -73,7 +73,7 @@ export async function cancelOrder(orderNumber) {
 }
 
 export async function updateOrderStatus(orderNumber, newStatus) {
-  const url = process.env.VUE_APP_ORDER_SERVICE_URL + '/' + orderNumber;
+  const url = process.env.VUE_APP_ORDER_SERVICE_URL + '/order/' + orderNumber;
   const payload = {'status': newStatus};
   console.log('Hitting ', url);
   console.log('Payload ', payload);
