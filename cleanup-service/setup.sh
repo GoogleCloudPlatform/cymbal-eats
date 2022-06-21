@@ -23,7 +23,11 @@ gcloud beta run jobs create cleanup-service \
 	--image=gcr.io/$PROJECT_NAME/cleanup-service \
 	--set-env-vars MENU_SERVICE_URL=$MENU_SERVICE_URL \
 	--set-env-vars DURATION=60 \
-    --region europe-west9
+	--region europe-west9
+
+gcloud projects add-iam-policy-binding $PROJECT_ID   \
+	--member="serviceAccount:$PROJECT_NUMBER-compute@developer.gserviceaccount.com" \
+	--role="roles/run.invoker"
 
 # schedule Cloud Run job to start once a day at 12:00AM
 gcloud scheduler jobs create http cleanup-schedule \
