@@ -41,3 +41,7 @@ cd $BASE_DIR
 cd ${BASE_DIR}/cloud-functions
 ./setup.sh
 cd $BASE_DIR
+
+cd ${BASE_DIR}/cleanup-service
+./setup.sh
+cd $BASE_DIR
