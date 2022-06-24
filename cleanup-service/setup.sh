@@ -23,11 +23,20 @@ gcloud beta run jobs create cleanup-service \
 	--image=gcr.io/$PROJECT_NAME/cleanup-service \
 	--set-env-vars MENU_SERVICE_URL=$MENU_SERVICE_URL \
 	--set-env-vars DURATION=60 \
-	--region europe-west9
+  --region $REGION
 
-gcloud projects add-iam-policy-binding $PROJECT_ID   \
-	--member="serviceAccount:$PROJECT_NUMBER-compute@developer.gserviceaccount.com" \
-	--role="roles/run.invoker"
+gcloud beta run jobs update cleanup-service \
+	--image=gcr.io/$PROJECT_NAME/cleanup-service \
+	--set-env-vars MENU_SERVICE_URL=$MENU_SERVICE_URL \
+	--set-env-vars DURATION=60 \
+  --region $REGION
+
+export SCHEDULER_SERVICE_ACCOUNT=cleanup-scheduler-job-sa
+gcloud iam service-accounts create ${SCHEDULER_SERVICE_ACCOUNT}
+
+gcloud projects add-iam-policy-binding ${PROJECT_ID} \
+  --member="serviceAccount:${SCHEDULER_SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com" \
+  --role="roles/run.invoker"
 
 # schedule Cloud Run job to start once a day at 12:00AM
 gcloud scheduler jobs create http cleanup-schedule \
@@ -35,6 +44,6 @@ gcloud scheduler jobs create http cleanup-schedule \
     --schedule="0 0 * * *" \
     --uri="https://$REGION-run.googleapis.com/apis/run.googleapis.com/v1/namespaces/$PROJECT_ID/jobs/cleanup-service:run" \
     --http-method POST \
-    --oauth-service-account-email $PROJECT_NUMBER-compute@developer.gserviceaccount.com
+    --oauth-service-account-email ${SCHEDULER_SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com
 
 
