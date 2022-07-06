@@ -1,10 +1,10 @@
 source ../config-env.sh
 
-# build image
-docker build . -t gcr.io/$PROJECT_NAME/cleanup-service
+# build image and push to Artifact Registry
+gcloud artifacts repositories create cymbal-eats --repository-format=docker --location=$REGION
 
-#push to registry
-docker push gcr.io/$PROJECT_NAME/cleanup-service
+gcloud builds submit -t $REGION-docker.pkg.dev/$PROJECT_NAME/cymbal-eats/cleanup-service:latest
+
 
 #get URL for the Menu Service
 if [[ -z "${MENU_SERVICE_URL}" ]]; then
@@ -20,15 +20,15 @@ fi
 
 # create a Cloud Run job to clean up failed menu items older than 60 mins
 gcloud beta run jobs create cleanup-service \
-	--image=gcr.io/$PROJECT_NAME/cleanup-service \
+	--image=$REGION-docker.pkg.dev/$PROJECT_NAME/cymbal-eats/cleanup-service:latest \
 	--set-env-vars MENU_SERVICE_URL=$MENU_SERVICE_URL \
-	--set-env-vars DURATION=60 \
+	--set-env-vars FAILED_ITEM_AGE=60 \
   --region $REGION
 
 gcloud beta run jobs update cleanup-service \
-	--image=gcr.io/$PROJECT_NAME/cleanup-service \
+	--image=$REGION-docker.pkg.dev/$PROJECT_NAME/cymbal-eats/cleanup-service:latest \
 	--set-env-vars MENU_SERVICE_URL=$MENU_SERVICE_URL \
-	--set-env-vars DURATION=60 \
+	--set-env-vars FAILED_ITEM_AGE=60 \
   --region $REGION
 
 export SCHEDULER_SERVICE_ACCOUNT=cleanup-scheduler-job-sa
