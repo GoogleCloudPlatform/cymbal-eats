@@ -20,13 +20,13 @@ fi
 
 # create a Cloud Run job to clean up failed menu items older than 60 mins
 gcloud beta run jobs create cleanup-service \
-	--image=$REGION-docker.pkg.dev/$PROJECT_NAME/containers/cleanup-service:latest \
+	--image=$REGION-docker.pkg.dev/$PROJECT_NAME/cymbal-eats/cleanup-service:latest \
 	--set-env-vars MENU_SERVICE_URL=$MENU_SERVICE_URL \
 	--set-env-vars FAILED_ITEM_AGE=60 \
   --region $REGION
 
 gcloud beta run jobs update cleanup-service \
-	--image=$REGION-docker.pkg.dev/$PROJECT_NAME/containers/cleanup-service:latest \
+	--image=$REGION-docker.pkg.dev/$PROJECT_NAME/cymbal-eats/cleanup-service:latest \
 	--set-env-vars MENU_SERVICE_URL=$MENU_SERVICE_URL \
 	--set-env-vars FAILED_ITEM_AGE=60 \
   --region $REGION
