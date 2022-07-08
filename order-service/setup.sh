@@ -36,7 +36,7 @@ gcloud firestore databases create --region=$REGION
 sed "s/PROJECT_ID/$PROJECT_ID/g" firebaserc.tmpl > .firebaserc
 
 curl -sL https://firebase.tools | upgrade=true bash
-firebase deploy --only firestore:rules
+firebase deploy
 
 if [[ -z "${INVENTORY_SERVICE_URL}" ]]; then
   INVENTORY_SERVICE_URL=$(gcloud run services describe $INVENTORY_SERVICE_NAME \
