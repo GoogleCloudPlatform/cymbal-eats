@@ -60,7 +60,6 @@ gcloud workflows deploy ${WORKFLOW_NAME} \
   --source=rewardsWorkflow.yaml \
   --service-account=${WORKFLOW_SERVICE_ACCOUNT}@$PROJECT_ID.iam.gserviceaccount.com
 
-export TOPIC_ID=order-topic
 gcloud pubsub topics create $TOPIC_ID --project=$PROJECT_ID
 
 gcloud config set eventarc/location ${REGION}
