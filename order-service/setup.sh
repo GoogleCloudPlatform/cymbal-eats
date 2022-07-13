@@ -25,9 +25,7 @@ gcloud services enable \
     cloudbuild.googleapis.com \
     firestore.googleapis.com \
     pubsub.googleapis.com \
-    workflows.googleapis.com \
-    eventarc.googleapis.com \
-    workflowexecutions.googleapis.com
+    --quiet
 
 gcloud app create --region=$REGION
 
@@ -63,37 +61,3 @@ gcloud run deploy $ORDER_SERVICE_NAME \
 
 export TOPIC_ID=order-topic
 gcloud pubsub topics create $TOPIC_ID --project=$PROJECT_ID
-gcloud pubsub subscriptions create order-subscription --topic=$TOPIC_ID --topic-project=$PROJECT_ID
-
-gcloud projects add-iam-policy-binding $PROJECT_ID \
---member="serviceAccount:$PROJECT_NUMBER-compute@developer.gserviceaccount.com" \
---role="roles/pubsub.publisher" 
-
-gcloud projects add-iam-policy-binding $PROJECT_ID \
---member="serviceAccount:$PROJECT_NUMBER-compute@developer.gserviceaccount.com" \
---role="roles/pubsub.subscriber" 
-
-gcloud projects add-iam-policy-binding $PROJECT_ID \
---member="serviceAccount:$PROJECT_NUMBER-compute@developer.gserviceaccount.com" \
---role="roles/workflows.invoker"
-
-export WORKFLOW_SERVICE_ACCOUNT=cymbal-eats-workflow-sa
-gcloud iam service-accounts create ${WORKFLOW_SERVICE_ACCOUNT}
-
-gcloud projects add-iam-policy-binding ${PROJECT_ID} \
-  --member="serviceAccount:${WORKFLOW_SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com" \
-  --role="roles/workflows.invoker"
-
-gcloud projects add-iam-policy-binding ${PROJECT_ID} \
-  --member="serviceAccount:${WORKFLOW_SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com" \
-  --role='roles/iam.serviceAccountTokenCreator'
-
-export WORKFLOW_NAME=testWorkflow
-gcloud workflows deploy ${WORKFLOW_NAME} --source=testWorkflow.yaml
-
-gcloud eventarc triggers create events-pubsub-trigger \
-  --destination-workflow=${WORKFLOW_NAME} \
-  --destination-workflow-location=${WORKFLOW_LOCATION} \
-  --event-filters="type=google.cloud.pubsub.topic.v1.messagePublished" \
-  --service-account="${WORKFLOW_SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com" \
-  --transport-topic=$TOPIC_ID
