@@ -26,7 +26,8 @@ gcloud services enable \
     logging.googleapis.com \
     eventarc.googleapis.com \
     artifactregistry.googleapis.com \
-    run.googleapis.com
+    run.googleapis.com \
+    --quiet
 
 export CF_SERVICE_ACCOUNT=thumbnail-service-sa
 gcloud iam service-accounts create ${CF_SERVICE_ACCOUNT}
