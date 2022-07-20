@@ -52,6 +52,7 @@ gcloud services enable \
     workflowexecutions.googleapis.com \
     eventarc.googleapis.com \
     cloudscheduler.googleapis.com \
+    logging.googleapis.com \
     --quiet
 
 export REGION=us-east1

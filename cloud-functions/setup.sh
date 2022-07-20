@@ -28,6 +28,27 @@ gcloud services enable \
     artifactregistry.googleapis.com \
     run.googleapis.com
 
+export CF_SERVICE_ACCOUNT=thumbnail-service-sa
+gcloud iam service-accounts create ${CF_SERVICE_ACCOUNT}
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member "serviceAccount:${CF_SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com" \
+  --role "roles/artifactregistry.reader"
+
+GCS_SERVICE_ACCOUNT=$(gsutil kms serviceaccount -p $PROJECT_NUMBER)
+
+gcloud projects add-iam-policy-binding $PROJECT_NUMBER \
+    --member "serviceAccount:$GCS_SERVICE_ACCOUNT" \
+    --role "roles/pubsub.publisher"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member "serviceAccount:${CF_SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com" \
+  --role "roles/storage.objectCreator"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member "serviceAccount:${CF_SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com" \
+  --role "roles/run.invoker"
+
 if [[ -z "${MENU_SERVICE_URL}" ]]; then
   MENU_SERVICE_URL=$(gcloud run services describe $MENU_SERVICE_NAME \
     --region=$REGION \
@@ -44,26 +65,7 @@ gsutil iam ch allUsers:objectViewer $BUCKET_THUMBNAILS
 gsutil mb -p $PROJECT_ID -l $REGION $UPLOAD_BUCKET
 gsutil iam ch allUsers:objectViewer $UPLOAD_BUCKET
 
-export CF_SERVICE_ACCOUNT=thumbnail-service-sa
-gcloud iam service-accounts create ${CF_SERVICE_ACCOUNT}
-
-gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member "serviceAccount:${CF_SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com" \
-  --role "roles/artifactregistry.reader"
-
-gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member "serviceAccount:service-$PROJECT_NUMBER@gs-project-accounts.iam.gserviceaccount.com" \
-  --role "roles/pubsub.publisher"
-
-gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:${CF_SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com" \
-  --role="roles/storage.objectCreator"
-
-gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member "serviceAccount:${CF_SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com" \
-  --role "roles/run.invoker"
-
-gcloud functions deploy process-thumbnails \
+gcloud beta functions deploy process-thumbnails \
   --gen2 \
   --runtime=nodejs16 \
   --source=thumbnail \
