@@ -65,7 +65,7 @@ gcloud functions deploy process-thumbnails \
   --source=thumbnail \
   --region=$REGION \
   --project=$PROJECT_ID \
-  --entry-point process-thumbnails \
+  --entry-point=process-thumbnails \
   --trigger-bucket=$UPLOAD_BUCKET \
   --service-account="${CF_SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com" \
   --set-env-vars=BUCKET_THUMBNAILS=$BUCKET_THUMBNAILS,MENU_SERVICE_URL=$MENU_SERVICE_URL \
