@@ -48,6 +48,10 @@ export CF_SERVICE_ACCOUNT=thumbnail-service-sa
 gcloud iam service-accounts create ${CF_SERVICE_ACCOUNT}
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member "serviceAccount:${CF_SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com" \
+  --role "roles/artifactregistry.reader"
+
+gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member "serviceAccount:service-$PROJECT_NUMBER@gs-project-accounts.iam.gserviceaccount.com" \
   --role "roles/pubsub.publisher"
 
