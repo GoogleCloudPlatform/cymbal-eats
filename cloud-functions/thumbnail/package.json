@@ -1,7 +1,8 @@
 {
     "name": "thumbnail-service",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "dependencies": {
+      "@google-cloud/functions-framework": "^3.0.0",
       "@google-cloud/storage": "^5.18.2",
       "@google-cloud/vision": "^2.4.2",
       "path": "^0.12.7",
