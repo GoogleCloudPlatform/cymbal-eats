@@ -51,7 +51,7 @@ esac
 
 gcloud app create --region=$AE_REGION
 
-gcloud firestore databases create --region=$REGION
+gcloud firestore databases create --region=$AE_REGION
 
 sed "s/PROJECT_ID/$PROJECT_ID/g" firebaserc.tmpl > .firebaserc
 
