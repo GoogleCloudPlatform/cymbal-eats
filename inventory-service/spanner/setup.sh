@@ -30,7 +30,7 @@ gcloud services enable \
 gcloud spanner instances create $DB_INSTANCE \
     --config=regional-${REGION} \
     --description="Cymbal Menu Inventory" \
-    --nodes=1
+    --processing-units=100
 
 # Disabling the update to speed up the labs setup
 # For long running projects, its recommended to update processing units after instance creation to minimize the cost
