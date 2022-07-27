@@ -42,6 +42,9 @@ gcloud services enable \
     run.googleapis.com \
     cloudbuild.googleapis.com \
     artifactregistry.googleapis.com \
+    --quiet
+
+gcloud services enable \
     vpcaccess.googleapis.com \
     vision.googleapis.com \
     cloudfunctions.googleapis.com \
