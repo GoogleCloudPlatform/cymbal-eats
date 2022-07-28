@@ -42,6 +42,9 @@ gcloud services enable \
     run.googleapis.com \
     cloudbuild.googleapis.com \
     artifactregistry.googleapis.com \
+    --quiet
+
+gcloud services enable \
     vpcaccess.googleapis.com \
     vision.googleapis.com \
     cloudfunctions.googleapis.com \
@@ -52,6 +55,7 @@ gcloud services enable \
     workflowexecutions.googleapis.com \
     eventarc.googleapis.com \
     cloudscheduler.googleapis.com \
+    logging.googleapis.com \
     --quiet
 
 export REGION=us-east1

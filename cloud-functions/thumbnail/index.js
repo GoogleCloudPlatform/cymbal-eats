@@ -11,20 +11,24 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+'use strict';
 
 const imageMagick = require('imagemagick');
 const Promise = require("bluebird");
 const path = require('path');
+const functions = require('@google-cloud/functions-framework');
 const vision = require('@google-cloud/vision');
 const {Storage} = require('@google-cloud/storage');
 const axios = require('axios');
 var fs = require('fs');
 
+functions.cloudEvent('process-thumbnails', async (cloudEvent) => {
+    console.log(`Event ID: ${cloudEvent.id}`);
+    console.log(`Event Type: ${cloudEvent.type}`);
 
-exports.process_thumbnails = async (file, context) =>
-{
+    const file = cloudEvent.data;
+
     try {
-
         console.log(`Received thumbnail request for file ${file.name} from bucket ${file.bucket}`);
 
         const storage = new Storage();
@@ -67,10 +71,10 @@ exports.process_thumbnails = async (file, context) =>
 
         const resizeCrop = Promise.promisify(imageMagick.crop);
         await resizeCrop({
-                srcPath: originalFile,
-                dstPath: thumbFile,
-                width: 400,
-                height: 400
+            srcPath: originalFile,
+            dstPath: thumbFile,
+            width: 400,
+            height: 400
         });
         console.log(`Created local thumbnail in ${thumbFile}`);
 
@@ -81,7 +85,7 @@ exports.process_thumbnails = async (file, context) =>
         console.log(`Raw vision output for: ${file.name}: ${JSON.stringify(visionResponse[0])}`);
         let status = "Failed"
         let labels = "";
-        for (label of visionResponse[0].labelAnnotations){
+        for (const label of visionResponse[0].labelAnnotations){
             status = label.description == "Food" ? "Ready" : status
             labels = labels.concat(label.description, ", ");
         }
@@ -99,17 +103,16 @@ exports.process_thumbnails = async (file, context) =>
         const item = await menuServer.get(`/menu/${itemID}`);
         // Send update call to menu service
         const request = await menuServer.put(`/menu/${itemID}`, {
-                itemImageURL: originalImageUrl,
-                itemName: item.data.itemName,
-                itemPrice: item.data.itemPrice,
-                itemThumbnailURL: thumbnailImageUrl,
-                spiceLevel: item.data.spiceLevel,
-                status: status,
-                tagLine: item.data.tagLine
+            itemImageURL: originalImageUrl,
+            itemName: item.data.itemName,
+            itemPrice: item.data.itemPrice,
+            itemThumbnailURL: thumbnailImageUrl,
+            spiceLevel: item.data.spiceLevel,
+            status: status,
+            tagLine: item.data.tagLine
 
         })
-
     } catch (err) {
         console.log(`Error: processing the thumbnail: ${err}`);
     }
-};
+});

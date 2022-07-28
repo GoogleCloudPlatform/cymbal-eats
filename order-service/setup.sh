@@ -27,9 +27,31 @@ gcloud services enable \
     pubsub.googleapis.com \
     --quiet
 
-gcloud app create --region=$REGION
+shopt -s nocasematch
+case $REGION in
+  us-central1)
+export AE_REGION="us-central" && echo "$REGION is not an Appengine Region, defaulting to AppEngine region $AE_REGION";;
+  us-east5 | us-south1)
+export AE_REGION="us-east1" && echo "$REGION is not an Appengine Region, defaulting to AppEngine region $AE_REGION";;
+  southamerica-west1)
+export AE_REGION="southamerica-east1" && echo "$REGION is not an Appengine Region, defaulting to AppEngine region $AE_REGION";;
+  northamerica-northeast2)
+export AE_REGION="northamerica-northeast1" && echo "$REGION is not an Appengine Region, defaulting to AppEngine region $AE_REGION";;
+  europe-west1)
+export AE_REGION="europe-west" && echo "$REGION is not an Appengine Region, defaulting to AppEngine region $AE_REGION";;
+  europe-north1 | europe-southwest1 | europe-west4 | europe-west8 | europe-west9)
+export AE_REGION="europe-west" && echo "$REGION is not an Appengine Region, defaulting to AppEngine region $AE_REGION";;
+  asia-south2)
+export AE_REGION="asia-south1" && echo "$REGION is not an Appengine Region, defaulting to AppEngine region $AE_REGION";;
+  australia-southeast2)
+export AE_REGION="australia-southeast1" && echo "$REGION is not an Appengine Region, defaulting to AppEngine region $AE_REGION";;
+  *)
+export AE_REGION=$REGION && echo "Deploying AppEngine to region $AE_REGION";;
+esac
 
-gcloud firestore databases create --region=$REGION
+gcloud app create --region=$AE_REGION
+
+gcloud firestore databases create --region=$AE_REGION
 
 sed "s/PROJECT_ID/$PROJECT_ID/g" firebaserc.tmpl > .firebaserc
 
