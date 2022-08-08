@@ -49,7 +49,7 @@ gcloud services vpc-peerings connect \
     --network=default \
     --project=$PROJECT_ID
 
-DB_DATABASE=postgres
+DB_DATABASE=customers
 DB_USER=postgres
 DB_PASSWORD=password123
 
