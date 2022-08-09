@@ -93,7 +93,7 @@ cd ./db
 
 gcloud builds submit -t $REGION-docker.pkg.dev/$PROJECT_NAME/cymbal-eats/db-job:latest
 
-gcloud beta run jobs create cleanup-service \
+gcloud beta run jobs create db-job \
     --image=$REGION-docker.pkg.dev/$PROJECT_NAME/cymbal-eats/db-job:latest \
     --set-env-vars DB_HOST=$DB_HOST \
     --set-env-vars PGUSER=$DB_USER \
@@ -102,7 +102,7 @@ gcloud beta run jobs create cleanup-service \
     --vpc-connector $VPC_CONNECTOR \
     --region $REGION
 
-gcloud beta run jobs execute cleanup-service --region $REGION
+gcloud beta run jobs execute db-job --region $REGION
 
 cd ..
 
