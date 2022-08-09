@@ -1,3 +1,0 @@
-[EXECUTABLE]
-customer-service-1.0.0-runner
-

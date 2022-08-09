@@ -12,38 +12,38 @@ import io.quarkus.hibernate.orm.panache.PanacheEntity;
 
 @Entity
 public class Customer extends PanacheEntity {
-    
+
     @Column(name="customer_email")
-    public String customerEmail;
+    public String email;
 
     @Column(name="customer_name")
-    public String customerName;
-    
+    public String name;
+
     @Column(name="customer_address")
-    public String customeraddress;
+    public String address;
 
     @Column(name="customer_city")
-    public String customerCity;
+    public String city;
 
     @Column(name="customer_state")
-    public String customerState;
+    public String state;
 
     @Column(name="customer_zip")
-    public String customerZIP;
+    public String zip;
 
     @Column(name="customer_reward_points")
-    public BigInteger customerRewardPoints;
+    public BigInteger rewardPoints;
 
     @CreationTimestamp
     @Column(name="creation_timestamp")
     public LocalDateTime createDateTime;
- 
+
     @UpdateTimestamp
     @Column(name="update_timestamp")
     public LocalDateTime updateDateTime;
 
-    public static Customer findByEmail(String customerEmail) {
-        return (find("customerEmail", customerEmail).firstResult());
+    public static Customer findByEmail(String email) {
+        return (find("email", email).firstResult());
     }
 
 }

@@ -1,0 +1,101 @@
+main:
+  params: [event]
+  steps:
+    - decode_pubsub_message:
+        assign:
+          - base64: ${base64.decode(event.data.message.data)}
+          - order: ${json.decode(text.decode(base64))}
+    - check_if_customer_exists:
+        call: http.post
+        args:
+          url: CUSTOMER_SERVICE_URL/customer/exists
+          auth:
+            type: OIDC
+          body:
+            email: ${order.email}
+        result: customerResponse
+    - set_existing_customer:
+        assign:
+            - customerRecord: ${customerResponse.body}
+    - create_or_update:
+        switch:
+          - condition: ${not("id" in customerRecord)}
+            next: create_customer
+          - condition: ${"id" in customerRecord}
+            next: init_total_amount
+        next: end
+    - create_customer:
+        call: http.post
+        args:
+          url: CUSTOMER_SERVICE_URL/customer
+          auth:
+            type: OIDC
+          body:
+            name: ${order.name}
+            email: ${order.email}
+            address: ${order.address}
+            city: ${order.city}
+            state: ${order.state}
+            zip: ${order.zip}
+            rewardPoints: 100
+        result: customerResponse
+    - set_new_customer:
+        assign:
+            - customerRecord: ${customerResponse.body}
+    - init_total_amount:
+        assign:
+            - list: ${order.orderItems}
+            - totalAmount: 0
+    - calculate_total_amount:
+        for:
+            value: item
+            in: ${list}
+            steps:
+                - getStep:
+                    assign:
+                        - totalAmount: ${totalAmount + item.itemPrice}
+    - log_totalAmount:
+        call: sys.log
+        args:
+            text: ${"totalAmount = $" + string(totalAmount)}
+            severity: INFO
+    - calculate_multiplier:
+        switch:
+          - condition: ${totalAmount < 10}
+            steps:
+              - set_multiplier1:
+                  assign:
+                    - multiplier: 2
+          - condition: ${totalAmount >= 10 and totalAmount < 25}
+            steps:
+              - set_multiplier2:
+                  assign:
+                    - multiplier: 3
+          - condition: ${totalAmount >= 25}
+            steps:
+              - set_multiplier3:
+                  assign:
+                    - multiplier: 5
+    - calculate_rewards:
+        assign:
+            - rewardPoints: ${customerRecord.rewardPoints * multiplier}
+    - update_rewards:
+        call: http.put
+        args:
+          url: ${"CUSTOMER_SERVICE_URL/customer/" + string(customerRecord.id)}
+          auth:
+            type: OIDC
+          body:
+            email: ${order.email}
+            rewardPoints: ${rewardPoints}
+        result: customerResponse
+    - log_rewards:
+        call: sys.log
+        args:
+            text: ${"Set Reward Points " + string(multiplier) + " x " + string(customerRecord.rewardPoints) + " = " + string(rewardPoints)}
+            severity: INFO
+    - return_result:
+        return:
+          multiplier: ${multiplier}
+          totalAmount: ${totalAmount}
+          rewardPoints: ${rewardPoints}

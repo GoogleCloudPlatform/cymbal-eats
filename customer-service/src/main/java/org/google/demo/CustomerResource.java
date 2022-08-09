@@ -27,7 +27,7 @@ public class CustomerResource {
     public List<Customer> getAll() throws Exception {
 
         return Customer.findAll(Sort.ascending("customer_name")).list();
-        
+
     }
 
     @GET
@@ -36,13 +36,26 @@ public class CustomerResource {
         return Customer.findById(id);
     }
 
-      
+    @POST
+    @Path("/exists")
+    public Response exists(Customer customer) {
+        if (customer.email == null)
+            throw new WebApplicationException("email is null");
+
+        Customer existingCustomer = Customer.findByEmail(customer.email);
+
+        if (existingCustomer == null)
+            return Response.ok(customer).status(200).build();
+
+        return Response.ok(existingCustomer).status(200).build();
+    }
+
     @POST
     @Transactional
     public Response create(Customer customer) {
-        if (customer == null || customer.id != null) 
+        if (customer == null || customer.id != null)
             throw new WebApplicationException("id != null");
-        if (Customer.findByEmail(customer.customerEmail)!=null) 
+        if (Customer.findByEmail(customer.email)!=null)
             throw new WebApplicationException("Customer already exists!");
         customer.persist();
         return Response.ok(customer).status(200).build();
@@ -58,12 +71,12 @@ public class CustomerResource {
             throw new WebApplicationException("Customer with id"+id+"does not exist", 404);
         }
 
-        if (customer.customerName != null) entity.customerName=customer.customerName;
-        if (customer.customeraddress != null) entity.customeraddress=customer.customeraddress;
-        if (customer.customerCity != null) entity.customerCity=customer.customerCity;
-        if (customer.customerState != null) entity.customerState = customer.customerState;
-        if (customer.customerZIP != null) entity.customerZIP = customer.customerZIP;
-        if (customer.customerRewardPoints != null) entity.customerRewardPoints = customer.customerRewardPoints;
+        if (customer.name != null) entity.name=customer.name;
+        if (customer.address != null) entity.address=customer.address;
+        if (customer.city != null) entity.city=customer.city;
+        if (customer.state != null) entity.state = customer.state;
+        if (customer.zip != null) entity.zip = customer.zip;
+        if (customer.rewardPoints != null) entity.rewardPoints = customer.rewardPoints;
 
         return entity;
     }
