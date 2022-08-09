@@ -55,7 +55,7 @@ DB_PASSWORD=password123
 CLUSTER=customer-cluster
 INSTANCE=customer-instance
 
-ALLOYDB_REGION=us-east4
+ALLOYDB_REGION=us-central1
 gcloud beta alloydb clusters create $CLUSTER \
     --password=$DB_PASSWORD \
     --network=default \
