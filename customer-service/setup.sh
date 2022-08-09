@@ -62,7 +62,7 @@ gcloud beta alloydb clusters create $CLUSTER \
     --region=$ALLOYDB_REGION \
     --project=$PROJECT_NAME
 
-gcloud beta alloydb clusters describe $CLUSTER --region=$REGION
+gcloud beta alloydb clusters describe $CLUSTER --region=$ALLOYDB_REGION
 
 gcloud beta alloydb instances create $INSTANCE \
     --cluster=$CLUSTER \
@@ -71,7 +71,7 @@ gcloud beta alloydb instances create $INSTANCE \
     --cpu-count=2 \
     --project=$PROJECT_NAME
 
-gcloud beta alloydb instances describe $INSTANCE --cluster=$CLUSTER --region $REGION
+gcloud beta alloydb instances describe $INSTANCE --cluster=$CLUSTER --region $ALLOYDB_REGION
 
 export DB_HOST=$(gcloud beta alloydb instances describe $INSTANCE \
     --cluster=$CLUSTER \
