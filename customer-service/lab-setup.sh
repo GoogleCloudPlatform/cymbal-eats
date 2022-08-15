@@ -51,7 +51,7 @@ gcloud services vpc-peerings connect \
 
 DB_DATABASE=customers
 DB_USER=postgres
-DB_PASSWORD=password123
+DB_PASSWORD=$(openssl rand -base64 21)
 CLUSTER=customer-cluster
 INSTANCE=customer-instance
 
