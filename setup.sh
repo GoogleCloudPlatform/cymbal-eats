@@ -46,6 +46,6 @@ cd ${BASE_DIR}/cleanup-service
 ./setup.sh
 cd $BASE_DIR
 
-cd ${BASE_DIR}/customer-rewards
+cd ${BASE_DIR}/customer-service
 ./setup.sh
 cd $BASE_DIR
