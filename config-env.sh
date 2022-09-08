@@ -42,6 +42,7 @@ gcloud services enable \
     run.googleapis.com \
     cloudbuild.googleapis.com \
     artifactregistry.googleapis.com \
+    alloydb.googleapis.com \
     --quiet
 
 gcloud services enable \
