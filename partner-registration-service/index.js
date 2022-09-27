@@ -8,6 +8,10 @@ app.listen(port, () => {
 const {Firestore} = require('@google-cloud/firestore');
 const db = new Firestore();
 
+app.get('/', async (req, res) => {
+  res.json({ 'status': 'OK' })
+})
+
 app.get('/partners', async (req, res) => {
   try {
     const partnerCollection = await db.collection('partners').get();
