@@ -9,7 +9,7 @@ const {Firestore} = require('@google-cloud/firestore');
 const db = new Firestore();
 
 app.get('/', async (req, res) => {
-  res.json({ 'status': 'OK' })
+  res.send("Partner registration service: RUNNING")
 })
 
 app.get('/partners', async (req, res) => {
