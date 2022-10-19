@@ -50,6 +50,10 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member "serviceAccount:${CF_SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com" \
   --role "roles/run.invoker"
 
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member "serviceAccount:${CF_SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com" \
+  --role "roles/eventarc.eventReceiver"
+
 if [[ -z "${MENU_SERVICE_URL}" ]]; then
   MENU_SERVICE_URL=$(gcloud run services describe $MENU_SERVICE_NAME \
     --region=$REGION \
@@ -66,7 +70,7 @@ gsutil iam ch allUsers:objectViewer $BUCKET_THUMBNAILS
 gsutil mb -p $PROJECT_ID -l $REGION $UPLOAD_BUCKET
 gsutil iam ch allUsers:objectViewer $UPLOAD_BUCKET
 
-gcloud beta functions deploy process-thumbnails \
+gcloud functions deploy process-thumbnails \
   --gen2 \
   --runtime=nodejs16 \
   --source=thumbnail \
@@ -76,4 +80,6 @@ gcloud beta functions deploy process-thumbnails \
   --trigger-bucket=$UPLOAD_BUCKET \
   --service-account="${CF_SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com" \
   --set-env-vars=BUCKET_THUMBNAILS=$BUCKET_THUMBNAILS,MENU_SERVICE_URL=$MENU_SERVICE_URL \
+  --max-instances=1 \
   --quiet
+
