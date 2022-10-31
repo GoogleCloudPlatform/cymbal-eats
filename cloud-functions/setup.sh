@@ -70,6 +70,8 @@ gsutil iam ch allUsers:objectViewer $BUCKET_THUMBNAILS
 gsutil mb -p $PROJECT_ID -l $REGION $UPLOAD_BUCKET
 gsutil iam ch allUsers:objectViewer $UPLOAD_BUCKET
 
+sleep 2m
+
 gcloud functions deploy process-thumbnails \
   --gen2 \
   --runtime=nodejs16 \
@@ -82,4 +84,3 @@ gcloud functions deploy process-thumbnails \
   --set-env-vars=BUCKET_THUMBNAILS=$BUCKET_THUMBNAILS,MENU_SERVICE_URL=$MENU_SERVICE_URL \
   --max-instances=1 \
   --quiet
-
