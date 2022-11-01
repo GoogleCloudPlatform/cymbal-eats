@@ -70,7 +70,7 @@ gsutil iam ch allUsers:objectViewer $BUCKET_THUMBNAILS
 gsutil mb -p $PROJECT_ID -l $REGION $UPLOAD_BUCKET
 gsutil iam ch allUsers:objectViewer $UPLOAD_BUCKET
 
-sleep 4m
+sleep 5m
 
 gcloud functions deploy process-thumbnails \
   --gen2 \
