@@ -48,4 +48,5 @@ gcloud run deploy $INVENTORY_SERVICE_NAME \
     --update-env-vars SPANNER_CONNECTION_STRING=$DB_CONNECTION_STRING \
     --allow-unauthenticated \
     --project=$PROJECT_ID \
+    --max-instances=3 \
     --quiet

@@ -54,7 +54,7 @@
   import { useStore } from 'vuex';
   import { useRouter, useRoute } from 'vue-router';
   import { doc, onSnapshot } from 'firebase/firestore';
-  import * as Firestore from '../utils/Firestore.js';
+  import * as Firebase from '../utils/Firebase.js';
   import OrderView from '../components/OrderView.vue';
   import Toolbar from '../components/Toolbar.vue';
 
@@ -67,7 +67,7 @@
   const status = ref('');
 
   onMounted(async () => {
-    const db = await Firestore.getDb();
+    const db = await Firebase.getDb();
     onSnapshot(doc(db, 'orders', orderNumber.value), (doc) => {
       const order = doc.data();
       orderItems.value = order.orderItems;

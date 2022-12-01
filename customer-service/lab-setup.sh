@@ -106,7 +106,7 @@ gcloud beta run jobs execute db-job --region $REGION
 
 cd ..
 
-./mvnw package -DskipTests
+./mvnw clean package -DskipTests
 
 gcloud auth configure-docker $REGION-docker.pkg.dev --quiet
 

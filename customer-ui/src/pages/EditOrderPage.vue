@@ -62,13 +62,18 @@
         </div>
 
         <br><br>
-        <div>
+        <div class="q-gutter-sm">
           <q-btn
             class="float-right"
             label="Keep Shopping"
             @click="goBackToShopping"
           />
-          <br><br><br>
+          <q-btn
+            v-if="!store.getters.userIsLoggedIn"
+            class="float-right"
+            label="Log in for reward points"
+            @click="logIn"
+          />
           <img
             class="float-right"
             style="cursor: pointer;"
@@ -89,7 +94,6 @@
   import { useStore } from 'vuex';
   import { useRouter } from 'vue-router';
   import OrderView from '../components/OrderView.vue';
-  import * as Server from '../utils/Server.js';
   import statesFile from '../assets/us-states.json';
   import Toolbar from '../components/Toolbar.vue';
 
@@ -105,6 +109,9 @@
   const zip = ref('94043');
   const states = ref(statesFile);
 
+  // TODO: Create a new page that lists the user's orders.
+  //       Link to it from the hamburger menu.
+
   function goBackToShopping() {
     router.push('/');
   }
@@ -115,11 +122,16 @@
 
   async function placeOrder() {
     try {
-      const orderNumber = await Server.placeOrder(
-        name.value, email.value, address.value, city.value, state.value, zip.value,
-        store.state.orderItems
-      );
+      const orderNumber = await store.dispatch('placeOrder', {
+        name: name.value,
+        email: email.value,
+        address: address.value,
+        city: city.value,
+        state: state.value,
+        zip: zip.value
+      })
       if (!orderNumber) throw 'No order number returned from server';
+      // TODO: Clear the cart after an order has been placed.
       router.push('/order-status/' + orderNumber);
     }
     catch(ex) {
@@ -127,6 +139,11 @@
       alert(ex.toString());
     }
   }
+
+  function logIn() {
+    store.dispatch('logIn');
+  }
+
 
 </script>
 

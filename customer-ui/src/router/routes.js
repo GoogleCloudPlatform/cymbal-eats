@@ -12,6 +12,10 @@ const routes = [
     component: () => import('pages/EditOrderPage.vue')
   },
   {
+    path: '/rewards',
+    component: () => import('pages/RewardsPage.vue')
+  },
+  {
     path: '/order-status/:orderNumber',
     component: () => import('pages/OrderStatusPage.vue')
   },

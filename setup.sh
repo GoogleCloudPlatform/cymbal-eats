@@ -30,14 +30,6 @@ cd ${BASE_DIR}/order-service
 ./setup.sh
 cd $BASE_DIR
 
-cd ${BASE_DIR}/employee-ui
-./setup.sh
-cd $BASE_DIR
-
-cd ${BASE_DIR}/customer-ui
-./setup.sh
-cd $BASE_DIR
-
 cd ${BASE_DIR}/cloud-functions
 ./setup.sh
 cd $BASE_DIR
@@ -47,5 +39,13 @@ cd ${BASE_DIR}/cleanup-service
 cd $BASE_DIR
 
 cd ${BASE_DIR}/customer-service
+./setup.sh
+cd $BASE_DIR
+
+cd ${BASE_DIR}/employee-ui
+./setup.sh
+cd $BASE_DIR
+
+cd ${BASE_DIR}/customer-ui
 ./setup.sh
 cd $BASE_DIR

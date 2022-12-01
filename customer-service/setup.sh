@@ -106,7 +106,7 @@ gcloud beta run jobs execute db-job --region $REGION
 
 cd ..
 
-./mvnw package -DskipTests
+./mvnw clean package -DskipTests
 
 gcloud auth configure-docker $REGION-docker.pkg.dev --quiet
 
@@ -131,7 +131,7 @@ gcloud run deploy customer-service \
   --max-instances=3 \
   --quiet
 
-CUSTOMER_SERVICE_URL=$(gcloud run services describe customer-service \
+export CUSTOMER_SERVICE_URL=$(gcloud run services describe customer-service \
   --platform managed \
   --region $REGION \
   --format=json | jq \
@@ -152,6 +152,9 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member "serviceAccount:${WORKFLOW_SERVICE_ACCOUNT}@$PROJECT_ID.iam.gserviceaccount.com" \
   --role "roles/logging.logWriter"
 
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member "serviceAccount:${WORKFLOW_SERVICE_ACCOUNT}@$PROJECT_ID.iam.gserviceaccount.com" \
+  --role "roles/pubsub.publisher"
 
 export WORKFLOW_NAME=rewardsWorkflow
 
@@ -160,7 +163,10 @@ gcloud workflows deploy ${WORKFLOW_NAME} \
   --service-account=${WORKFLOW_SERVICE_ACCOUNT}@$PROJECT_ID.iam.gserviceaccount.com
 
 export TOPIC_ID=order-topic
+export ORDER_POINTS_TOPIC_ID=order-points-topic
+
 gcloud pubsub topics create $TOPIC_ID --project=$PROJECT_ID
+gcloud pubsub topics create $ORDER_POINTS_TOPIC_ID --project=$PROJECT_ID
 
 gcloud config set eventarc/location ${REGION}
 
@@ -171,6 +177,8 @@ gcloud iam service-accounts create ${TRIGGER_SERVICE_ACCOUNT}
 gcloud projects add-iam-policy-binding ${PROJECT_ID} \
   --member="serviceAccount:${TRIGGER_SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com" \
   --role="roles/workflows.invoker"
+
+sleep 2m
 
 gcloud eventarc triggers create new-orders-trigger \
   --destination-workflow=${WORKFLOW_NAME} \

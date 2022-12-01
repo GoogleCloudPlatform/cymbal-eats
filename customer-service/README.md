@@ -40,18 +40,13 @@ gcloud compute networks create default --subnet-mode=auto
 Create a private connection to Google so that the VM instances in the “default” VPC network can use private services access to reach Google services that support it
 
 ```
-gcloud compute addresses create google-managed-services-default 
-\ --global 
-\ --purpose=VPC_PEERING 
-\ --prefix-length=16 
-\ --description="peering range for Google" 
-\ --network=default
+gcloud compute addresses create google-managed-services-default --global --purpose=VPC_PEERING --prefix-length=16 --description="peering range for Google" --network=default
 ```
 
 Set up Peering to the default network
 
 ```
-gcloud services vpc-peerings connect \ --service=servicenetworking.googleapis.com \ --ranges=google-managed-services-default \ --network=default
+gcloud services vpc-peerings connect --service=servicenetworking.googleapis.com --ranges=google-managed-services-default --network=default
 ```
 
 Create an Alloy DB cluster
@@ -75,7 +70,9 @@ OPERATION_ID=[OPERATION ID OUTPUT FROM CLUSTER CREATION]
 Check the status of the cluster
 
 ```
-gcloud beta alloydb operations describe $OPERATION_ID \ --region=$REGION \ --project=$PROJECT_NAME
+gcloud beta alloydb operations describe $OPERATION_ID \
+ --region=$REGION \
+ --project=$PROJECT_NAME
 ```
 
 ## Create an instance 
@@ -83,10 +80,15 @@ gcloud beta alloydb operations describe $OPERATION_ID \ --region=$REGION \ --pro
 ```
 INSTANCE_ID=customer-instance
 
-gcloud beta alloydb instances create $INSTANCE_ID \ --instance-type=PRIMARY \ --cpu-count=2 \ --region=$REGION \ --cluster=customer-cluster \ --project=$PROJECT_NAME
+gcloud beta alloydb instances create $INSTANCE_ID \
+--instance-type=PRIMARY \
+--cpu-count=2 \
+--region=$REGION \
+--cluster=customer-cluster \
+--project=$PROJECT_NAME
 ```
 
-Note the instance IP address. This willbe use
+Note the instance IP address. 
 
 ## Create a database
 
@@ -99,7 +101,7 @@ The VM needs external IP so you may have to change the org policy `constraints/c
 ```
 ZONE=us-central1-a
 
-gcloud compute instances create psql-client --project=$PROJECT_ID --zone=$ZONE --machine-type=e2-medium --network-interface=subnet=default,no-address --metadata=enable-oslogin=true --maintenance-policy=MIGRATE --provisioning-model=STANDARD --service-account=686901112955-compute@developer.gserviceaccount.com --scopes=https://www.googleapis.com/auth/cloud-platform --create-disk=auto-delete=yes,boot=yes,device-name=psql-client,image=projects/debian-cloud/global/images/debian-11-bullseye-v20220719,mode=rw,size=10,type=projects/veer-alloydb/zones/us-central1-a/diskTypes/pd-balanced --shielded-secure-boot --shielded-vtpm --shielded-integrity-monitoring --reservation-affinity=any
+gcloud compute instances create psql-client --project=$PROJECT_ID --zone=$ZONE --machine-type=e2-medium --network-interface=subnet=default,no-address --metadata=enable-oslogin=true --maintenance-policy=MIGRATE --provisioning-model=STANDARD --service-account=$PROJECT_NUMBER-compute@developer.gserviceaccount.com --scopes=https://www.googleapis.com/auth/cloud-platform --create-disk=auto-delete=yes,boot=yes,device-name=psql-client,image=projects/debian-cloud/global/images/debian-11-bullseye-v20220719,mode=rw,size=10,type=projects/$PROJECT_ID/zones/us-central1-a/diskTypes/pd-balanced --shielded-secure-boot --shielded-vtpm --shielded-integrity-monitoring --reservation-affinity=any
 ```
 
 SSH into the VM
@@ -121,16 +123,10 @@ Connect to the database with the instance ip address
 
 ```
 DB_INSTANCE_IP=[ALLOY INSTANCE IP ADDRESS]
-psql -h $DB_INSTANCE_IP -U postgres
+createdb -h $DB_INSTANCE_IP -U postgres customer_db
 ```
 
-Enter the password to sign into the instance. Create a new database with name `customer_db`
-
-```
-CREATE DATABASE customer_db
-```
-
-Exit out of psql with `\q`. You can exit out of the VM now.
+Enter the password to sign into the instance.
 
 
 ## Setup Serverless VPC Connector
@@ -214,7 +210,7 @@ http GET $URL/customer
 ### Test GET by Id
 
 ```
-http GET $URL/customer/1
+http GET $URL/customer/id1
 ```
 
 ### Test GET by email
@@ -225,7 +221,7 @@ http GET $URL/customer/1
 ### Test POST
 
 ```
-http POST $URL/customer customerEmail='eater@foodlover.com' customerName='Foodie Rich' customerAddress='1st Street' customerCity='Manhattan' customerState='NY' customerZIP='11111' customerRewardPoints=0
+http POST $URL/customer id='id2' email='eater@foodlover.com' name='Foodie Rich' address='1st Street' city='Manhattan' state='NY' zip='11111' rewardPoints=50
 ```
 
 Output as below.
@@ -251,11 +247,16 @@ content-type: application/json
     "updateDateTime": "2022-07-28T16:32:30.050852"
 }
 
+```
+
 ### Test PUT
 
 ```
+
 ID=[REPLACEME]
-http PUT $URL/customer/${ID} customerEmail='eater@foodlover.com' customerName='Foodie Rich' customerAddress='1st Street' customerCity='Manhattan' customerState='NY' customerZIP='11111' customerRewardPoints=100
+
+http PUT $URL/customer/${ID} email='eater@foodlover.com' name='Foodie Rich' address='1st Street' city='Manhattan' state='NY' zip='11111' rewardPoints=100
+
 ```
 Output
 
@@ -286,6 +287,7 @@ content-type: application/json
 ### Test DELETE
 
 ```
+
 ID=[REPLACEME]
 
 http DELETE $URL/customer/$ID

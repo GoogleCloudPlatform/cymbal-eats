@@ -32,30 +32,20 @@ public class CustomerResource {
 
     @GET
     @Path("{id}")
-    public Customer get(@PathParam("id") Long id) throws Exception {
-        return Customer.findById(id);
-    }
-
-    @POST
-    @Path("/exists")
-    public Response exists(Customer customer) {
-        if (customer.email == null)
-            throw new WebApplicationException("email is null");
-
-        Customer existingCustomer = Customer.findByEmail(customer.email);
-
-        if (existingCustomer == null)
+    public Response get(@PathParam("id") String id) throws Exception {
+        Customer customer = Customer.findById(id);
+        if (customer != null)
             return Response.ok(customer).status(200).build();
 
-        return Response.ok(existingCustomer).status(200).build();
+        return Response.status(404).build();
     }
 
     @POST
     @Transactional
-    public Response create(Customer customer) {
-        if (customer == null || customer.id != null)
-            throw new WebApplicationException("id != null");
-        if (Customer.findByEmail(customer.email)!=null)
+    public Response create(Customer customer) throws Exception {
+        if (customer == null || customer.id == null)
+            throw new WebApplicationException("id == null");
+        if (Customer.findById(customer.id)!=null)
             throw new WebApplicationException("Customer already exists!");
         customer.persist();
         return Response.ok(customer).status(200).build();
@@ -64,7 +54,7 @@ public class CustomerResource {
     @PUT
     @Transactional
     @Path("{id}")
-    public Customer update(@PathParam("id") Long id, Customer customer) {
+    public Customer update(@PathParam("id") String id, Customer customer) {
 
         Customer entity = Customer.findById(id);
         if (entity == null) {
@@ -84,7 +74,7 @@ public class CustomerResource {
     @DELETE
     @Path("{id}")
     @Transactional
-    public Response delete(@PathParam("id") Long id) {
+    public Response delete(@PathParam("id") String id) {
         Customer entity = Customer.findById(id);
         if (entity == null) {
             throw new WebApplicationException("Customer with id"+id+"does not exist", 404);

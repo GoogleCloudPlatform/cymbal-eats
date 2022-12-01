@@ -24,16 +24,29 @@ export async function getInventoryCounts() {
   }));
 }
 
-export async function placeOrder(name, email, address, city, state, zip, orderItems) {
+export async function placeOrder(idToken, name, email, address, city, state, zip, orderItems) {
   const url = process.env.VUE_APP_ORDER_SERVICE_URL + "/order";
   const payload = {name, email, address, city, state, zip, orderItems};
   const response = await fetch(url, {
     method: 'POST',
     mode: 'cors',
-    headers: {'Content-Type': 'application/json'},
+    headers: {'Content-Type': 'application/json', 'Authorization': idToken},
     body: JSON.stringify(payload)
   });
   const respObj = await response.json();
   if (respObj.error) throw respObj.error;
   return respObj.orderNumber;
+}
+
+export async function getOrders(idToken) {
+  console.time('getOrders');
+  const url = process.env.VUE_APP_ORDER_SERVICE_URL+"/orders/customer";
+  const response = await fetch(url, {
+    method: 'GET',
+    mode: 'cors',
+    headers: {'Content-Type': 'application/json', 'Authorization': idToken},
+  })
+  const respObj = await response.json();
+  console.timeEnd('getOrders')
+  return respObj.data;
 }

@@ -4,14 +4,18 @@ import java.math.BigInteger;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
 @Entity
-public class Customer extends PanacheEntity {
+public class Customer extends PanacheEntityBase {
+
+    @Id
+    public String id;
 
     @Column(name="customer_email")
     public String email;

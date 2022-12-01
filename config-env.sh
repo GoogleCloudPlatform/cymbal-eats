@@ -28,6 +28,7 @@ export PROJECT_NAME=$(gcloud projects describe $PROJECT_ID --format='value(name)
 export UPLOAD_BUCKET=gs://menu-item-uploads-$PROJECT_ID
 export BUCKET_THUMBNAILS=gs://menu-item-thumbnails-$PROJECT_ID
 export TOPIC_ID=order-topic
+export ORDER_POINTS_TOPIC_ID=order-points-topic
 
 gcloud config set project $PROJECT_ID
 

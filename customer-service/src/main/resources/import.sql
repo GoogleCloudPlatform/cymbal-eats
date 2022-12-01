@@ -1,1 +1,1 @@
-insert into customer(id, customer_email, customer_name, customer_address, customer_city, customer_state, customer_zip, customer_reward_points) values (nextval('hibernate_sequence'),'abc@abc.com','abc def','address line1', 'mycity', 'myst', '11111' , 100);
+insert into customer(id, customer_email, customer_name, customer_address, customer_city, customer_state, customer_zip, customer_reward_points) values ('id1','abc@abc.com','abc def','address line1', 'mycity', 'myst', '11111' , 100);
