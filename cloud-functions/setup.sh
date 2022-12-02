@@ -71,7 +71,23 @@ gsutil mb -p $PROJECT_ID -l $REGION $UPLOAD_BUCKET
 gsutil iam ch allUsers:objectViewer $UPLOAD_BUCKET
 
 # This is to allow for Eventarc permissions to propagate
-sleep 5m
+sleep 1m
+
+gcloud functions deploy process-thumbnails \
+  --gen2 \
+  --runtime=nodejs16 \
+  --source=thumbnail \
+  --region=$REGION \
+  --project=$PROJECT_ID \
+  --entry-point=process-thumbnails \
+  --trigger-bucket=$UPLOAD_BUCKET \
+  --service-account="${CF_SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com" \
+  --set-env-vars=BUCKET_THUMBNAILS=$BUCKET_THUMBNAILS,MENU_SERVICE_URL=$MENU_SERVICE_URL \
+  --max-instances=1 \
+  --quiet
+
+# This is to allow for Eventarc permissions to propagate
+sleep 3m
 
 gcloud functions deploy process-thumbnails \
   --gen2 \
