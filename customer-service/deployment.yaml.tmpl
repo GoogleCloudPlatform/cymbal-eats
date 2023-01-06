@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: customer-service
+  labels:
+    app: customer-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: customer-service
+  template:
+    metadata:
+      labels:
+        app: customer-service
+    spec:
+      containers:
+      - name: customer-service
+        image: CUSTOMER_SERVICE_IMAGE
+        env:
+          - name: PORT
+            value: "8080"
+          - name: TARGET
+            value: "Customer Service"
+          - name: DB_HOST
+            valueFrom:
+              secretKeyRef:
+                name: gke-alloydb-secrets
+                key: db_host
+          - name: DB_PORT
+            value: "5432"
+          - name: DB_USER
+            valueFrom:
+              secretKeyRef:
+                name: gke-alloydb-secrets
+                key: username
+          - name: DB_PASS
+            valueFrom:
+              secretKeyRef:
+                name: gke-alloydb-secrets
+                key: password
+          - name: DB_NAME
+            valueFrom:
+              secretKeyRef:
+                name: gke-alloydb-secrets
+                key: database

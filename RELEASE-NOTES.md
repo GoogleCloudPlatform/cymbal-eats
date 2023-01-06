@@ -1,5 +1,11 @@
 #Enterprise Serverless Workshop Release Notes
 
+## Version 1.0.6 (January, 2023)
+### New Features:
+- Added GKE Autopilot setup and application deployment files
+### Labs added:
+- Connecting to Private AlloyDB instance from application running on GKE Autopilot.
+
 ## Version 1.0.5 (December, 2022)
 ### New Features:
 - Added Google sign-in integration - Firebase Authentication

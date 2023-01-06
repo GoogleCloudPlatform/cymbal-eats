@@ -19,6 +19,15 @@ gcloud compute networks create default --subnet-mode=auto
 
 sleep 1m
 
+# vmExternalIpAccess
+cat > vmExternalIpAccess.yaml << ENDOFFILE
+name: projects/$PROJECT_ID/policies/compute.vmExternalIpAccess
+spec:
+ rules:
+ - allowAll: true
+ENDOFFILE
+gcloud org-policies set-policy vmExternalIpAccess.yaml --project=$PROJECT_ID
+
 # vpc-access connectors creation.
 cat > vmCanIpForward.yaml << ENDOFFILE
 name: projects/$PROJECT_ID/policies/compute.vmCanIpForward
@@ -28,6 +37,24 @@ spec:
 ENDOFFILE
 
 gcloud org-policies set-policy vmCanIpForward.yaml --project=$PROJECT_ID
+
+# requireOsLogin
+# cat > requireOsLogin.yaml << ENDOFFILE
+# name: projects/$PROJECT_ID/policies/compute.requireOsLogin
+# spec:
+#  rules:
+#  - allowAll: true
+# ENDOFFILE
+# gcloud org-policies set-policy requireOsLogin.yaml --project=$PROJECT_ID
+
+# requireShieldedVm
+# cat > requireShieldedVm.yaml << ENDOFFILE
+# name: projects/$PROJECT_ID/policies/compute.requireShieldedVm
+# spec:
+#  rules:
+#  - allowAll: true
+# ENDOFFILE
+# gcloud org-policies set-policy requireShieldedVm.yaml --project=$PROJECT_ID
 
 # Domain restricted sharing. To allow allUsers access on resource, ex. GCS.
 # Allow Cloud Run public access
