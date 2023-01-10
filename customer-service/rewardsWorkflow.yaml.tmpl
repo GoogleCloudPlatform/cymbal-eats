@@ -87,7 +87,7 @@ main:
                     - multiplier: 5
     - calculate_rewards:
         assign:
-            - rewardPoints: ${customerRecord.rewardPoints * multiplier}
+            - rewardPoints: ${customerRecord.rewardPoints + multiplier}
             - orderRewardPoints: ${rewardPoints - customerRecord.rewardPoints}
     - update_rewards:
         call: http.put
