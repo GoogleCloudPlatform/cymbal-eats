@@ -34,6 +34,7 @@ gcloud services enable \
     compute.googleapis.com \
     --quiet
 
+# Create a GKE Autopilot cluster
 gcloud container clusters create-auto rewards-cluster --region us-central1 --async
 
 gcloud projects add-iam-policy-binding $PROJECT_NAME \
@@ -48,17 +49,19 @@ gcloud projects add-iam-policy-binding ${PROJECT_ID} \
 --member="serviceAccount:${PROJECT_NUMBER}-compute@developer.gserviceaccount.com" \
 --role='roles/monitoring.metricWriter'
 
-
 gcloud projects add-iam-policy-binding $PROJECT_NAME \
   --member="serviceAccount:$PROJECT_NUMBER-compute@developer.gserviceaccount.com" \
   --role="roles/alloydb.client"
 
+# Create an address space for VPC peering
 gcloud compute addresses create google-managed-services-default \
     --global \
     --purpose=VPC_PEERING \
     --prefix-length=20 \
     --network=projects/$PROJECT_ID/global/networks/default
 
+# Create a VPC peering connection
+# This will allow applications running on GKE to access AlloyDB using internal IP
 gcloud services vpc-peerings connect \
     --service=servicenetworking.googleapis.com \
     --ranges=google-managed-services-default \
