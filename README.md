@@ -102,3 +102,15 @@ Run script in the root of the repo:
 ```bash
 ./get-site-users.sh
 ```
+
+### Contributing
+
+See [`CONTRIBUTING.md`](CONTRIBUTING.md) for details.
+
+### Code of conduct
+
+See [`CODE-OF-CONDUCT.md`](CODE-OF-CONDUCT.md) for details.
+
+### License
+
+Apache 2.0; see [`LICENSE`](LICENSE) for details.
