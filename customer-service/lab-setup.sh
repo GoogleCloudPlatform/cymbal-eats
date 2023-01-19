@@ -91,18 +91,36 @@ gcloud artifacts repositories create cymbal-eats \
 
 cd ./db
 
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:$PROJECT_NUMBER-compute@developer.gserviceaccount.com" \
+  --role="roles/artifactregistry.reader"
+
 gcloud builds submit -t $REGION-docker.pkg.dev/$PROJECT_NAME/cymbal-eats/db-job:latest
 
-gcloud beta run jobs create db-job \
-    --image=$REGION-docker.pkg.dev/$PROJECT_NAME/cymbal-eats/db-job:latest \
-    --set-env-vars DB_HOST=$DB_HOST \
-    --set-env-vars PGUSER=$DB_USER \
-    --set-env-vars PGPASSWORD=$DB_PASSWORD \
-    --set-env-vars PGDB=$DB_DATABASE \
-    --vpc-connector $VPC_CONNECTOR \
-    --region $REGION
+#gcloud beta run jobs create db-job \
+#    --image=$REGION-docker.pkg.dev/$PROJECT_NAME/cymbal-eats/db-job:latest \
+#    --set-env-vars DB_HOST=$DB_HOST \
+#    --set-env-vars PGUSER=$DB_USER \
+#    --set-env-vars PGPASSWORD=$DB_PASSWORD \
+#    --set-env-vars PGDB=$DB_DATABASE \
+#    --vpc-connector $VPC_CONNECTOR \
+#    --region $REGION
+#
+#gcloud beta run jobs execute db-job --region $REGION
 
-gcloud beta run jobs execute db-job --region $REGION
+
+gcloud compute instances create-with-container client-instance \
+    --project=$PROJECT_ID --zone=us-central1-c --machine-type=e2-medium \
+    --network-interface=network-tier=PREMIUM,subnet=default --maintenance-policy=MIGRATE \
+    --provisioning-model=STANDARD \
+    --service-account=$PROJECT_NUMBER-compute@developer.gserviceaccount.com \
+    --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append \
+    --image=projects/cos-cloud/global/images/cos-stable-101-17162-40-52 --boot-disk-size=10GB --boot-disk-type=pd-balanced --boot-disk-device-name=instance-1 \
+    --container-image=$REGION-docker.pkg.dev/$PROJECT_NAME/cymbal-eats/db-job:latest \
+    --container-restart-policy=always \
+    --container-env=DB_HOST=$DB_HOST,PGUSER=$DB_USER,PGPASSWORD=$DB_PASSWORD,PGDB=$DB_DATABASE \
+    --shielded-secure-boot --shielded-vtpm --shielded-integrity-monitoring \
+    --labels=container-vm=cos-stable-101-17162-40-52
 
 cd ..
 
