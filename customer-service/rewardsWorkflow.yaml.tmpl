@@ -121,7 +121,7 @@ main:
     - log_rewards:
         call: sys.log
         args:
-            text: ${"Set Reward Points " + string(multiplier) + " x " + string(customerRecord.rewardPoints) + " = " + string(rewardPoints)}
+            text: ${"Set Reward Points " + string(multiplier) + " + " + string(customerRecord.rewardPoints) + " = " + string(rewardPoints)}
             severity: INFO
     - return_result:
         return:
