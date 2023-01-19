@@ -44,7 +44,7 @@ Application includes:
 
 * (Prerequisite is to have gcloud SDK Installed)
 
-1. Clone the [Cymbal Eats](https://https://github.com/momander/cymbal-eats) git repository to your local machine
+1. Clone the [Cymbal Eats](https://github.com/GoogleCloudPlatform/cymbal-eats) git repository to your local machine
 2. Open a command line and change directoy to inventory-service/spanner/
 3. Run `gcloud run deploy spanner-service --update-env-vars SPANNER_CONNECTION_STRING=<your_connection_string>`
 4. The command will output something like this:
