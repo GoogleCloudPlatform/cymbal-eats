@@ -1,4 +1,4 @@
-module github.com/momander/cymbal-eats/inventory-service
+module github.com/GoogleCloudPlatform/cymbal-eats/inventory-service
 
 go 1.17
 

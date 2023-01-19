@@ -1,12 +1,30 @@
 # Cymbal-eats
 
+### Cymbal Eats Architecture
+
+<img src="./images/cymbal-eats.png" width="1000">
+
+
+| Service                                                        | Language     | Description                                                                                                                              |
+|----------------------------------------------------------------|--------------|------------------------------------------------------------------------------------------------------------------------------------------|
+| [customer-ui](./customer-ui)                                   | Vue.js       | Exposes an HTTP server to serve the customer website. Contains login page, rewards page, list of menu items.                             |
+| [employee-ui](./employee-ui)                                   | Vue.js       | Exposes an HTTP server to serve the employee website. Contains order processing page, adding new menu items page, inventory update page. |
+| [menu-service](./menu-service)                                 | Java         | Manages menu items.                                                                                                                      |
+| [inventory-service](./inventory-service/spanner)               | Go           | Manages inventory for menu items.                                                                                                        |
+| [order-service](./oser-service)                                | Node.js      | Manages customer orders.                                                                                                                 |
+| [customer-service](./customer-service)                         | Java         | Manages customer records. Contains Rewards workflow.                                                                                     |
+| [cloud-functions](./cloud-functions)                           | Node.js      | Processes uploaded images for menu items.                                                                                                |
+| [cleanup-service](./cleanup-service)                           | Shell script | Manages scheduled clean up process for menu items in failed status.                                                                      |
+| [partner-registration-service](./partner-registration-service) | Node.js      | Manages partner registrations.                                                                                                           |
+
+
 ### New Project Setup
 
 Log in with an Org Admin account,
 open Cloud Shell and clone the repo:
 
 ```bash
-git clone https://github.com/momander/cymbal-eats.git
+git clone https://github.com/GoogleCloudPlatform/cymbal-eats.git
 cd cymbal-eats
 ```
 
@@ -33,7 +51,7 @@ Log in with GCP_USER_ACCOUNT into Cloud Console and select new project that was 
 
 Open Cloud Shell and clone the repo:
 ```bash
-git clone https://github.com/momander/cymbal-eats.git
+git clone https://github.com/GoogleCloudPlatform/cymbal-eats.git
 cd cymbal-eats
 ```
 
