@@ -17,6 +17,8 @@
 | [cleanup-service](./cleanup-service)                           | Shell script | Manages scheduled clean up process for menu items in failed status.                                                                      |
 | [partner-registration-service](./partner-registration-service) | Node.js      | Manages partner registrations.                                                                                                           |
 
+### Request workshop for your team
+If you would like to learn more about Google Cloud serverless technologies, please send an email to [esw-request@google.com](mailto:esw-request@google.com) to request workshop delivery.
 
 ### New Project Setup
 
