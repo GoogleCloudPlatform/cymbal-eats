@@ -1,0 +1,129 @@
+main:
+  params: [event]
+  steps:
+    - decode_pubsub_message:
+        assign:
+          - base64: ${base64.decode(event.data.message.data)}
+          - order: ${json.decode(text.decode(base64))}
+          - projectId: ${sys.get_env("GOOGLE_CLOUD_PROJECT_ID")}
+    - is_user_authenticated:
+        switch:
+              - condition: ${"userId" in order}
+                next: check_if_customer_exists
+        next: return_skipped_result
+    - check_if_customer_exists:
+        try:
+          call: http.get
+          args:
+            url: ${"CUSTOMER_SERVICE_URL/customer/" + string(order.userId)}
+          result: customerResponse
+        except:
+             as: e
+             steps:
+               - known_errors:
+                   switch:
+                     - condition: ${e.code == 404}
+                       next: create_customer
+                     - condition: ${e.code == 403}
+                       return: "Authentication error"
+               - unhandled_exception:
+                   raise: ${e}
+    - set_existing_customer:
+        assign:
+            - customerRecord: ${customerResponse.body}
+    - update_existing_customer:
+        switch:
+          - condition: ${"id" in customerRecord}
+            next: init_total_amount
+    - create_customer:
+        call: http.post
+        args:
+          url: CUSTOMER_SERVICE_URL/customer
+          body:
+            id: ${order.userId}
+            name: ${order.name}
+            email: ${order.email}
+            address: ${order.address}
+            city: ${order.city}
+            state: ${order.state}
+            zip: ${order.zip}
+            rewardPoints: 1
+        result: customerResponse
+    - set_new_customer:
+        assign:
+            - customerRecord: ${customerResponse.body}
+    - init_total_amount:
+        assign:
+            - list: ${order.orderItems}
+            - totalAmount: 0
+    - calculate_total_amount:
+        for:
+            value: item
+            in: ${list}
+            steps:
+                - getStep:
+                    assign:
+                        - totalAmount: ${totalAmount + item.itemPrice}
+    - calculate_multiplier:
+        switch:
+          - condition: ${totalAmount < 10}
+            steps:
+              - set_multiplier1:
+                  assign:
+                    - multiplier: 2
+          - condition: ${totalAmount >= 10 and totalAmount < 25}
+            steps:
+              - set_multiplier2:
+                  assign:
+                    - multiplier: 3
+          - condition: ${totalAmount >= 25}
+            steps:
+              - set_multiplier3:
+                  assign:
+                    - multiplier: 5
+    - calculate_rewards:
+        assign:
+            - rewardPoints: ${customerRecord.rewardPoints + multiplier}
+            - orderRewardPoints: ${rewardPoints - customerRecord.rewardPoints}
+    - update_rewards:
+        call: http.put
+        args:
+          url: ${"CUSTOMER_SERVICE_URL/customer/" + string(customerRecord.id)}
+          body:
+            rewardPoints: ${rewardPoints}
+        result: customerResponse
+    - publish_order_points:
+        call: googleapis.pubsub.v1.projects.topics.publish
+        args:
+          topic: ${"projects/" + projectId + "/topics/order-points-topic"}
+          body:
+            messages:
+              - attributes:
+                  orderNumber: ${string(order.orderNumber)}
+                  rewardPoints: ${string(orderRewardPoints)}
+                  totalAmount: ${string(totalAmount)}
+    - log_totalAmount:
+        call: sys.log
+        args:
+            json:
+              orderNumber: ${order.orderNumber}
+              totalAmount: ${totalAmount}
+              multiplier: ${multiplier}
+              totalRewardPoints: ${rewardPoints}
+              orderRewardPoints: ${orderRewardPoints}
+            severity: INFO
+    - log_rewards:
+        call: sys.log
+        args:
+            text: ${"Set Reward Points to " + string(rewardPoints)}
+            severity: INFO
+    - return_result:
+        return:
+          orderNumber: ${order.orderNumber}
+          totalAmount: ${totalAmount}
+          multiplier: ${multiplier}
+          totalRewardPoints: ${rewardPoints}
+          orderRewardPoints: ${orderRewardPoints}
+    - return_skipped_result:
+        return:
+          msg: "Reward Points are available for logged in users only."
