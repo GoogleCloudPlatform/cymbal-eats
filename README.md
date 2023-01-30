@@ -32,7 +32,6 @@ cd cymbal-eats
 
 update environment variables in ```org-admin-setup.sh``` script:
 ```
-PROJECT_ID=cymbal-eats-<random number>
 ORGANIZATION_ID=your org id
 BILLING_ACCOUNT=your billing account id
 GCP_USER_ACCOUNT=user@userdomain.altostrat.com
