@@ -27,5 +27,5 @@ cd ${BASE_DIR}/menu-service
 cd $BASE_DIR
 
 cd ${BASE_DIR}/customer-service
-./gke-lab-setup.sh &
+./setup-gke.sh &
 cd $BASE_DIR
