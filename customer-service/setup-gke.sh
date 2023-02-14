@@ -40,22 +40,6 @@ REGION=us-central1
 # Create a GKE Autopilot cluster
 gcloud container clusters create-auto $CLUSTER_NAME --region $REGION --async
 
-gcloud projects add-iam-policy-binding $PROJECT_NAME \
-  --member="serviceAccount:$PROJECT_NUMBER-compute@developer.gserviceaccount.com" \
-  --role="roles/storage.objectViewer"
-
-gcloud projects add-iam-policy-binding ${PROJECT_ID} \
---member="serviceAccount:${PROJECT_NUMBER}-compute@developer.gserviceaccount.com" \
---role='roles/logging.logWriter'
-
-gcloud projects add-iam-policy-binding ${PROJECT_ID} \
---member="serviceAccount:${PROJECT_NUMBER}-compute@developer.gserviceaccount.com" \
---role='roles/monitoring.metricWriter'
-
-gcloud projects add-iam-policy-binding $PROJECT_NAME \
-  --member="serviceAccount:$PROJECT_NUMBER-compute@developer.gserviceaccount.com" \
-  --role="roles/alloydb.client"
-
 # Create an address space for VPC peering
 gcloud compute addresses create google-managed-services-default \
     --global \
@@ -115,6 +99,22 @@ cd ./db
 gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member="serviceAccount:$PROJECT_NUMBER-compute@developer.gserviceaccount.com" \
   --role="roles/artifactregistry.reader"
+
+gcloud projects add-iam-policy-binding $PROJECT_NAME \
+  --member="serviceAccount:$PROJECT_NUMBER-compute@developer.gserviceaccount.com" \
+  --role="roles/storage.objectViewer"
+
+gcloud projects add-iam-policy-binding ${PROJECT_ID} \
+--member="serviceAccount:${PROJECT_NUMBER}-compute@developer.gserviceaccount.com" \
+--role='roles/logging.logWriter'
+
+gcloud projects add-iam-policy-binding ${PROJECT_ID} \
+--member="serviceAccount:${PROJECT_NUMBER}-compute@developer.gserviceaccount.com" \
+--role='roles/monitoring.metricWriter'
+
+gcloud projects add-iam-policy-binding $PROJECT_NAME \
+  --member="serviceAccount:$PROJECT_NUMBER-compute@developer.gserviceaccount.com" \
+  --role="roles/alloydb.client"
 
 gcloud builds submit -t $REGION-docker.pkg.dev/$PROJECT_NAME/cymbal-eats/db-job:latest
 
