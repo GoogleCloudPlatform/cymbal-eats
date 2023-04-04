@@ -55,27 +55,26 @@ DB_PASSWORD=password123
 CLUSTER=customer-cluster
 INSTANCE=customer-instance
 
-ALLOYDB_REGION=us-central1
 gcloud beta alloydb clusters create $CLUSTER \
     --password=$DB_PASSWORD \
     --network=default \
-    --region=$ALLOYDB_REGION \
+    --region=$REGION \
     --project=$PROJECT_NAME
 
-gcloud beta alloydb clusters describe $CLUSTER --region=$ALLOYDB_REGION
+gcloud beta alloydb clusters describe $CLUSTER --region=$REGION
 
 gcloud beta alloydb instances create $INSTANCE \
     --cluster=$CLUSTER \
-    --region=$ALLOYDB_REGION \
+    --region=$REGION \
     --instance-type=PRIMARY \
     --cpu-count=2 \
     --project=$PROJECT_NAME
 
-gcloud beta alloydb instances describe $INSTANCE --cluster=$CLUSTER --region $ALLOYDB_REGION
+gcloud beta alloydb instances describe $INSTANCE --cluster=$CLUSTER --region $REGION
 
 export DB_HOST=$(gcloud beta alloydb instances describe $INSTANCE \
     --cluster=$CLUSTER \
-    --region=$ALLOYDB_REGION \
+    --region=$REGION \
     --format=json | jq \
     --raw-output ".ipAddress")
 
