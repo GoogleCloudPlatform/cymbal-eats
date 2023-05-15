@@ -34,7 +34,6 @@ gcloud config set project $PROJECT_ID
 
 gcloud services enable \
     compute.googleapis.com \
-    appengine.googleapis.com \
     firestore.googleapis.com \
     sqladmin.googleapis.com \
     vpcaccess.googleapis.com \
