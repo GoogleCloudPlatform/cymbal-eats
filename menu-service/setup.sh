@@ -76,12 +76,12 @@ gcloud compute networks vpc-access connectors create ${VPC_CONNECTOR} \
 ./mvnw clean package -DskipTests
 
 docker build -f src/main/docker/Dockerfile.jvm \
-    --tag gcr.io/$PROJECT_NAME/menu-service .
+    --tag gcr.io/$PROJECT_ID/menu-service .
 
-docker push gcr.io/$PROJECT_NAME/menu-service
+docker push gcr.io/$PROJECT_ID/menu-service
 
 gcloud run deploy $MENU_SERVICE_NAME \
-    --image=gcr.io/$PROJECT_NAME/menu-service:latest \
+    --image=gcr.io/$PROJECT_ID/menu-service:latest \
     --region $REGION \
     --allow-unauthenticated \
     --set-env-vars DB_USER=$DB_USER \

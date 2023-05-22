@@ -60,6 +60,7 @@ gcloud services enable \
     --quiet
 
 export REGION=us-east1
+export FIRESTORE_LOCATION=nam5
 export WORKFLOW_LOCATION=$REGION
 export TRIGGER_LOCATION=$REGION
 

@@ -33,7 +33,7 @@ gcloud services enable \
     compute.googleapis.com \
     --quiet
 
-gcloud projects add-iam-policy-binding $PROJECT_NAME \
+gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member="serviceAccount:$PROJECT_NUMBER-compute@developer.gserviceaccount.com" \
   --role="roles/alloydb.client"
 
@@ -59,7 +59,7 @@ gcloud beta alloydb clusters create $CLUSTER \
     --password=$DB_PASSWORD \
     --network=default \
     --region=$REGION \
-    --project=$PROJECT_NAME
+    --project=$PROJECT_ID
 
 gcloud beta alloydb clusters describe $CLUSTER --region=$REGION
 
@@ -68,7 +68,7 @@ gcloud beta alloydb instances create $INSTANCE \
     --region=$REGION \
     --instance-type=PRIMARY \
     --cpu-count=2 \
-    --project=$PROJECT_NAME
+    --project=$PROJECT_ID
 
 gcloud beta alloydb instances describe $INSTANCE --cluster=$CLUSTER --region $REGION
 
@@ -90,10 +90,10 @@ gcloud artifacts repositories create cymbal-eats \
 
 cd ./db
 
-gcloud builds submit -t $REGION-docker.pkg.dev/$PROJECT_NAME/cymbal-eats/db-job:latest
+gcloud builds submit -t $REGION-docker.pkg.dev/$PROJECT_ID/cymbal-eats/db-job:latest
 
 gcloud beta run jobs create db-job \
-    --image=$REGION-docker.pkg.dev/$PROJECT_NAME/cymbal-eats/db-job:latest \
+    --image=$REGION-docker.pkg.dev/$PROJECT_ID/cymbal-eats/db-job:latest \
     --set-env-vars DB_HOST=$DB_HOST \
     --set-env-vars PGUSER=$DB_USER \
     --set-env-vars PGPASSWORD=$DB_PASSWORD \
@@ -111,12 +111,12 @@ gcloud auth configure-docker $REGION-docker.pkg.dev --quiet
 
 docker build -f src/main/docker/Dockerfile.jvm --tag customer-service .
 
-docker tag customer-service $REGION-docker.pkg.dev/$PROJECT_NAME/cymbal-eats/customer-service:latest
+docker tag customer-service $REGION-docker.pkg.dev/$PROJECT_ID/cymbal-eats/customer-service:latest
 
-docker push $REGION-docker.pkg.dev/$PROJECT_NAME/cymbal-eats/customer-service:latest
+docker push $REGION-docker.pkg.dev/$PROJECT_ID/cymbal-eats/customer-service:latest
 
 gcloud run deploy customer-service \
-  --image=$REGION-docker.pkg.dev/$PROJECT_NAME/cymbal-eats/customer-service:latest \
+  --image=$REGION-docker.pkg.dev/$PROJECT_ID/cymbal-eats/customer-service:latest \
   --set-env-vars DB_USER=$DB_USER \
   --set-env-vars DB_PASS=$DB_PASSWORD \
   --set-env-vars DB_DATABASE=$DB_DATABASE \
