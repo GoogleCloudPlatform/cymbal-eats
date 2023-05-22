@@ -24,6 +24,10 @@ gcloud services enable \
     iap.googleapis.com \
     cloudresourcemanager.googleapis.com
 
+gcloud beta services identity create \
+  --service=iap.googleapis.com \
+  --project=$PROJECT_ID
+
 gcloud alpha iap oauth-brands create \
     --application_title="Cymbal Eats" \
     --support_email=$USER_EMAIL
@@ -96,6 +100,11 @@ gcloud iap web add-iam-policy-binding \
 gcloud run services update $EMPLOYEE_SERVICE_NAME \
     --ingress internal-and-cloud-load-balancing \
     --region $REGION
+
+gcloud run services add-iam-policy-binding $EMPLOYEE_SERVICE_NAME \
+  --region=$REGION \
+  --member="serviceAccount:service-$PROJECT_NUMBER@gcp-sa-iap.iam.gserviceaccount.com"  \
+  --role='roles/run.invoker'
 
 # Manual Steps
 # Go to [OAuth consent screen](https://console.cloud.google.com/apis/credentials/consent?_ga=2.130198351.1761251243.1647864901-1887242533.1645241331) and change User type to External, set Publishing status to Testing.
