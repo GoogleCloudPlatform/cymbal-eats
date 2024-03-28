@@ -12,6 +12,6 @@
   "author": "Google Inc.",
   "dependencies": {
     "@google-cloud/firestore": "^5.0.2",
-    "express": "^4.17.1"
+    "express": "^4.19.2"
   }
 }
