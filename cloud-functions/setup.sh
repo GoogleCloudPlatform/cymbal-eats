@@ -73,31 +73,27 @@ gsutil iam ch allUsers:objectViewer $UPLOAD_BUCKET
 # This is to allow for Eventarc permissions to propagate
 sleep 1m
 
-gcloud functions deploy process-thumbnails \
-  --gen2 \
-  --runtime=nodejs16 \
-  --source=thumbnail \
-  --region=$REGION \
-  --project=$PROJECT_ID \
-  --entry-point=process-thumbnails \
-  --trigger-bucket=$UPLOAD_BUCKET \
-  --service-account="${CF_SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com" \
-  --set-env-vars=BUCKET_THUMBNAILS=$BUCKET_THUMBNAILS,MENU_SERVICE_URL=$MENU_SERVICE_URL \
-  --max-instances=1 \
-  --quiet
+gcloud beta run deploy process-thumbnails \
+      --source=thumbnail \
+      --function process-thumbnails \
+      --region $REGION \
+      --base-image google-22-full/nodejs20 \
+      --no-allow-unauthenticated \
+      --project=$PROJECT_ID \
+      --service-account="${CF_SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com" \
+      --set-env-vars=BUCKET_THUMBNAILS=$BUCKET_THUMBNAILS,MENU_SERVICE_URL=$MENU_SERVICE_URL \
+      --max-instances=1 \
+      --quiet
+
 
 # This is to allow for Eventarc permissions to propagate
 sleep 3m
 
-gcloud functions deploy process-thumbnails \
-  --gen2 \
-  --runtime=nodejs16 \
-  --source=thumbnail \
-  --region=$REGION \
-  --project=$PROJECT_ID \
-  --entry-point=process-thumbnails \
-  --trigger-bucket=$UPLOAD_BUCKET \
-  --service-account="${CF_SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com" \
-  --set-env-vars=BUCKET_THUMBNAILS=$BUCKET_THUMBNAILS,MENU_SERVICE_URL=$MENU_SERVICE_URL \
-  --max-instances=1 \
-  --quiet
+gcloud eventarc triggers create process-thumbnails-trigger \
+     --location=$REGION \
+     --destination-run-service=process-thumbnails \
+     --destination-run-region=$REGION \
+     --event-filters="type=google.cloud.storage.object.v1.finalized" \
+     --event-filters="bucket=$UPLOAD_BUCKET_NAME" \
+     --service-account="${CF_SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com"
+
