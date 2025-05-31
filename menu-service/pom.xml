@@ -22,6 +22,7 @@
   <artifactId>menu-service</artifactId>
   <version>1.0.0</version>
   <properties>
+    <quarkus.container-image.group>org.google.demo</quarkus.container-image.group>	  
     <compiler-plugin.version>3.8.1</compiler-plugin.version>
     <failsafe.useModulePath>false</failsafe.useModulePath>
     <maven.compiler.release>11</maven.compiler.release>
