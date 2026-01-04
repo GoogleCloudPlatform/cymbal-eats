@@ -36,7 +36,7 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member "serviceAccount:${CF_SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com" \
   --role "roles/artifactregistry.reader"
 
-GCS_SERVICE_ACCOUNT=$(gsutil kms serviceaccount -p $PROJECT_NUMBER)
+GCS_SERVICE_ACCOUNT=$(gcloud storage service-agent --project $PROJECT_NUMBER)
 
 gcloud projects add-iam-policy-binding $PROJECT_NUMBER \
     --member "serviceAccount:$GCS_SERVICE_ACCOUNT" \
@@ -64,11 +64,11 @@ else
   echo "Using pre-defined MENU_SERVICE_URL=$MENU_SERVICE_URL"
 fi
 
-gsutil mb -p $PROJECT_ID -l $REGION $BUCKET_THUMBNAILS
-gsutil iam ch allUsers:objectViewer $BUCKET_THUMBNAILS
+gcloud storage buckets create --project $PROJECT_ID --location $REGION $BUCKET_THUMBNAILS
+gcloud storage buckets add-iam-policy-binding $BUCKET_THUMBNAILS --member=allUsers --role=roles/storage.objectViewer
 
-gsutil mb -p $PROJECT_ID -l $REGION $UPLOAD_BUCKET
-gsutil iam ch allUsers:objectViewer $UPLOAD_BUCKET
+gcloud storage buckets create --project $PROJECT_ID --location $REGION $UPLOAD_BUCKET
+gcloud storage buckets add-iam-policy-binding $UPLOAD_BUCKET --member=allUsers --role=roles/storage.objectViewer
 
 # This is to allow for Eventarc permissions to propagate
 sleep 1m
@@ -96,4 +96,3 @@ gcloud eventarc triggers create process-thumbnails-trigger \
      --event-filters="type=google.cloud.storage.object.v1.finalized" \
      --event-filters="bucket=$UPLOAD_BUCKET_NAME" \
      --service-account="${CF_SERVICE_ACCOUNT}@${PROJECT_ID}.iam.gserviceaccount.com"
-

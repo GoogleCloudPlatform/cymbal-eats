@@ -69,9 +69,9 @@ mkdir -p cloud-run/public
 cp -r dist/spa/* cloud-run/public
 cd cloud-run
 
-gsutil mb -p $PROJECT_ID -l $REGION $UPLOAD_BUCKET
+gcloud storage buckets create $UPLOAD_BUCKET --project $PROJECT_ID --location $REGION
 
-gsutil iam ch allUsers:objectViewer $UPLOAD_BUCKET
+gcloud storage buckets add-iam-policy-binding $UPLOAD_BUCKET --member=allUsers --role=roles/storage.objectViewer
 
 gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member="serviceAccount:$PROJECT_NUMBER-compute@developer.gserviceaccount.com" \
