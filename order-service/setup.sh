@@ -26,7 +26,7 @@ gcloud services enable \
     pubsub.googleapis.com \
     --quiet
 
-gcloud firestore databases create --location=$REGION
+gcloud firestore databases create --location=$FIRESTORE_LOCATION
 
 sed "s/PROJECT_ID/$PROJECT_ID/g" firebaserc.tmpl > .firebaserc
 
