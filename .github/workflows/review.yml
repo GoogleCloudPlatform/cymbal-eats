@@ -6,7 +6,8 @@ on: [push, workflow_dispatch]
 env:
   GEMINI_API_KEY: '${{ secrets.GEMINI_API_KEY }}'
   # Fixes the Node 20 deprecation warning:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true' 
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  GEMINI_CLI_TRUST_WORKSPACE: 'true'
 
 jobs:
   Gemini-CLI-Code-Reviews:
