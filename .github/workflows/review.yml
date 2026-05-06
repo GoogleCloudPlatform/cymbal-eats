@@ -10,19 +10,16 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
-      - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}
-
-      - run: cd ${{ github.workspace }}/menu-service
-      - run: npm install -g @google/gemini-cli
-
+      - name: Install Gemini CLI
+        run: npm install -g @google/gemini-cli
+      # By setting working-directory, gemini will look inside menu-service
       - name: Documentation Coverage Review
-        run: echo '## Documentation Coverage Review Results 🚀' >> $GITHUB_STEP_SUMMARY
-      - run: gemini -p 'review menu-service java code and check that all classes are properly documented and provide suggestions on how to improve the documentation in the code and return findings as text in markdown format to the console' >> $GITHUB_STEP_SUMMARY
-        shell: bash
-
+        working-directory: ${{ github.workspace }}/menu-service
+        run: |
+          echo '## Documentation Coverage Review Results 🚀' >> $GITHUB_STEP_SUMMARY
+          gemini -p 'Review Java code, check that all classes are properly documented, and provide suggestions on how to improve it. Return findings in markdown format.' >> $GITHUB_STEP_SUMMARY
       - name: Test Coverage Review
-        run: echo '## Test Coverage Review Results 🚀' >> $GITHUB_STEP_SUMMARY
-      - run: gemini -p 'review menu-service java code and check that all classes and methods have test coverage and provide suggestions on how to improve the test coverage in the code and return findings as text in markdown format to the console' -y >> $GITHUB_STEP_SUMMARY
-        shell: bash
+        working-directory: ${{ github.workspace }}/menu-service
+        run: |
+          echo '## Test Coverage Review Results 🚀' >> $GITHUB_STEP_SUMMARY
+          gemini -p 'Review Java code, check that all classes and methods have test coverage, and provide suggestions on how to improve it. Return findings in markdown format.' -y >> $GITHUB_STEP_SUMMARY
