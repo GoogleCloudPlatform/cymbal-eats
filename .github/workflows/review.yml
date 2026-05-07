@@ -1,28 +1,40 @@
-# AI powered code reviews using Gemini CLI
 name: Code Reviews
 run-name: Reviewing ${{ github.actor }}'s code changes  🚀
+
 on: [push, workflow_dispatch]
+
 env:
   GEMINI_API_KEY: '${{ secrets.GEMINI_API_KEY }}'
+  # Fixes the Node 20 deprecation warning:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  GEMINI_CLI_TRUST_WORKSPACE: 'true'
+
 jobs:
   Gemini-CLI-Code-Reviews:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
-      - name: List files in the repository
+
+      - name: Verify API Key Configuration
         run: |
-          ls ${{ github.workspace }}
+          if [ -z "$GEMINI_API_KEY" ]; then
+            echo "❌ ERROR: GEMINI_API_KEY is empty! Go to your repo settings and add it to Secrets."
+            exit 1
+          fi
 
-      - run: cd ${{ github.workspace }}/menu-service
-      - run: npm install -g @google/gemini-cli
+      - name: Install Gemini CLI
+        run: npm install -g @google/gemini-cli
 
+      # Using working-directory ensures gemini executes inside the java folder
       - name: Documentation Coverage Review
-        run: echo '## Documentation Coverage Review Results 🚀' >> $GITHUB_STEP_SUMMARY
-      - run: gemini -p 'review menu-service java code and check that all classes are properly documented and provide suggestions on how to improve the documentation in the code and return findings as text in markdown format to the console' >> $GITHUB_STEP_SUMMARY
-        shell: bash
+        working-directory: ./menu-service
+        run: |
+          echo "## Documentation Coverage Review Results 🚀" >> "${{ github.step_summary }}"
+          gemini -p 'Review Java code, check that all classes are properly documented, and suggest improvements in markdown.' >> "${{ github.step_summary }}"
 
       - name: Test Coverage Review
-        run: echo '## Test Coverage Review Results 🚀' >> $GITHUB_STEP_SUMMARY
-      - run: gemini -p 'review menu-service java code and check that all classes and methods have test coverage and provide suggestions on how to improve the test coverage in the code and return findings as text in markdown format to the console' -y >> $GITHUB_STEP_SUMMARY
-        shell: bash
+        working-directory: ./menu-service
+        run: |
+          echo "## Test Coverage Review Results 🚀" >> "${{ github.step_summary }}"
+          gemini -p 'Review Java code, check that all classes and methods have test coverage, and suggest improvements in markdown.' -y >> "${{ github.step_summary }}"
