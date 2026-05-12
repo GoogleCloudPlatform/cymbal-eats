@@ -12,10 +12,10 @@
   "author": "Google Inc.",
   "dependencies": {
     "@google-cloud/firestore": "^5.0.2",
-    "@google-cloud/pubsub": "^3.2.0",
+    "@google-cloud/pubsub": "^5.3.0",
     "axios": "^0.26.1",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "firebase-admin": "^11.1.0"
+    "firebase-admin": "^13.9.0"
   }
 }
