@@ -140,10 +140,49 @@ app.delete('/order/:orderNumber', async (req, res) => {
   }
 })
 
+const ALLOWED_ORDER_STATUSES = ['New', 'Being prepared', 'Ready for pickup', 'Picked up', 'Canceled'];
+const ALLOWED_UPDATE_FIELDS = ['status'];
+
 app.patch('/order/:orderNumber', async (req, res) => {
   try {
-    const orderDoc = db.doc(`orders/${req.params.orderNumber}`);
-    await orderDoc.update(req.body);
+    const { orderNumber } = req.params;
+    if (!orderNumber || !/^\d+$/.test(orderNumber)) {
+      return res.status(400).json({error: 'Invalid order number. Must be numeric.'});
+    }
+
+    if (!req.body || typeof req.body !== 'object' || Object.keys(req.body).length === 0) {
+      return res.status(400).json({error: 'Request body must contain at least one field to update.'});
+    }
+
+    // Guard against mass assignment: reject any fields outside the allowlist
+    const disallowedFields = Object.keys(req.body).filter(k => !ALLOWED_UPDATE_FIELDS.includes(k));
+    if (disallowedFields.length > 0) {
+      return res.status(400).json({
+        error: `Disallowed fields in update: ${disallowedFields.join(', ')}`
+      });
+    }
+
+    const { status } = req.body;
+    if (status !== undefined) {
+      if (!ALLOWED_ORDER_STATUSES.includes(status)) {
+        return res.status(400).json({
+          error: `Invalid status "${status}". Allowed values: ${ALLOWED_ORDER_STATUSES.join(', ')}`
+        });
+      }
+    }
+
+    const orderDoc = db.doc(`orders/${orderNumber}`);
+    const docSnapshot = await orderDoc.get();
+    if (!docSnapshot.exists) {
+      return res.status(404).json({error: `Order "${orderNumber}" not found`});
+    }
+
+    const updateData = {
+      status,
+      statusUpdatedAt: new Date()
+    };
+
+    await orderDoc.update(updateData);
     res.json({status: 'success'});
   } catch (ex) {
     console.error(ex);
