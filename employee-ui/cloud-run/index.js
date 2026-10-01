@@ -17,6 +17,9 @@ const fileUpload = require('express-fileupload');
 const {Storage} = require('@google-cloud/storage');
 const storage = new Storage();
 const path = require('path');
+const fs = require('fs');
+
+const ALLOWED_EXTENSIONS = new Set(['jpg', 'jpeg', 'png', 'webp']);
 
 const app = express();
 app.use(express.static('public'));
@@ -32,25 +35,43 @@ app.listen(PORT, () => {
 });
 
 app.post('/upload-picture', async (req, res) => {
-  if (!req.files || Object.keys(req.files).length === 0) {
+  if (!req.files || Object.keys(req.files).length === 0 || !req.files.picture) {
     console.log("No file uploaded");
     return res.status(400).send('No file was uploaded.');
   }
-  console.log(`Receiving file ${JSON.stringify(req.files.picture)}`);
-  console.log(`MenuItemId: `, req.body.menuItemId);
 
-  const pictureFileExtension = getFileExtension(req.files.picture.name);
-  const newPictureName = req.body.menuItemId + '.' + pictureFileExtension;
-  const newPicture = path.resolve('/tmp', newPictureName);
-  await req.files.picture.mv(newPicture);
-  console.log(`File "${newPictureName}" moved to /tmp`);
+  const rawMenuItemId = req.body.menuItemId;
+  if (!rawMenuItemId || !/^\d+$/.test(String(rawMenuItemId).trim())) {
+    console.log(`Invalid menuItemId rejected: ${rawMenuItemId}`);
+    return res.status(400).send('Invalid menuItemId: must be a positive integer.');
+  }
+  const menuItemId = parseInt(String(rawMenuItemId).trim(), 10);
 
-  const pictureBucket = storage.bucket(process.env.UPLOAD_BUCKET);
-  await pictureBucket.upload(newPicture, { resumable: false });
-  console.log(`Uploaded "${newPictureName}" to Cloud Storage bucket "${process.env.UPLOAD_BUCKET}"`);
+  const pictureFileExtension = getFileExtension(req.files.picture.name).toLowerCase();
+  if (!ALLOWED_EXTENSIONS.has(pictureFileExtension)) {
+    console.log(`Invalid file extension rejected: ${pictureFileExtension}`);
+    return res.status(400).send('Invalid file type: only JPG, PNG, and WebP images are allowed.');
+  }
 
-  res.set('Content-Type', 'text/html');
-  res.send('<html>Your menu item is being processed.</html>');
+  console.log(`Receiving picture for menuItemId: ${menuItemId}`);
+
+  const newPictureName = `${menuItemId}.${pictureFileExtension}`;
+  const safeFileName = path.basename(newPictureName);
+  const newPicture = path.join('/tmp', safeFileName);
+
+  try {
+    await req.files.picture.mv(newPicture);
+    console.log(`File "${safeFileName}" moved to /tmp`);
+
+    const pictureBucket = storage.bucket(process.env.UPLOAD_BUCKET);
+    await pictureBucket.upload(newPicture, { resumable: false });
+    console.log(`Uploaded "${safeFileName}" to Cloud Storage bucket "${process.env.UPLOAD_BUCKET}"`);
+
+    res.set('Content-Type', 'text/html');
+    res.send('<html>Your menu item is being processed.</html>');
+  } finally {
+    fs.promises.unlink(newPicture).catch(() => {});
+  }
 });
 
 function getFileExtension(fileName) {

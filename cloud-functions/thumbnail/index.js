@@ -27,9 +27,27 @@ functions.cloudEvent('process-thumbnails', async (cloudEvent) => {
     console.log(`Event Type: ${cloudEvent.type}`);
 
     const file = cloudEvent.data;
+    if (!file || !file.name || !file.bucket) {
+        console.log('Invalid event data: missing file name or bucket');
+        return;
+    }
+
+    // Strict validation of the file name format: <integer_id>.<ext>
+    const baseName = path.basename(file.name);
+    const match = baseName.match(/^(\d+)\.(jpg|jpeg|png|webp)$/i);
+    if (!match) {
+        console.warn(`Security Warning: Skipping file with invalid filename pattern: "${file.name}"`);
+        return;
+    }
+
+    const itemID = parseInt(match[1], 10);
+    const ext = match[2].toLowerCase();
+    const safeFileName = `${itemID}.${ext}`;
+    const originalFile = path.join('/tmp/original', safeFileName);
+    const thumbFile = path.join('/tmp/thumbnail', safeFileName);
 
     try {
-        console.log(`Received thumbnail request for file ${file.name} from bucket ${file.bucket}`);
+        console.log(`Received thumbnail request for item ${itemID} (${safeFileName}) from bucket ${file.bucket}`);
 
         const storage = new Storage();
         const bucket = storage.bucket(file.bucket);
@@ -46,14 +64,11 @@ functions.cloudEvent('process-thumbnails', async (cloudEvent) => {
         const visionPromise = client.annotateImage(visionRequest);
 
         if (!fs.existsSync("/tmp/original")){
-            fs.mkdirSync("/tmp/original");
+            fs.mkdirSync("/tmp/original", { recursive: true });
         }
         if (!fs.existsSync("/tmp/thumbnail")){
-            fs.mkdirSync("/tmp/thumbnail");
+            fs.mkdirSync("/tmp/thumbnail", { recursive: true });
         }
-
-        const originalFile = `/tmp/original/${file.name}`;
-        const thumbFile = `/tmp/thumbnail/${file.name}`
 
         await bucket.file(file.name).download({
             destination: originalFile
@@ -62,12 +77,6 @@ functions.cloudEvent('process-thumbnails', async (cloudEvent) => {
         const originalImageUrl = await bucket.file(file.name).publicUrl()
 
         console.log(`Downloaded picture into ${originalFile}`);
-
-        const itemID = parseInt(path.parse(file.name).name);
-
-        if (isNaN(itemID)){
-            return;
-        }
 
         const resizeCrop = Promise.promisify(imageMagick.crop);
         await resizeCrop({
@@ -114,5 +123,8 @@ functions.cloudEvent('process-thumbnails', async (cloudEvent) => {
         })
     } catch (err) {
         console.log(`Error: processing the thumbnail: ${err}`);
+    } finally {
+        fs.promises.unlink(originalFile).catch(() => {});
+        fs.promises.unlink(thumbFile).catch(() => {});
     }
 });
