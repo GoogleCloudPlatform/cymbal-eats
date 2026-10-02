@@ -1,7 +1,8 @@
 # AI powered code reviews using Gemini CLI
 name: Code Reviews
 run-name: Reviewing ${{ github.actor }}'s code changes  🚀
-on: [push, workflow_dispatch]
+#on: [push, workflow_dispatch]
+on: []
 env:
   GEMINI_API_KEY: '${{ secrets.GEMINI_API_KEY }}'
 jobs:
